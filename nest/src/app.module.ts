@@ -65,6 +65,7 @@ const validationSchema = Joi.object({
   CORS_ORIGIN: Joi.string().required(),
   FRONTEND_URL: Joi.string().required(),
   BACKEND_URL: Joi.string().required(),
+  INTERNAL_API_KEY: Joi.string().min(16).allow(""),
   MIDTRANS_MERCHANT_ID: Joi.string().allow(""),
   MIDTRANS_SERVER_KEY: Joi.string().allow(""),
   MIDTRANS_CLIENT_KEY: Joi.string().allow(""),

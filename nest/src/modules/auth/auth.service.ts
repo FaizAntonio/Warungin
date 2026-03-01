@@ -43,7 +43,13 @@ export class AuthService {
   ) {}
 
   private get jwtSecret(): string {
-    return this.config.get<string>("JWT_SECRET") || "";
+    const secret = this.config.get<string>("JWT_SECRET");
+    if (!secret || secret.length < 32) {
+      throw new Error(
+        "JWT_SECRET is missing or too short (min 32 chars). Application cannot sign tokens safely.",
+      );
+    }
+    return secret;
   }
 
   private get jwtExpiresIn(): string {
@@ -271,10 +277,8 @@ export class AuthService {
 
   async getMeFromToken(token: string) {
     try {
-      const jwtSecret = this.config.get<string>("JWT_SECRET");
-      if (isDebug) console.log("[DEBUG] JWT_SECRET from config:", jwtSecret);
-      const secret = jwtSecret || "warungin-dev-secret-key-min32chars-ok";
-      if (isDebug) console.log("[DEBUG] Using secret:", secret);
+      const secret = this.jwtSecret;
+      if (isDebug) console.log("[DEBUG] JWT_SECRET loaded from config");
 
       const decoded = jwt.verify(token, secret) as TokenPayload;
       if (isDebug) console.log("[DEBUG] Token decoded:", decoded);

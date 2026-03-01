@@ -62,6 +62,14 @@ All configured as shared env vars in Replit Secrets:
 - `MIDTRANS_*`: Payment gateway (optional, empty)
 - `SMTP_*`: Email (optional, empty)
 
+## Security: Internal Endpoints
+
+Sensitive internal endpoints (`/api/internal/backup`, `/api/internal/subscription/revert`, `/api/internal/api-key/rotate`, etc.) are protected by `InternalApiKeyGuard` requiring `X-Internal-Api-Key` header matching the `INTERNAL_API_KEY` environment variable.
+
+## Security: JWT
+
+JWT secret has no hardcoded fallback. The `jwtSecret` getter in `AuthService` will throw if `JWT_SECRET` is missing or shorter than 32 characters.
+
 ## Deployment
 
 Configured for autoscale deployment:
