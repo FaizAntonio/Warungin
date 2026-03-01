@@ -49,6 +49,19 @@ import { ReceiptModule } from "./modules/receipt/receipt.module";
 import { StockAlertModule } from "./modules/stock-alert/stock-alert.module";
 import { StockTransferModule } from "./modules/stock-transfer/stock-transfer.module";
 import { SubscriptionReceiptModule } from "./modules/subscription-receipt/subscription-receipt.module";
+import { SupportModule } from "./modules/support/support.module";
+import { MarketingModule } from "./modules/marketing/marketing.module";
+import { EmailModule } from "./modules/email/email.module";
+import { TenantProfileModule } from "./modules/tenant-profile/tenant-profile.module";
+import { AdminModule } from "./modules/admin/admin.module";
+import { RewardsModule } from "./modules/rewards/rewards.module";
+import { RetentionModule } from "./modules/retention/retention.module";
+import { GdprModule } from "./modules/gdpr/gdpr.module";
+import { InventoryModule } from "./modules/inventory/inventory.module";
+import { ProductStubModule } from "./modules/product-stub/product-stub.module";
+import { QuickInsightModule } from "./modules/quick-insight/quick-insight.module";
+import { AdvancedReportingModule } from "./modules/advanced-reporting/advanced-reporting.module";
+import { CustomerEngagementModule } from "./modules/customer-engagement/customer-engagement.module";
 import { JwtAuthGuard } from "./modules/auth/guards/jwt-auth.guard";
 import { ResponseInterceptor } from "./common/interceptors/response.interceptor";
 import { GlobalExceptionFilter } from "./common/filters/global-exception.filter";
@@ -139,6 +152,19 @@ const validationSchema = Joi.object({
     StockAlertModule,
     StockTransferModule,
     SubscriptionReceiptModule,
+    SupportModule,
+    MarketingModule,
+    EmailModule,
+    TenantProfileModule,
+    AdminModule,
+    RewardsModule,
+    RetentionModule,
+    GdprModule,
+    InventoryModule,
+    ProductStubModule,
+    QuickInsightModule,
+    AdvancedReportingModule,
+    CustomerEngagementModule,
   ],
   providers: [
     { provide: APP_GUARD, useClass: JwtAuthGuard },

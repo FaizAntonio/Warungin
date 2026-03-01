@@ -54,4 +54,13 @@ export class SessionController {
   ) {
     return this.sessionService.getSessionCount(user.id, tenantId);
   }
+
+  @Delete("revoke-all")
+  @Roles("SUPER_ADMIN", "ADMIN_TENANT")
+  async revokeAllSessionsAlias(
+    @CurrentUser() user: any,
+    @TenantId() tenantId: string,
+  ) {
+    return this.sessionService.revokeAllSessions(user.id, tenantId);
+  }
 }

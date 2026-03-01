@@ -76,4 +76,17 @@ export class StockTransferController {
   ) {
     return this.stockTransferService.deleteStockTransfer(id, tenantId);
   }
+
+  @Put(":id/cancel")
+  @Roles("SUPER_ADMIN", "ADMIN_TENANT")
+  async cancelStockTransfer(
+    @Param("id") id: string,
+    @TenantId() tenantId: string,
+  ) {
+    return this.stockTransferService.updateStockTransfer(
+      id,
+      { status: "CANCELLED" } as any,
+      tenantId,
+    );
+  }
 }

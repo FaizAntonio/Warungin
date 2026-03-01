@@ -29,4 +29,17 @@ export class PasswordController {
   async validatePasswordStrength(@Body() body: { password: string }) {
     return this.passwordService.validatePasswordStrength(body.password);
   }
+
+  @Post("update")
+  @UseGuards(JwtAuthGuard)
+  async updatePassword(
+    @Body() body: { currentPassword: string; newPassword: string },
+    @CurrentUser() user: any,
+  ) {
+    return this.passwordService.changePassword(
+      user.id,
+      body.currentPassword,
+      body.newPassword,
+    );
+  }
 }

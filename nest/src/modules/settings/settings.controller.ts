@@ -75,4 +75,19 @@ export class SettingsController {
   ) {
     return this.settingsService.updateNotificationSettings(tenantId, body);
   }
+
+  @Get("system")
+  @Roles("ADMIN_TENANT", "SUPER_ADMIN", "SUPERVISOR")
+  async getSystemSettings(@TenantId() tenantId: string) {
+    return this.settingsService.getSettings(tenantId);
+  }
+
+  @Put("system")
+  @Roles("ADMIN_TENANT", "SUPER_ADMIN")
+  async updateSystemSettings(
+    @TenantId() tenantId: string,
+    @Body() updateSettingsDto: UpdateSettingsDto,
+  ) {
+    return this.settingsService.updateSettings(tenantId, updateSettingsDto);
+  }
 }

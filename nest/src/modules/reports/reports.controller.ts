@@ -128,4 +128,22 @@ export class ReportsController {
     );
     res?.json(data);
   }
+
+  @Get('tenant')
+  @Roles('SUPER_ADMIN', 'ADMIN_TENANT', 'SUPERVISOR')
+  async getTenantReport(@TenantId() tenantId: string) {
+    return this.reportsService.getSummaryDashboard(tenantId);
+  }
+
+  @Get('global')
+  @Roles('SUPER_ADMIN')
+  async getGlobalReport(@TenantId() tenantId: string) {
+    return this.reportsService.getSummaryDashboard(tenantId);
+  }
+
+  @Get('multi')
+  @Roles('SUPER_ADMIN', 'ADMIN_TENANT')
+  async getMultiStoreReport(@TenantId() tenantId: string) {
+    return this.reportsService.getSummaryDashboard(tenantId);
+  }
 }

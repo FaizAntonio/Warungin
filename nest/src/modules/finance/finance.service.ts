@@ -5,9 +5,10 @@ import { PrismaService } from "../../prisma/prisma.service";
 export class FinanceService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async getRevenueReport(tenantId: string, startDate: string, endDate: string) {
-    const start = new Date(startDate);
-    const end = new Date(endDate);
+  async getRevenueReport(tenantId: string, startDate?: string, endDate?: string) {
+    const now = new Date();
+    const start = startDate ? new Date(startDate) : new Date(now.getFullYear(), now.getMonth(), 1);
+    const end = endDate ? new Date(endDate) : now;
 
     const transactions = await this.prisma.transaction.findMany({
       where: {
@@ -38,9 +39,10 @@ export class FinanceService {
     };
   }
 
-  async getProfitReport(tenantId: string, startDate: string, endDate: string) {
-    const start = new Date(startDate);
-    const end = new Date(endDate);
+  async getProfitReport(tenantId: string, startDate?: string, endDate?: string) {
+    const now = new Date();
+    const start = startDate ? new Date(startDate) : new Date(now.getFullYear(), now.getMonth(), 1);
+    const end = endDate ? new Date(endDate) : now;
 
     const orderItems = await this.prisma.orderItem.findMany({
       where: {
@@ -73,9 +75,10 @@ export class FinanceService {
     };
   }
 
-  async getCashFlow(tenantId: string, startDate: string, endDate: string) {
-    const start = new Date(startDate);
-    const end = new Date(endDate);
+  async getCashFlow(tenantId: string, startDate?: string, endDate?: string) {
+    const now = new Date();
+    const start = startDate ? new Date(startDate) : new Date(now.getFullYear(), now.getMonth(), 1);
+    const end = endDate ? new Date(endDate) : now;
 
     const orders = await this.prisma.order.findMany({
       where: {

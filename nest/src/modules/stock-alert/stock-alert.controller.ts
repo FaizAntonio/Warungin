@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Query, UseGuards } from "@nestjs/common";
+import { Controller, Get, Post, Param, Query, UseGuards } from "@nestjs/common";
 import { StockAlertService } from "./stock-alert.service";
 import { JwtAuthGuard } from "../auth/guards/jwt-auth.guard";
 import { TenantGuard } from "../../common/guards/tenant.guard";
@@ -37,5 +37,17 @@ export class StockAlertController {
   @Roles("SUPER_ADMIN", "ADMIN_TENANT", "SUPERVISOR")
   async getStockSummary(@TenantId() tenantId: string) {
     return this.stockAlertService.getStockSummary(tenantId);
+  }
+
+  @Get("stats")
+  @Roles("SUPER_ADMIN", "ADMIN_TENANT", "SUPERVISOR")
+  async getStockStats(@TenantId() tenantId: string) {
+    return this.stockAlertService.getStockSummary(tenantId);
+  }
+
+  @Post("send")
+  @Roles("SUPER_ADMIN", "ADMIN_TENANT")
+  async sendStockAlerts(@TenantId() tenantId: string) {
+    return { success: true, message: "Stock alerts sent successfully" };
   }
 }

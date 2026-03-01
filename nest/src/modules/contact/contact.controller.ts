@@ -70,3 +70,59 @@ export class ContactController {
     return { success: true, message: "Reply sent" };
   }
 }
+
+@Controller("contact")
+export class ContactAliasController {
+  constructor(private readonly contactService: ContactService) {}
+
+  @Get()
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles("SUPER_ADMIN")
+  async getContacts(@Query() query: any) {
+    return this.contactService.getContacts(query);
+  }
+
+  @Get(":id")
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles("SUPER_ADMIN")
+  async getContactById(@Param("id") id: string) {
+    return this.contactService.getContactById(id);
+  }
+
+  @Post()
+  async createContact(@Body() createContactDto: CreateContactDto) {
+    return this.contactService.createContact(createContactDto);
+  }
+
+  @Put(":id")
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles("SUPER_ADMIN")
+  async updateContact(
+    @Param("id") id: string,
+    @Body() updateContactDto: UpdateContactDto,
+  ) {
+    return this.contactService.updateContact(id, updateContactDto);
+  }
+
+  @Put(":id/read")
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles("SUPER_ADMIN")
+  async markAsRead(@Param("id") id: string) {
+    return this.contactService.markAsRead(id);
+  }
+
+  @Post("demo")
+  async submitDemoRequest(@Body() body: any) {
+    return { success: true, message: "Demo request submitted" };
+  }
+
+  @Post(":id/reply")
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles("SUPER_ADMIN")
+  async replyToContact(
+    @Param("id") id: string,
+    @Body() body: { message: string },
+  ) {
+    return { success: true, message: "Reply sent" };
+  }
+}

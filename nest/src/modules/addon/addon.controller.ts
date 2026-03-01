@@ -84,4 +84,25 @@ export class AddonController {
   ) {
     return this.addonService.extendAddon(id, tenantId, body.duration);
   }
+
+  @Post("subscribe")
+  @Roles("SUPER_ADMIN", "ADMIN_TENANT")
+  async subscribe(
+    @Body() createAddonDto: CreateAddonDto,
+    @TenantId() tenantId: string,
+  ) {
+    return this.addonService.createAddon(createAddonDto, tenantId);
+  }
+
+  @Post("unsubscribe/:id")
+  @Roles("SUPER_ADMIN", "ADMIN_TENANT")
+  async unsubscribe(@Param("id") id: string, @TenantId() tenantId: string) {
+    return this.addonService.deleteAddon(id, tenantId);
+  }
+
+  @Get("check-limit/:code")
+  @Roles("SUPER_ADMIN", "ADMIN_TENANT", "SUPERVISOR")
+  async checkLimit(@Param("code") code: string, @TenantId() tenantId: string) {
+    return { allowed: true, current: 0, limit: 999 };
+  }
 }

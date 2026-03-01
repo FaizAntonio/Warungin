@@ -255,4 +255,30 @@ export class TenantsService {
 
     return { orders, products, customers, users };
   }
+
+  async createTenantUser(tenantId: string, data: { name: string; email: string; password: string; role?: string }) {
+    await this.findOne(tenantId);
+    const hashedPassword = await bcrypt.hash(data.password, 10);
+    return this.prisma.user.create({
+      data: {
+        tenantId,
+        name: data.name,
+        email: data.email,
+        password: hashedPassword,
+        role: (data.role as any) || "CASHIER",
+      },
+    });
+  }
+
+  async createTenantOutlet(tenantId: string, data: { name: string; address?: string; phone?: string }) {
+    await this.findOne(tenantId);
+    return this.prisma.outlet.create({
+      data: {
+        tenantId,
+        name: data.name,
+        address: data.address,
+        phone: data.phone,
+      },
+    });
+  }
 }

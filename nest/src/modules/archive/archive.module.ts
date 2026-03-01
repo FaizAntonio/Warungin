@@ -1,11 +1,11 @@
 import { Module } from "@nestjs/common";
-import { ArchiveController } from "./archive.controller";
+import { ArchiveController, ArchiveAliasController } from "./archive.controller";
 import { ArchiveService } from "./archive.service";
 import { PrismaModule } from "../../prisma/prisma.module";
 
 @Module({
   imports: [PrismaModule],
-  controllers: [ArchiveController],
+  controllers: [ArchiveController, ArchiveAliasController],
   providers: [ArchiveService],
   exports: [ArchiveService],
 })

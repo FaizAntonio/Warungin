@@ -30,6 +30,31 @@ export class ReceiptController {
     return this.receiptService.getReceipts(tenantId, query);
   }
 
+  @Get("templates")
+  @Roles("SUPER_ADMIN", "ADMIN_TENANT")
+  async getReceiptTemplates(@TenantId() tenantId: string) {
+    return this.receiptService.getReceiptTemplates(tenantId);
+  }
+
+  @Get("templates/default")
+  @Roles("SUPER_ADMIN", "ADMIN_TENANT")
+  async getDefaultTemplate(@TenantId() tenantId: string) {
+    return this.receiptService.getDefaultTemplate(tenantId);
+  }
+
+  @Get("templates/:id")
+  @Roles("SUPER_ADMIN", "ADMIN_TENANT")
+  async getTemplateById(@Param("id") id: string, @TenantId() tenantId: string) {
+    return this.receiptService.getTemplateById(id, tenantId);
+  }
+
+  @Get("generate/:orderId")
+  @Roles("SUPER_ADMIN", "ADMIN_TENANT", "SUPERVISOR", "CASHIER")
+  async generateReceipt(@Param("orderId") orderId: string, @TenantId() tenantId: string) {
+    const template = await this.receiptService.getDefaultTemplate(tenantId);
+    return { orderId, template, generated: true };
+  }
+
   @Get(":id")
   @Roles("SUPER_ADMIN", "ADMIN_TENANT", "SUPERVISOR", "CASHIER")
   async getReceiptById(@Param("id") id: string, @TenantId() tenantId: string) {
@@ -61,21 +86,34 @@ export class ReceiptController {
     return this.receiptService.deleteReceipt(id, tenantId);
   }
 
-  @Get("templates")
+  @Post("templates")
   @Roles("SUPER_ADMIN", "ADMIN_TENANT")
-  async getReceiptTemplates(@TenantId() tenantId: string) {
-    return this.receiptService.getReceiptTemplates(tenantId);
+  async createTemplate(
+    @Body() createReceiptDto: CreateReceiptDto,
+    @TenantId() tenantId: string,
+  ) {
+    return this.receiptService.createReceipt(createReceiptDto, tenantId);
   }
 
-  @Get("templates/default")
+  @Put("templates/:id")
   @Roles("SUPER_ADMIN", "ADMIN_TENANT")
-  async getDefaultTemplate(@TenantId() tenantId: string) {
-    return this.receiptService.getDefaultTemplate(tenantId);
+  async updateTemplate(
+    @Param("id") id: string,
+    @Body() updateReceiptDto: UpdateReceiptDto,
+    @TenantId() tenantId: string,
+  ) {
+    return this.receiptService.updateReceipt(id, updateReceiptDto, tenantId);
   }
 
-  @Get("templates/:id")
+  @Delete("templates/:id")
   @Roles("SUPER_ADMIN", "ADMIN_TENANT")
-  async getTemplateById(@Param("id") id: string, @TenantId() tenantId: string) {
-    return this.receiptService.getTemplateById(id, tenantId);
+  async deleteTemplate(@Param("id") id: string, @TenantId() tenantId: string) {
+    return this.receiptService.deleteReceipt(id, tenantId);
+  }
+
+  @Post("templates/:id/set-default")
+  @Roles("SUPER_ADMIN", "ADMIN_TENANT")
+  async setDefaultTemplate(@Param("id") id: string, @TenantId() tenantId: string) {
+    return this.receiptService.updateReceipt(id, { isDefault: true } as any, tenantId);
   }
 }

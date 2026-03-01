@@ -132,6 +132,15 @@ export class StoreShiftsController {
     );
   }
 
+  @Get("today")
+  async getTodayShifts(
+    @TenantId() tenantId: string | null,
+    @Query("outletId") outletId?: string,
+  ) {
+    if (!tenantId) throw new Error("TenantId required");
+    return this.storeShiftsService.getShiftHistory(tenantId, 1, 50, outletId);
+  }
+
   @Get(":id/details")
   async getShiftDetails(
     @TenantId() tenantId: string | null,

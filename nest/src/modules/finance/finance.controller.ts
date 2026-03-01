@@ -41,4 +41,44 @@ export class FinanceController {
   ) {
     return this.financeService.getCashFlow(tenantId, startDate, endDate);
   }
+
+  @Get("summary")
+  @Roles("SUPER_ADMIN", "ADMIN_TENANT", "SUPERVISOR")
+  async getSummary(
+    @TenantId() tenantId: string,
+    @Query("startDate") startDate: string,
+    @Query("endDate") endDate: string,
+  ) {
+    const [revenue, profit] = await Promise.all([
+      this.financeService.getRevenueReport(tenantId, startDate, endDate),
+      this.financeService.getProfitReport(tenantId, startDate, endDate),
+    ]);
+    return { ...revenue, ...profit };
+  }
+
+  @Get("balance-sheet")
+  @Roles("SUPER_ADMIN", "ADMIN_TENANT", "SUPERVISOR")
+  async getBalanceSheet(
+    @TenantId() tenantId: string,
+    @Query("startDate") startDate: string,
+    @Query("endDate") endDate: string,
+  ) {
+    const revenue = await this.financeService.getRevenueReport(tenantId, startDate, endDate);
+    return {
+      assets: { cash: revenue.totalRevenue, inventory: 0, total: revenue.totalRevenue },
+      liabilities: { total: 0 },
+      equity: { total: revenue.totalRevenue },
+      period: { startDate, endDate },
+    };
+  }
+
+  @Get("profit-loss")
+  @Roles("SUPER_ADMIN", "ADMIN_TENANT", "SUPERVISOR")
+  async getProfitLoss(
+    @TenantId() tenantId: string,
+    @Query("startDate") startDate: string,
+    @Query("endDate") endDate: string,
+  ) {
+    return this.financeService.getProfitReport(tenantId, startDate, endDate);
+  }
 }

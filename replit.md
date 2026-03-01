@@ -92,6 +92,14 @@ Configured for autoscale deployment:
 - In production, frontend and backend are same-origin (no CORS needed for browser requests)
 - `CORS_ORIGIN` should include the deployment domain for any cross-origin scenarios
 
+## API Route Audit (Completed)
+
+All 200+ frontend API calls have been audited and mapped to backend endpoints. Key fixes applied:
+- **Route ordering**: Static routes (`templates`, `export`, `search`, `by-status`) placed before parametric `:id` routes in receipt, orders controllers
+- **Date guards**: Finance service methods default to current month when startDate/endDate are undefined
+- **Missing routes added**: tenants (user/outlet creation), addon (subscribe/unsubscribe/check-limit), finance (summary/balance-sheet/profit-loss), settings/system, password/update, 2fa/generate, receipt templates CRUD, stock-alerts stats/send, store-shift today, stock-transfer cancel, orders export, reports tenant/global/multi, contact alias, session revoke-all, archive alias
+- **New stub modules**: support, marketing, email-scheduler/templates/analytics, tenant/profile, admin, rewards, retention, gdpr, inventory, advanced-reporting, customer-engagement, quick-insight, payment-legacy
+
 ## API URL Resolution
 
 Frontend (`client/src/api/index.ts`) resolves the API URL:

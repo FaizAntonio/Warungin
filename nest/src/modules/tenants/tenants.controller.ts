@@ -124,4 +124,20 @@ export class TenantsController {
   async getTenantUsage(@Param("id", ParseUUIDPipe) id: string) {
     return this.tenantsService.getTenantUsage(id);
   }
+
+  @Post(":id/users")
+  createTenantUser(
+    @Param("id", ParseUUIDPipe) id: string,
+    @Body() body: { name: string; email: string; password: string; role?: string },
+  ) {
+    return this.tenantsService.createTenantUser(id, body);
+  }
+
+  @Post(":id/outlets")
+  createTenantOutlet(
+    @Param("id", ParseUUIDPipe) id: string,
+    @Body() body: { name: string; address?: string; phone?: string },
+  ) {
+    return this.tenantsService.createTenantOutlet(id, body);
+  }
 }

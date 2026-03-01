@@ -39,4 +39,13 @@ export class TwoFactorController {
   async getTwoFactorStatus(@CurrentUser() user: any) {
     return this.twoFactorService.getTwoFactorStatus(user.id);
   }
+
+  @Post("generate")
+  @UseGuards(JwtAuthGuard)
+  async generateTwoFactorSecret(@CurrentUser() user: any) {
+    const crypto = await import("crypto");
+    const secret = crypto.randomBytes(20).toString("hex");
+    const qrCode = `otpauth://totp/POS:${user.email || user.id}?secret=${secret}&issuer=POS`;
+    return { secret, qrCode };
+  }
 }
