@@ -21,8 +21,8 @@ const getApiUrl = () => {
     }
   }
 
-  // Default to localhost for development (NestJS backend on port 3001)
-  return "http://localhost:3001/api";
+  // Default to localhost for development (NestJS backend on port 3000)
+  return "http://localhost:3000/api";
 };
 
 const api = axios.create({

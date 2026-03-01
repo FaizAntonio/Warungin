@@ -67,7 +67,7 @@ async function bootstrap() {
 
   app.enableCors({
     origin: config
-      .get("CORS_ORIGIN", "http://localhost:5173")
+      .get("CORS_ORIGIN", "http://localhost:5000")
       .split(",")
       .map((o: string) => o.trim()),
     credentials: true,
@@ -77,6 +77,8 @@ async function bootstrap() {
       "Authorization",
       "X-Requested-With",
       "X-Correlation-ID",
+      "X-Tenant-Id",
+      "X-Internal-Api-Key",
     ],
     exposedHeaders: ["Content-Disposition", "Content-Type", "Content-Length"],
   });

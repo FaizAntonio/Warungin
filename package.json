@@ -5,7 +5,7 @@
   "main": "nest/dist/main.js",
   "scripts": {
     "dev": "cd nest && npm run start:dev",
-    "build": "cd nest && npm run build",
+    "build": "npx prisma generate && cd client && npm run build && cd ../nest && npm run build",
     "start": "cd nest && npm run start:prod",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",

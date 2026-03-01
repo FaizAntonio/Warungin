@@ -1,4 +1,4 @@
-const { PrismaClient } = require("@prisma/client");
+const { PrismaClient } = require("../nest/src/generated/client");
 const bcrypt = require("bcryptjs");
 
 const prisma = new PrismaClient();
@@ -6,11 +6,11 @@ const prisma = new PrismaClient();
 async function createSuperAdmin() {
   console.log("Creating super admin user...");
 
-  const hashedPassword = await bcrypt.hash("12345678", 10);
+  const password = process.env.SUPERADMIN_PASSWORD || "SuperAdmin123!";
+  const hashedPassword = await bcrypt.hash(password, 10);
 
-  // First create a default tenant
   let tenant = await prisma.tenant.findFirst({
-    where: { name: "Warungin HQ" },
+    where: { slug: "warungin-hq" },
   });
 
   if (!tenant) {
@@ -18,35 +18,40 @@ async function createSuperAdmin() {
       data: {
         name: "Warungin HQ",
         slug: "warungin-hq",
+        email: "system@warungin.com",
         isActive: true,
-        plan: "ENTERPRISE",
-        maxUsers: 100,
+        subscriptionPlan: "ENTERPRISE",
+        subscriptionStart: new Date(),
+        subscriptionEnd: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000),
       },
     });
     console.log("Created tenant:", tenant.id);
+  } else {
+    console.log("Tenant already exists:", tenant.id);
   }
 
-  // Check if admin already exists
   const existingAdmin = await prisma.user.findFirst({
-    where: { email: "admin@demo.com" },
+    where: { email: "admin@warungin.com" },
   });
 
   if (existingAdmin) {
     console.log("Admin already exists:", existingAdmin.email);
 
-    // Update password
     await prisma.user.update({
       where: { id: existingAdmin.id },
-      data: { password: hashedPassword },
+      data: {
+        password: hashedPassword,
+        role: "SUPER_ADMIN",
+        isActive: true,
+      },
     });
-    console.log("Password updated to: 12345678");
+    console.log("Password updated to:", password);
     return;
   }
 
-  // Create admin user
   const admin = await prisma.user.create({
     data: {
-      email: "admin@demo.com",
+      email: "admin@warungin.com",
       name: "Super Admin",
       password: hashedPassword,
       role: "SUPER_ADMIN",
@@ -56,7 +61,7 @@ async function createSuperAdmin() {
   });
 
   console.log("Super admin created:", admin.email);
-  console.log("Password: 12345678");
+  console.log("Password:", password);
   console.log("User ID:", admin.id);
 }
 

@@ -54,11 +54,12 @@ All configured as shared env vars in Replit Secrets:
 - `PORT`: 3000
 - `FRONTEND_URL`: http://localhost:5000
 - `BACKEND_URL`: http://localhost:3000
-- `JWT_SECRET`: (set)
+- `JWT_SECRET`: (set, 32+ chars required)
 - `JWT_REFRESH_SECRET`: (set)
 - `JWT_EXPIRES_IN`: 7d
 - `CORS_ORIGIN`: http://localhost:5000
 - `DATABASE_URL`: (managed by Replit)
+- `INTERNAL_API_KEY`: (set, 16+ chars required)
 - `MIDTRANS_*`: Payment gateway (optional, empty)
 - `SMTP_*`: Email (optional, empty)
 
@@ -70,8 +71,30 @@ Sensitive internal endpoints (`/api/internal/backup`, `/api/internal/subscriptio
 
 JWT secret has no hardcoded fallback. The `jwtSecret` getter in `AuthService` will throw if `JWT_SECRET` is missing or shorter than 32 characters.
 
+## CORS Configuration
+
+`nest/src/main.ts` CORS config allows headers: `Content-Type`, `Authorization`, `X-Requested-With`, `X-Correlation-ID`, `X-Tenant-Id`, `X-Internal-Api-Key`. Default origin is `http://localhost:5000`. Supports comma-separated origins via `CORS_ORIGIN` env var.
+
+## Super Admin
+
+- **Email**: admin@warungin.com
+- **Default Password**: SuperAdmin123! (set via `SUPERADMIN_PASSWORD` env var or default)
+- **Role**: SUPER_ADMIN
+- **Tenant**: Warungin HQ (ENTERPRISE plan)
+- **Script**: `node scripts/create-super-admin.js` to create/reset
+- Super admin has full CRUD access to all tenants
+
 ## Deployment
 
 Configured for autoscale deployment:
-- **Build**: Builds client and nest
-- **Run**: `node nest/dist/main.js` (serves static frontend + API)
+- **Build**: `npx prisma generate && cd client && npm install && npm run build && cd ../nest && npm install --legacy-peer-deps && npm run build`
+- **Run**: `node nest/dist/main.js` (serves static frontend via ServeStaticModule + API)
+- In production, frontend and backend are same-origin (no CORS needed for browser requests)
+- `CORS_ORIGIN` should include the deployment domain for any cross-origin scenarios
+
+## API URL Resolution
+
+Frontend (`client/src/api/index.ts`) resolves the API URL:
+1. Uses `VITE_API_URL` env var if set
+2. In production (non-localhost), auto-detects from `window.location` → `${origin}/api`
+3. Falls back to `http://localhost:3000/api` for development

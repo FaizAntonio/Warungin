@@ -83,4 +83,4 @@ externalPort = 3001
 [deployment]
 deploymentTarget = "autoscale"
 run = ["node", "nest/dist/main.js"]
-build = ["bash", "-c", "cd client && npm install && npm run build && cd ../nest && npm install --legacy-peer-deps && npm run build"]
+build = ["bash", "-c", "npx prisma generate && cd client && npm install && npm run build && cd ../nest && npm install --legacy-peer-deps && npm run build"]
