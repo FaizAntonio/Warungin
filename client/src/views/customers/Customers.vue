@@ -701,8 +701,6 @@ const handleBulkMessage = async (data: { message: string; type: 'SMS' | 'EMAIL' 
     // Send messages based on type
     if (data.type === 'SMS' || data.type === 'WHATSAPP') {
       // Use marketing service for SMS/WhatsApp campaigns
-      const phoneNumbers = customersWithContact.map(c => c.phone).filter(Boolean);
-      
       await api.post('/marketing/campaigns/send-sms', {
         name: `Bulk Message - ${new Date().toLocaleDateString()}`,
         content: data.message,
@@ -715,8 +713,6 @@ const handleBulkMessage = async (data: { message: string; type: 'SMS' | 'EMAIL' 
       await showSuccess(`Pesan ${data.type} berhasil dikirim ke ${customersWithContact.length} pelanggan`);
     } else if (data.type === 'EMAIL') {
       // Use marketing service for email campaigns
-      const emails = customersWithContact.map(c => c.email).filter(Boolean);
-      
       await api.post('/marketing/campaigns/send-email', {
         name: `Bulk Message - ${new Date().toLocaleDateString()}`,
         subject: 'Pesan dari Toko',
@@ -775,7 +771,7 @@ const handleEmailReport = async (title: string) => {
   
   try {
     await showSuccess(`Laporan "${title}" telah dijadwalkan untuk dikirim ke ${email}`);
-  } catch (err) {
+  } catch {
     await showError('Gagal menjadwalkan pengiriman email');
   }
 };
@@ -830,7 +826,7 @@ const handleFileImport = async (event: Event) => {
           await Promise.all(customersToImport.map(c => api.post('/customers', c)));
           await showSuccess(`Berhasil mengimpor ${customersToImport.length} pelanggan`);
           await loadCustomers(1);
-        } catch (err) {
+        } catch {
           await showError('Gagal mengimpor pelanggan');
         } finally {
           loading.value = false;
