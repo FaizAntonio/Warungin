@@ -103,6 +103,6 @@ export class AddonController {
   @Get("check-limit/:code")
   @Roles("SUPER_ADMIN", "ADMIN_TENANT", "SUPERVISOR")
   async checkLimit(@Param("code") code: string, @TenantId() tenantId: string) {
-    return { allowed: true, current: 0, limit: 999 };
+    return this.addonService.checkLimit(code, tenantId);
   }
 }

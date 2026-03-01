@@ -1,5 +1,7 @@
 import { Controller, Get, Post, Put, Delete, Param, Body, UseGuards } from "@nestjs/common";
 import { AdminMonitorService } from "../admin-monitor/admin-monitor.service";
+import { SubscriptionsService } from "../subscriptions/subscriptions.service";
+import { AddonService } from "../addon/addon.service";
 import { JwtAuthGuard } from "../auth/guards/jwt-auth.guard";
 import { RolesGuard } from "../../common/guards/roles.guard";
 import { Roles } from "../../common/decorators/roles.decorator";
@@ -7,7 +9,11 @@ import { Roles } from "../../common/decorators/roles.decorator";
 @Controller("admin")
 @UseGuards(JwtAuthGuard, RolesGuard)
 export class AdminController {
-  constructor(private readonly adminMonitorService: AdminMonitorService) {}
+  constructor(
+    private readonly adminMonitorService: AdminMonitorService,
+    private readonly subscriptionsService: SubscriptionsService,
+    private readonly addonService: AddonService,
+  ) {}
 
   @Get("health")
   @Roles("SUPER_ADMIN")
@@ -54,36 +60,73 @@ export class AdminController {
   @Get("subscriptions/:id")
   @Roles("SUPER_ADMIN")
   async getSubscription(@Param("id") id: string) {
-    return { id, plan: "BASIC", status: "ACTIVE", startDate: new Date(), endDate: new Date() };
+    return this.subscriptionsService.getCurrentSubscription(id);
   }
 
   @Put("subscriptions/:id")
   @Roles("SUPER_ADMIN")
   async updateSubscription(@Param("id") id: string, @Body() data: any) {
-    return { success: true, id, ...data };
+    if (data.plan) {
+      return this.subscriptionsService.upgradeSubscription(id, {
+        plan: data.plan,
+        duration: data.duration || 30,
+        purchasedBy: "ADMIN",
+      } as any);
+    }
+    if (data.duration && data.action === "extend") {
+      return this.subscriptionsService.extendSubscription(id, {
+        duration: data.duration,
+      });
+    }
+    if (data.duration && data.action === "reduce") {
+      return this.subscriptionsService.reduceSubscription(id, data.duration);
+    }
+    return this.subscriptionsService.upgradeSubscription(id, {
+      plan: data.plan || "BASIC",
+      duration: data.duration || 30,
+      purchasedBy: "ADMIN",
+    } as any);
   }
 
   @Delete("subscriptions/:id")
   @Roles("SUPER_ADMIN")
   async deleteSubscription(@Param("id") id: string) {
-    return { success: true, message: `Subscription ${id} deleted` };
+    const tenant = await this.subscriptionsService.getCurrentSubscription(id);
+    if (tenant.latestSubscription) {
+      return this.subscriptionsService.deleteSubscription(tenant.latestSubscription.id);
+    }
+    return { success: true, message: "No active subscription to delete" };
   }
 
   @Get("addons-purchase/:id")
   @Roles("SUPER_ADMIN")
   async getAddonPurchase(@Param("id") id: string) {
-    return { id, addons: [] };
+    const addons = await this.addonService.getActiveAddons(id);
+    return { id, addons };
   }
 
   @Put("addons-purchase/:id")
   @Roles("SUPER_ADMIN")
   async updateAddonPurchase(@Param("id") id: string, @Body() data: any) {
+    if (data.addonId) {
+      return this.subscriptionsService.addAddon(id, {
+        ...data,
+        purchasedBy: "ADMIN",
+      });
+    }
     return { success: true, id, ...data };
   }
 
   @Delete("addons-purchase/:id")
   @Roles("SUPER_ADMIN")
-  async deleteAddonPurchase(@Param("id") id: string) {
-    return { success: true, message: `Addon purchase ${id} deleted` };
+  async deleteAddonPurchase(@Param("id") id: string, @Body() data?: any) {
+    if (data?.addonId) {
+      return this.subscriptionsService.removeAddon(id, data.addonId);
+    }
+    const addons = await this.addonService.getActiveAddons(id);
+    for (const addon of addons) {
+      await this.subscriptionsService.removeAddon(id, addon.id);
+    }
+    return { success: true, message: "All addons removed" };
   }
 }

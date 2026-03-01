@@ -72,4 +72,16 @@ export class PaymentLegacyController {
   ) {
     return this.paymentsService.createAddonPayment(dto, tenantId);
   }
+
+  @Post("subscription")
+  @Roles("SUPER_ADMIN", "ADMIN_TENANT")
+  createSubscriptionPayment(
+    @Body() dto: CreateAddonPaymentDto,
+    @TenantId() tenantId: string,
+  ) {
+    return this.paymentsService.createAddonPayment(
+      { ...dto, itemType: dto.itemType || "subscription" },
+      tenantId,
+    );
+  }
 }

@@ -110,6 +110,35 @@ All 200+ frontend API calls audited and mapped to backend endpoints. 112/112 rou
 - KITCHEN role added to `dashboard/stats` endpoint.
 - Auth rate limit: Environment-aware (10 in production, 100 in development).
 
+## Subscription & Addon System (Fully Implemented)
+
+### Plan Catalog (3 plans)
+- BASIC (Rp 0): 1 outlet, 1 user, 100 products
+- PRO (Rp 199,000/mo): 5 outlets, 10 users, 1000 products
+- ENTERPRISE (Rp 499,000/mo): Unlimited
+
+### Addon Catalog (8 addons)
+- Business Analytics, Delivery Management, Marketing & Promosi, Tambah Outlet, Tambah Pengguna, Tambah Produk, Bulk Import, E-Commerce Integration
+
+### Key Endpoints
+- `GET /subscriptions/plans` — Plan catalog
+- `GET /addons/available` — Addon catalog
+- `GET /subscriptions/current` — Current plan + active addons + subscription details
+- `POST /subscriptions/upgrade` — Upgrade plan (creates Subscription record + SubscriptionHistory)
+- `POST /subscriptions/extend` — Extend subscription days
+- `POST /subscriptions/reduce` — Reduce days (SUPER_ADMIN only)
+- `POST /addons/subscribe` — Subscribe to addon (DB create/reactivate)
+- `POST /addons/unsubscribe/:id` — Soft-delete addon (sets INACTIVE)
+- `GET /addons/check-limit/:code` — Real limit check (counts outlets/users/products vs plan+addon limits)
+- `POST /addons/:id/extend` — Extend addon expiry
+- `GET /admin/subscriptions/:tenantId` — Super Admin view tenant subscription
+- `PUT /admin/subscriptions/:tenantId` — Super Admin upgrade/extend/reduce tenant
+- `DELETE /admin/subscriptions/:tenantId` — Super Admin delete tenant subscription
+- `GET /admin/addons-purchase/:tenantId` — Super Admin view tenant addons
+- `PUT /admin/addons-purchase/:tenantId` — Super Admin add addon to tenant
+- `POST /payment/subscription` — Create subscription payment (Midtrans)
+- `POST /payment/addon` — Create addon payment (Midtrans)
+
 ## Quality Gate Status
 
 - `npm run type-check`: PASS (backend + frontend)

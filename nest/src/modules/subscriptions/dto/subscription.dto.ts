@@ -16,11 +16,21 @@ export class CreateSubscriptionDto {
 }
 
 export class UpgradeSubscriptionDto {
+  @IsOptional()
   @IsString()
-  newPlanId: string;
+  newPlanId?: string;
 
+  @IsOptional()
   @IsString()
-  plan: string;
+  plan?: string;
+
+  @IsOptional()
+  @IsNumber()
+  duration?: number;
+
+  @IsOptional()
+  @IsString()
+  purchasedBy?: string;
 }
 
 export class AddAddonDto {
@@ -28,6 +38,22 @@ export class AddAddonDto {
   addonId: string;
 
   @IsOptional()
+  @IsString()
+  addonName?: string;
+
+  @IsOptional()
+  @IsString()
+  addonType?: string;
+
+  @IsOptional()
   @IsPositive()
   quantity: number = 1;
+
+  @IsOptional()
+  @IsNumber()
+  limit?: number;
+
+  @IsOptional()
+  @IsString()
+  purchasedBy?: string;
 }
