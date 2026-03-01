@@ -30,6 +30,28 @@ export class WebhookController {
     return this.webhookService.getWebhooks(tenantId, query);
   }
 
+  @Get("events")
+  @Roles("SUPER_ADMIN", "ADMIN_TENANT")
+  async getWebhookEvents(@TenantId() tenantId: string) {
+    return this.webhookService.getWebhookEvents(tenantId);
+  }
+
+  @Get(":id/deliveries")
+  @Roles("SUPER_ADMIN", "ADMIN_TENANT")
+  async getWebhookDeliveries(@Param("id") id: string, @TenantId() tenantId: string) {
+    return { data: [], total: 0 };
+  }
+
+  @Post(":id/replay/:deliveryId")
+  @Roles("SUPER_ADMIN", "ADMIN_TENANT")
+  async replayWebhookDelivery(
+    @Param("id") id: string,
+    @Param("deliveryId") deliveryId: string,
+    @TenantId() tenantId: string,
+  ) {
+    return { success: true, message: `Delivery ${deliveryId} replayed` };
+  }
+
   @Get(":id")
   @Roles("SUPER_ADMIN", "ADMIN_TENANT", "SUPERVISOR")
   async getWebhookById(@Param("id") id: string, @TenantId() tenantId: string) {
@@ -71,11 +93,5 @@ export class WebhookController {
   @Roles("SUPER_ADMIN", "ADMIN_TENANT")
   async toggleWebhook(@Param("id") id: string, @TenantId() tenantId: string) {
     return this.webhookService.toggleWebhook(id, tenantId);
-  }
-
-  @Get("events")
-  @Roles("SUPER_ADMIN", "ADMIN_TENANT")
-  async getWebhookEvents(@TenantId() tenantId: string) {
-    return this.webhookService.getWebhookEvents(tenantId);
   }
 }

@@ -130,7 +130,7 @@ export class ReportsController {
   }
 
   @Get('tenant')
-  @Roles('SUPER_ADMIN', 'ADMIN_TENANT', 'SUPERVISOR')
+  @Roles('SUPER_ADMIN', 'ADMIN_TENANT', 'SUPERVISOR', 'CASHIER')
   async getTenantReport(@TenantId() tenantId: string) {
     return this.reportsService.getSummaryDashboard(tenantId);
   }
@@ -142,7 +142,7 @@ export class ReportsController {
   }
 
   @Get('multi')
-  @Roles('SUPER_ADMIN', 'ADMIN_TENANT')
+  @Roles('SUPER_ADMIN', 'ADMIN_TENANT', 'SUPERVISOR')
   async getMultiStoreReport(@TenantId() tenantId: string) {
     return this.reportsService.getSummaryDashboard(tenantId);
   }

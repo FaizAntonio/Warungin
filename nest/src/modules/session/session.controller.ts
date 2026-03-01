@@ -20,7 +20,7 @@ export class SessionController {
   constructor(private readonly sessionService: SessionService) {}
 
   @Get()
-  @Roles("SUPER_ADMIN", "ADMIN_TENANT")
+  @Roles("SUPER_ADMIN", "ADMIN_TENANT", "SUPERVISOR")
   async getActiveSessions(
     @CurrentUser() user: any,
     @TenantId() tenantId: string,
@@ -29,7 +29,7 @@ export class SessionController {
   }
 
   @Delete(":sessionId")
-  @Roles("SUPER_ADMIN", "ADMIN_TENANT")
+  @Roles("SUPER_ADMIN", "ADMIN_TENANT", "SUPERVISOR")
   async revokeSession(
     @Param("sessionId") sessionId: string,
     @CurrentUser() user: any,
@@ -38,7 +38,7 @@ export class SessionController {
   }
 
   @Delete()
-  @Roles("SUPER_ADMIN", "ADMIN_TENANT")
+  @Roles("SUPER_ADMIN", "ADMIN_TENANT", "SUPERVISOR")
   async revokeAllSessions(
     @CurrentUser() user: any,
     @TenantId() tenantId: string,
@@ -47,7 +47,7 @@ export class SessionController {
   }
 
   @Get("count")
-  @Roles("SUPER_ADMIN", "ADMIN_TENANT")
+  @Roles("SUPER_ADMIN", "ADMIN_TENANT", "SUPERVISOR")
   async getSessionCount(
     @CurrentUser() user: any,
     @TenantId() tenantId: string,
@@ -56,7 +56,7 @@ export class SessionController {
   }
 
   @Delete("revoke-all")
-  @Roles("SUPER_ADMIN", "ADMIN_TENANT")
+  @Roles("SUPER_ADMIN", "ADMIN_TENANT", "SUPERVISOR")
   async revokeAllSessionsAlias(
     @CurrentUser() user: any,
     @TenantId() tenantId: string,
@@ -65,7 +65,7 @@ export class SessionController {
   }
 
   @Post("revoke-all")
-  @Roles("SUPER_ADMIN", "ADMIN_TENANT")
+  @Roles("SUPER_ADMIN", "ADMIN_TENANT", "SUPERVISOR")
   async revokeAllSessionsPost(
     @CurrentUser() user: any,
     @TenantId() tenantId: string,

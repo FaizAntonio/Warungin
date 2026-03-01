@@ -28,7 +28,7 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get()
-  @Roles("ADMIN_TENANT", "SUPER_ADMIN")
+  @Roles("ADMIN_TENANT", "SUPER_ADMIN", "SUPERVISOR")
   async getUsers(
     @TenantId() tenantId: string,
     @Query("page") page?: string,
@@ -44,10 +44,16 @@ export class UsersController {
     return this.usersService.getUsers(tenantId, pageNum, limitNum);
   }
 
-  @Get(":id")
-  @Roles("ADMIN_TENANT", "SUPER_ADMIN", "SUPERVISOR")
-  async getUserById(@Param("id") id: string, @TenantId() tenantId: string) {
-    return this.usersService.getUserById(id, tenantId);
+  @Get("export")
+  @Roles("ADMIN_TENANT", "SUPER_ADMIN")
+  async exportUsers(@TenantId() tenantId: string) {
+    return this.usersService.exportUsers(tenantId);
+  }
+
+  @Get("stats")
+  @Roles("ADMIN_TENANT", "SUPER_ADMIN")
+  async getUserStats(@TenantId() tenantId: string) {
+    return this.usersService.getUserStats(tenantId);
   }
 
   @Post()
@@ -57,6 +63,21 @@ export class UsersController {
     @TenantId() tenantId: string,
   ) {
     return this.usersService.createUser(createUserDto, tenantId);
+  }
+
+  @Post("reset-password")
+  @Roles("ADMIN_TENANT", "SUPER_ADMIN")
+  async resetPassword(
+    @Body() body: { email: string },
+    @TenantId() tenantId: string,
+  ) {
+    return this.usersService.resetPassword(body.email, tenantId);
+  }
+
+  @Get(":id")
+  @Roles("ADMIN_TENANT", "SUPER_ADMIN", "SUPERVISOR")
+  async getUserById(@Param("id") id: string, @TenantId() tenantId: string) {
+    return this.usersService.getUserById(id, tenantId);
   }
 
   @Put(":id")
@@ -83,27 +104,6 @@ export class UsersController {
     @TenantId() tenantId: string,
   ) {
     return this.usersService.changePassword(id, changePasswordDto, tenantId);
-  }
-
-  @Get("export")
-  @Roles("ADMIN_TENANT", "SUPER_ADMIN")
-  async exportUsers(@TenantId() tenantId: string) {
-    return this.usersService.exportUsers(tenantId);
-  }
-
-  @Get("stats")
-  @Roles("ADMIN_TENANT", "SUPER_ADMIN")
-  async getUserStats(@TenantId() tenantId: string) {
-    return this.usersService.getUserStats(tenantId);
-  }
-
-  @Post("reset-password")
-  @Roles("ADMIN_TENANT", "SUPER_ADMIN")
-  async resetPassword(
-    @Body() body: { email: string },
-    @TenantId() tenantId: string,
-  ) {
-    return this.usersService.resetPassword(body.email, tenantId);
   }
 
   @Post(":id/activate")

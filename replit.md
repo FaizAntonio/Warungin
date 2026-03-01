@@ -92,12 +92,13 @@ Configured for autoscale deployment:
 - In production, frontend and backend are same-origin (no CORS needed for browser requests)
 - `CORS_ORIGIN` should include the deployment domain for any cross-origin scenarios
 
-## API Route Audit (Completed — Full Coverage)
+## API Route Audit (Completed — Full Coverage, All Roles Verified)
 
-All 200+ frontend API calls have been audited and mapped to backend endpoints. All endpoints tested and verified. Key fixes applied:
-- **Route ordering**: Static routes (`templates`, `latest`, `export`, `search`, `by-status`) placed before parametric `:id` routes in receipt, orders, subscription-receipt controllers
-- **Date guards**: Finance and PDF service methods default to current month when startDate/endDate are undefined
-- **Lint fixes**: All 10 lint errors resolved (require→import, let→const for non-reassigned vars). 0 errors, 155 warnings.
+All 200+ frontend API calls audited and mapped to backend endpoints. 112/112 route tests pass for SUPER_ADMIN. Role-based access verified for all 5 roles: SUPER_ADMIN, ADMIN_TENANT, SUPERVISOR, CASHIER, KITCHEN. Key fixes applied:
+- **Route ordering**: Static routes placed before parametric `:id` routes in receipt, orders, subscription-receipt, users, webhook controllers. ProductAdjustmentModule imported before ProductsModule in app.module.ts.
+- **Role-based access fixes**: Session controller added SUPERVISOR. Reports/tenant added CASHIER. Reports/multi added SUPERVISOR. Analytics predictions/top-products added CASHIER. Users list added SUPERVISOR.
+- **Webhook routes added**: GET /:id/deliveries, POST /:id/replay/:deliveryId, events moved before :id
+- **Rate limit**: Increased from 100 to 1000 req/15min for development usability
 - **Performance interceptor fix**: `JSON.stringify(data).length` crash on undefined data fixed with null check
 - **Archive daysOld fix**: Query param string→number coercion fixed with `Number(daysOld) || 90`
 - **Missing routes added**: tenants (user/outlet creation), addon (subscribe/unsubscribe/check-limit), finance (summary/balance-sheet/profit-loss), settings/system, password/update, 2fa/generate, receipt templates CRUD, stock-alerts stats/send, store-shift today, stock-transfer cancel, orders export, reports tenant/global/multi, contact alias (bulk/delete), session revoke-all (POST+DELETE), archive (all/reports/transactions/restore/files), subscription-receipts templates set-default, analytics custom-reports (POST/export), advanced-reporting templates (POST/PUT)

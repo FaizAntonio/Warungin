@@ -47,7 +47,7 @@ export class AnalyticsController {
   }
 
   @Get("predictions")
-  @Roles("SUPER_ADMIN", "ADMIN_TENANT", "SUPERVISOR")
+  @Roles("SUPER_ADMIN", "ADMIN_TENANT", "SUPERVISOR", "CASHIER")
   getPredictions(
     @TenantId() tenantId: string,
     @Query("method") method?: string,
@@ -59,7 +59,7 @@ export class AnalyticsController {
   }
 
   @Get("top-products")
-  @Roles("SUPER_ADMIN", "ADMIN_TENANT", "SUPERVISOR")
+  @Roles("SUPER_ADMIN", "ADMIN_TENANT", "SUPERVISOR", "CASHIER")
   getTopProducts(@TenantId() tenantId: string, @Query("limit") limit?: number) {
     return this.analyticsService.getTopProducts(tenantId, limit || 10);
   }
