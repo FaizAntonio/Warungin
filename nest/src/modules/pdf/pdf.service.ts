@@ -52,11 +52,12 @@ export class PdfService {
   async generateReport(
     type: string,
     tenantId: string,
-    startDate: string,
-    endDate: string,
+    startDate?: string,
+    endDate?: string,
   ) {
-    const start = new Date(startDate);
-    const end = new Date(endDate);
+    const now = new Date();
+    const start = startDate ? new Date(startDate) : new Date(now.getFullYear(), now.getMonth(), 1);
+    const end = endDate ? new Date(endDate) : now;
 
     const orders = await this.prisma.order.findMany({
       where: {

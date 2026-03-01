@@ -89,7 +89,7 @@ export class FinanceService {
     });
 
     let totalIn = 0;
-    let totalOut = 0;
+    const totalOut = 0;
 
     for (const order of orders) {
       totalIn += Number(order.total);

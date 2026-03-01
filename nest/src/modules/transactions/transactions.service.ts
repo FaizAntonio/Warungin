@@ -20,7 +20,7 @@ export class TransactionsService {
       query.limit || 20,
     );
 
-    let where: any = { tenantId };
+    const where: any = { tenantId };
 
     if (query.startDate && query.endDate) {
       where.createdAt = {

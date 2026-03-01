@@ -9,7 +9,7 @@ export class AuditLogService {
   async getAuditLogs(tenantId: string, query: any) {
     const { page, limit, skip } = parsePagination(query.page, query.limit);
 
-    let where: any = { tenantId };
+    const where: any = { tenantId };
 
     if (query.action) {
       where.action = query.action;

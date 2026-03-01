@@ -15,7 +15,7 @@ export class PurchaseOrderService {
   async getPurchaseOrders(tenantId: string, query: any) {
     const { page, limit, skip } = parsePagination(query.page, query.limit);
 
-    let where: any = { tenantId };
+    const where: any = { tenantId };
 
     if (query.status) {
       where.status = query.status;

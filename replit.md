@@ -94,11 +94,19 @@ Configured for autoscale deployment:
 
 ## API Route Audit (Completed)
 
-All 200+ frontend API calls have been audited and mapped to backend endpoints. Key fixes applied:
-- **Route ordering**: Static routes (`templates`, `export`, `search`, `by-status`) placed before parametric `:id` routes in receipt, orders controllers
-- **Date guards**: Finance service methods default to current month when startDate/endDate are undefined
+All 200+ frontend API calls have been audited and mapped to backend endpoints. 78 endpoint test — all pass. Key fixes applied:
+- **Route ordering**: Static routes (`templates`, `latest`, `export`, `search`, `by-status`) placed before parametric `:id` routes in receipt, orders, subscription-receipt controllers
+- **Date guards**: Finance and PDF service methods default to current month when startDate/endDate are undefined
+- **Lint fixes**: All 10 lint errors resolved (require→import, let→const for non-reassigned vars). 0 errors, 155 warnings.
 - **Missing routes added**: tenants (user/outlet creation), addon (subscribe/unsubscribe/check-limit), finance (summary/balance-sheet/profit-loss), settings/system, password/update, 2fa/generate, receipt templates CRUD, stock-alerts stats/send, store-shift today, stock-transfer cancel, orders export, reports tenant/global/multi, contact alias, session revoke-all, archive alias
 - **New stub modules**: support, marketing, email-scheduler/templates/analytics, tenant/profile, admin, rewards, retention, gdpr, inventory, advanced-reporting, customer-engagement, quick-insight, payment-legacy
+
+## Quality Gate Status
+
+- `npm run type-check`: PASS (backend + frontend)
+- `npm run lint`: PASS (0 errors, 155 warnings)
+- `npx prisma validate`: PASS
+- `npm run build`: PASS (backend + frontend)
 
 ## API URL Resolution
 

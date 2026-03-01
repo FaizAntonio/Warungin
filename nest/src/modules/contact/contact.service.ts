@@ -11,7 +11,7 @@ export class ContactService {
   async getContacts(query: any) {
     const { page, limit, skip } = parsePagination(query.page, query.limit);
 
-    let where: any = {};
+    const where: any = {};
 
     if (query.status) {
       where.status = query.status;

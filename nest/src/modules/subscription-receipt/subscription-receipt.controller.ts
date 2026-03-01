@@ -28,6 +28,36 @@ export class SubscriptionReceiptController {
     return this.subscriptionReceiptService.getSubscriptionHistory(tenantId);
   }
 
+  @Get("latest")
+  @Roles("SUPER_ADMIN", "ADMIN_TENANT")
+  async getLatestSubscription(@TenantId() tenantId: string) {
+    return this.subscriptionReceiptService.getLatestSubscription(tenantId);
+  }
+
+  @Get("templates")
+  @Roles("SUPER_ADMIN", "ADMIN_TENANT")
+  async getTemplates(@TenantId() tenantId: string) {
+    return { data: [], total: 0 };
+  }
+
+  @Post("templates")
+  @Roles("SUPER_ADMIN", "ADMIN_TENANT")
+  async createTemplate(@Body() data: any, @TenantId() tenantId: string) {
+    return { success: true, id: "stub-template-id", ...data };
+  }
+
+  @Put("templates/:id")
+  @Roles("SUPER_ADMIN", "ADMIN_TENANT")
+  async updateTemplate(@Param("id") id: string, @Body() data: any) {
+    return { success: true, id, ...data };
+  }
+
+  @Delete("templates/:id")
+  @Roles("SUPER_ADMIN", "ADMIN_TENANT")
+  async deleteTemplate(@Param("id") id: string) {
+    return { success: true, message: `Template ${id} deleted` };
+  }
+
   @Get(":id")
   @Roles("SUPER_ADMIN", "ADMIN_TENANT")
   async getSubscriptionById(
@@ -73,35 +103,5 @@ export class SubscriptionReceiptController {
     @TenantId() tenantId: string,
   ) {
     return this.subscriptionReceiptService.deleteSubscription(id, tenantId);
-  }
-
-  @Get("latest")
-  @Roles("SUPER_ADMIN", "ADMIN_TENANT")
-  async getLatestSubscription(@TenantId() tenantId: string) {
-    return this.subscriptionReceiptService.getLatestSubscription(tenantId);
-  }
-
-  @Get("templates")
-  @Roles("SUPER_ADMIN", "ADMIN_TENANT")
-  async getTemplates(@TenantId() tenantId: string) {
-    return { data: [], total: 0 };
-  }
-
-  @Post("templates")
-  @Roles("SUPER_ADMIN", "ADMIN_TENANT")
-  async createTemplate(@Body() data: any, @TenantId() tenantId: string) {
-    return { success: true, id: "stub-template-id", ...data };
-  }
-
-  @Put("templates/:id")
-  @Roles("SUPER_ADMIN", "ADMIN_TENANT")
-  async updateTemplate(@Param("id") id: string, @Body() data: any) {
-    return { success: true, id, ...data };
-  }
-
-  @Delete("templates/:id")
-  @Roles("SUPER_ADMIN", "ADMIN_TENANT")
-  async deleteTemplate(@Param("id") id: string) {
-    return { success: true, message: `Template ${id} deleted` };
   }
 }
