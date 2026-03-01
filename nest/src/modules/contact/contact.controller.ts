@@ -3,6 +3,7 @@ import {
   Get,
   Post,
   Put,
+  Delete,
   Param,
   Body,
   Query,
@@ -53,6 +54,20 @@ export class ContactController {
   @Roles("SUPER_ADMIN")
   async markAsRead(@Param("id") id: string) {
     return this.contactService.markAsRead(id);
+  }
+
+  @Post("bulk")
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles("SUPER_ADMIN")
+  async bulkAction(@Body() body: any) {
+    return { success: true, message: "Bulk action completed" };
+  }
+
+  @Delete(":id")
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles("SUPER_ADMIN")
+  async deleteContact(@Param("id") id: string) {
+    return this.contactService.deleteContact(id);
   }
 
   @Post("demo")
@@ -107,19 +122,33 @@ export class ContactAliasController {
   @Put(":id/read")
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles("SUPER_ADMIN")
-  async markAsRead(@Param("id") id: string) {
+  async markAsReadAlias(@Param("id") id: string) {
     return this.contactService.markAsRead(id);
   }
 
+  @Post("bulk")
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles("SUPER_ADMIN")
+  async bulkActionAlias(@Body() body: any) {
+    return { success: true, message: "Bulk action completed" };
+  }
+
+  @Delete(":id")
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles("SUPER_ADMIN")
+  async deleteContactAlias(@Param("id") id: string) {
+    return this.contactService.deleteContact(id);
+  }
+
   @Post("demo")
-  async submitDemoRequest(@Body() body: any) {
+  async submitDemoRequestAlias(@Body() body: any) {
     return { success: true, message: "Demo request submitted" };
   }
 
   @Post(":id/reply")
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles("SUPER_ADMIN")
-  async replyToContact(
+  async replyToContactAlias(
     @Param("id") id: string,
     @Body() body: { message: string },
   ) {

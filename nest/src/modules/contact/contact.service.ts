@@ -76,6 +76,12 @@ export class ContactService {
     });
   }
 
+  async deleteContact(id: string) {
+    await this.getContactById(id);
+    await this.prisma.contactSubmission.delete({ where: { id } });
+    return { success: true, message: "Contact submission deleted" };
+  }
+
   async markAsRead(id: string) {
     await this.getContactById(id);
 

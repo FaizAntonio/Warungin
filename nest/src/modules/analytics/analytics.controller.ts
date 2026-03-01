@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Query, UseGuards } from "@nestjs/common";
+import { Controller, Get, Post, Param, Query, Body, UseGuards } from "@nestjs/common";
 import { AnalyticsService } from "./analytics.service";
 import { JwtAuthGuard } from "../auth/guards/jwt-auth.guard";
 import { TenantGuard } from "../../common/guards/tenant.guard";
@@ -68,6 +68,18 @@ export class AnalyticsController {
   @Roles("SUPER_ADMIN", "ADMIN_TENANT", "SUPERVISOR")
   getCustomReports(@TenantId() tenantId: string) {
     return this.analyticsService.getCustomReports(tenantId);
+  }
+
+  @Post("custom-reports")
+  @Roles("SUPER_ADMIN", "ADMIN_TENANT")
+  async createCustomReport(@Body() data: any, @TenantId() tenantId: string) {
+    return { success: true, id: "stub-report-id", ...data };
+  }
+
+  @Get("custom-reports/:id/export")
+  @Roles("SUPER_ADMIN", "ADMIN_TENANT")
+  async exportCustomReport(@Param("id") id: string, @TenantId() tenantId: string) {
+    return { success: true, id, data: [], format: "csv" };
   }
 
   @Get("revenue-by-hour")

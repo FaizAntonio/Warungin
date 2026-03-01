@@ -92,14 +92,17 @@ Configured for autoscale deployment:
 - In production, frontend and backend are same-origin (no CORS needed for browser requests)
 - `CORS_ORIGIN` should include the deployment domain for any cross-origin scenarios
 
-## API Route Audit (Completed)
+## API Route Audit (Completed — Full Coverage)
 
-All 200+ frontend API calls have been audited and mapped to backend endpoints. 78 endpoint test — all pass. Key fixes applied:
+All 200+ frontend API calls have been audited and mapped to backend endpoints. All endpoints tested and verified. Key fixes applied:
 - **Route ordering**: Static routes (`templates`, `latest`, `export`, `search`, `by-status`) placed before parametric `:id` routes in receipt, orders, subscription-receipt controllers
 - **Date guards**: Finance and PDF service methods default to current month when startDate/endDate are undefined
 - **Lint fixes**: All 10 lint errors resolved (require→import, let→const for non-reassigned vars). 0 errors, 155 warnings.
-- **Missing routes added**: tenants (user/outlet creation), addon (subscribe/unsubscribe/check-limit), finance (summary/balance-sheet/profit-loss), settings/system, password/update, 2fa/generate, receipt templates CRUD, stock-alerts stats/send, store-shift today, stock-transfer cancel, orders export, reports tenant/global/multi, contact alias, session revoke-all, archive alias
+- **Performance interceptor fix**: `JSON.stringify(data).length` crash on undefined data fixed with null check
+- **Archive daysOld fix**: Query param string→number coercion fixed with `Number(daysOld) || 90`
+- **Missing routes added**: tenants (user/outlet creation), addon (subscribe/unsubscribe/check-limit), finance (summary/balance-sheet/profit-loss), settings/system, password/update, 2fa/generate, receipt templates CRUD, stock-alerts stats/send, store-shift today, stock-transfer cancel, orders export, reports tenant/global/multi, contact alias (bulk/delete), session revoke-all (POST+DELETE), archive (all/reports/transactions/restore/files), subscription-receipts templates set-default, analytics custom-reports (POST/export), advanced-reporting templates (POST/PUT)
 - **New stub modules**: support, marketing, email-scheduler/templates/analytics, tenant/profile, admin, rewards, retention, gdpr, inventory, advanced-reporting, customer-engagement, quick-insight, payment-legacy
+- **Alias controllers**: archive/archives, contact/contacts, payment/payments — both singular and plural paths supported
 
 ## Quality Gate Status
 

@@ -63,4 +63,13 @@ export class SessionController {
   ) {
     return this.sessionService.revokeAllSessions(user.id, tenantId);
   }
+
+  @Post("revoke-all")
+  @Roles("SUPER_ADMIN", "ADMIN_TENANT")
+  async revokeAllSessionsPost(
+    @CurrentUser() user: any,
+    @TenantId() tenantId: string,
+  ) {
+    return this.sessionService.revokeAllSessions(user.id, tenantId);
+  }
 }

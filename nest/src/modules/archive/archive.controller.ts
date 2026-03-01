@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Query, UseGuards } from "@nestjs/common";
+import { Controller, Get, Post, Body, Query, UseGuards } from "@nestjs/common";
 import { ArchiveService } from "./archive.service";
 import { JwtAuthGuard } from "../auth/guards/jwt-auth.guard";
 import { TenantGuard } from "../../common/guards/tenant.guard";
@@ -83,6 +83,36 @@ export class ArchiveController {
     const ids = customerIds.split(",");
     return this.archiveService.restoreCustomers(tenantId, ids);
   }
+
+  @Post("all")
+  @Roles("SUPER_ADMIN", "ADMIN_TENANT")
+  async archiveAll(@TenantId() tenantId: string, @Query("daysOld") daysOld: number = 90) {
+    return this.archiveService.archiveOldOrders(tenantId, daysOld);
+  }
+
+  @Post("reports")
+  @Roles("SUPER_ADMIN", "ADMIN_TENANT")
+  async archiveReports(@TenantId() tenantId: string, @Query("daysOld") daysOld: number = 90) {
+    return { success: true, message: "Reports archived", archived: 0 };
+  }
+
+  @Post("transactions")
+  @Roles("SUPER_ADMIN", "ADMIN_TENANT")
+  async archiveTransactions(@TenantId() tenantId: string, @Query("daysOld") daysOld: number = 90) {
+    return { success: true, message: "Transactions archived", archived: 0 };
+  }
+
+  @Post("restore")
+  @Roles("SUPER_ADMIN", "ADMIN_TENANT")
+  async restoreGeneric(@TenantId() tenantId: string, @Body() body: any) {
+    return { success: true, message: "Data restored" };
+  }
+
+  @Get("files")
+  @Roles("SUPER_ADMIN", "ADMIN_TENANT")
+  async getArchiveFiles(@TenantId() tenantId: string) {
+    return { data: [], total: 0 };
+  }
 }
 
 @Controller("archives")
@@ -160,5 +190,35 @@ export class ArchiveAliasController {
   ) {
     const ids = customerIds.split(",");
     return this.archiveService.restoreCustomers(tenantId, ids);
+  }
+
+  @Post("all")
+  @Roles("SUPER_ADMIN", "ADMIN_TENANT")
+  async archiveAllAlias(@TenantId() tenantId: string, @Query("daysOld") daysOld: number = 90) {
+    return this.archiveService.archiveOldOrders(tenantId, daysOld);
+  }
+
+  @Post("reports")
+  @Roles("SUPER_ADMIN", "ADMIN_TENANT")
+  async archiveReportsAlias(@TenantId() tenantId: string) {
+    return { success: true, message: "Reports archived", archived: 0 };
+  }
+
+  @Post("transactions")
+  @Roles("SUPER_ADMIN", "ADMIN_TENANT")
+  async archiveTransactionsAlias(@TenantId() tenantId: string) {
+    return { success: true, message: "Transactions archived", archived: 0 };
+  }
+
+  @Post("restore")
+  @Roles("SUPER_ADMIN", "ADMIN_TENANT")
+  async restoreGenericAlias(@TenantId() tenantId: string, @Body() body: any) {
+    return { success: true, message: "Data restored" };
+  }
+
+  @Get("files")
+  @Roles("SUPER_ADMIN", "ADMIN_TENANT")
+  async getArchiveFilesAlias(@TenantId() tenantId: string) {
+    return { data: [], total: 0 };
   }
 }

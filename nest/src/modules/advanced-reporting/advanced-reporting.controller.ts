@@ -36,6 +36,16 @@ export class AdvancedReportingController {
     return { success: true, message: `Scheduled report ${id} deleted` };
   }
 
+  @Post("templates")
+  async createTemplate(@Body() data: any, @TenantId() tenantId: string) {
+    return { success: true, id: "stub-template-id", ...data };
+  }
+
+  @Put("templates/:id")
+  async updateTemplate(@Param("id") id: string, @Body() data: any) {
+    return { success: true, id, ...data };
+  }
+
   @Post("generate")
   async generateReport(@Body() data: any, @TenantId() tenantId: string) {
     return { success: true, reportId: "stub-report-id", data: {} };

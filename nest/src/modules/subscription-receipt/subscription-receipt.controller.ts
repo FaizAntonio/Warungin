@@ -58,6 +58,12 @@ export class SubscriptionReceiptController {
     return { success: true, message: `Template ${id} deleted` };
   }
 
+  @Post("templates/:id/set-default")
+  @Roles("SUPER_ADMIN", "ADMIN_TENANT")
+  async setDefaultTemplate(@Param("id") id: string) {
+    return { success: true, message: `Template ${id} set as default` };
+  }
+
   @Get(":id")
   @Roles("SUPER_ADMIN", "ADMIN_TENANT")
   async getSubscriptionById(

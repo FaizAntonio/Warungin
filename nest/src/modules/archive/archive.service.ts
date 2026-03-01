@@ -6,8 +6,9 @@ export class ArchiveService {
   constructor(private readonly prisma: PrismaService) {}
 
   async archiveOldOrders(tenantId: string, daysOld: number = 90) {
+    const days = Number(daysOld) || 90;
     const cutoffDate = new Date();
-    cutoffDate.setDate(cutoffDate.getDate() - daysOld);
+    cutoffDate.setDate(cutoffDate.getDate() - days);
 
     const oldOrders = await this.prisma.order.findMany({
       where: {

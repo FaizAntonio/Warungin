@@ -43,7 +43,7 @@ export class PerformanceMonitoringInterceptor implements NestInterceptor {
         (data) => {
           metrics.statusCode = response.statusCode;
           metrics.responseTimeMs = Date.now() - startTime;
-          metrics.responseSize = JSON.stringify(data).length;
+          metrics.responseSize = data ? JSON.stringify(data).length : 0;
 
           this.logMetrics(metrics);
         },
