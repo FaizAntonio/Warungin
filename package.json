@@ -66,6 +66,7 @@
     "audit:local": "node scripts/run-local-audit.js",
     "audit:status": "node scripts/audit-health-summary.js",
     "audit:gate": "node scripts/audit-gate.js",
+    "audit:release": "node scripts/release-readiness.js",
     "pre-commit": "npm run type-check && npm run lint && npx prisma validate"
   },
   "keywords": [
