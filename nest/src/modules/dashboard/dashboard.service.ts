@@ -180,8 +180,16 @@ export class DashboardService {
       _sum: { total: true },
     });
 
+    const transactionWhere: any = {
+      tenantId,
+      createdAt: { gte: start, lte: end },
+      status: "COMPLETED",
+    };
+    if (outletId) {
+      transactionWhere.order = { outletId };
+    }
     const transactionResult = await this.prisma.transaction.aggregate({
-      where: { ...where, status: "COMPLETED" },
+      where: transactionWhere,
       _sum: { amount: true },
     });
 

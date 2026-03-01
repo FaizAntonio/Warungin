@@ -105,6 +105,11 @@ All 200+ frontend API calls audited and mapped to backend endpoints. 112/112 rou
 - **New stub modules**: support, marketing, email-scheduler/templates/analytics, tenant/profile, admin, rewards, retention, gdpr, inventory, advanced-reporting, customer-engagement, quick-insight, payment-legacy
 - **Alias controllers**: archive/archives, contact/contacts, payment/payments — both singular and plural paths supported
 
+## Dashboard Fix
+- Transaction aggregate crash fixed: `outletId` filter removed from `transaction.aggregate()` (Transaction model has no `outletId` field). Now filters via `order` relation: `order: { outletId }`.
+- KITCHEN role added to `dashboard/stats` endpoint.
+- Auth rate limit: Environment-aware (10 in production, 100 in development).
+
 ## Quality Gate Status
 
 - `npm run type-check`: PASS (backend + frontend)

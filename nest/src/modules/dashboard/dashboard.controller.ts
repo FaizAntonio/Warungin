@@ -51,7 +51,7 @@ export class DashboardController {
   }
 
   @Get("stats")
-  @Roles("SUPER_ADMIN", "ADMIN_TENANT", "SUPERVISOR", "CASHIER")
+  @Roles("SUPER_ADMIN", "ADMIN_TENANT", "SUPERVISOR", "CASHIER", "KITCHEN")
   async getDashboardStats(
     @TenantId() tenantId: string,
     @Query("startDate") startDate?: string,

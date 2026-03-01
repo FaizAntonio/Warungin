@@ -33,11 +33,11 @@ async function bootstrap() {
   });
   app.use("/api/", limiter);
 
-  // Rate Limiting - Auth endpoints (stricter)
+  const isProduction = config.get("NODE_ENV") === "production";
   const authLimiter = rateLimit({
-    windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 5, // limit each IP to 5 requests per windowMs
-    skipSuccessfulRequests: true, // don't count successful requests
+    windowMs: 15 * 60 * 1000,
+    max: isProduction ? 10 : 100,
+    skipSuccessfulRequests: true,
     message: "Too many login attempts, please try again later.",
   });
   app.use("/api/auth/login", authLimiter);
