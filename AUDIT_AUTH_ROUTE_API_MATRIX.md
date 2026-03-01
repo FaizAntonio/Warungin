@@ -1,6 +1,6 @@
 # AUTH ROUTE API RISK REPORT
 
-Generated: 2026-03-01T15:17:14.899Z
+Generated: 2026-03-01T15:21:18.615Z
 
 ## Summary
 - Routed pages analyzed: 79
