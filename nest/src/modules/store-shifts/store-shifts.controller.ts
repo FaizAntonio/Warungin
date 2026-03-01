@@ -7,6 +7,7 @@ import {
   UseGuards,
   HttpCode,
   HttpStatus,
+  BadRequestException,
 } from "@nestjs/common";
 import { StoreShiftsService } from "./store-shifts.service";
 import { OpenStoreShiftDto } from "./dto/open-store-shift.dto";
@@ -32,7 +33,7 @@ export class StoreShiftsController {
     @TenantId() tenantId: string | null,
     @Query("outletId") outletId?: string,
   ) {
-    if (!tenantId) throw new Error("TenantId required");
+    if (!tenantId) throw new BadRequestException("TenantId required");
     if (!outletId) {
       return { message: "Outlet ID is required" };
     }
@@ -54,7 +55,7 @@ export class StoreShiftsController {
     @TenantId() tenantId: string | null,
     @Query("outletId") outletId?: string,
   ) {
-    if (!tenantId) throw new Error("TenantId required");
+    if (!tenantId) throw new BadRequestException("TenantId required");
     const shifts = await this.storeShiftsService.getOpenShifts(
       tenantId,
       outletId,
@@ -73,7 +74,7 @@ export class StoreShiftsController {
     @Query("limit") limit?: string,
     @Query("outletId") outletId?: string,
   ) {
-    if (!tenantId) throw new Error("TenantId required");
+    if (!tenantId) throw new BadRequestException("TenantId required");
     return this.storeShiftsService.getShiftHistory(
       tenantId,
       page ? parseInt(page) : 1,
@@ -89,7 +90,7 @@ export class StoreShiftsController {
     @CurrentUser() user: any,
     @Body() dto: OpenStoreShiftDto,
   ) {
-    if (!tenantId) throw new Error("TenantId required");
+    if (!tenantId) throw new BadRequestException("TenantId required");
     return this.storeShiftsService.openShift(tenantId, user.id, user.role, dto);
   }
 
@@ -100,7 +101,7 @@ export class StoreShiftsController {
     @CurrentUser() user: any,
     @Body() dto: CloseStoreShiftDto,
   ) {
-    if (!tenantId) throw new Error("TenantId required");
+    if (!tenantId) throw new BadRequestException("TenantId required");
     return this.storeShiftsService.closeShift(
       tenantId,
       user.id,
@@ -114,7 +115,7 @@ export class StoreShiftsController {
     @TenantId() tenantId: string | null,
     @Query("outletId") outletId?: string,
   ) {
-    if (!tenantId) throw new Error("TenantId required");
+    if (!tenantId) throw new BadRequestException("TenantId required");
     return this.storeShiftsService.checkActiveShift(tenantId, outletId);
   }
 
@@ -124,7 +125,7 @@ export class StoreShiftsController {
     @Query("startDate") startDate?: string,
     @Query("endDate") endDate?: string,
   ) {
-    if (!tenantId) throw new Error("TenantId required");
+    if (!tenantId) throw new BadRequestException("TenantId required");
     return this.storeShiftsService.getShiftSummary(
       tenantId,
       startDate,
@@ -137,7 +138,7 @@ export class StoreShiftsController {
     @TenantId() tenantId: string | null,
     @Query("outletId") outletId?: string,
   ) {
-    if (!tenantId) throw new Error("TenantId required");
+    if (!tenantId) throw new BadRequestException("TenantId required");
     return this.storeShiftsService.getShiftHistory(tenantId, 1, 50, outletId);
   }
 
@@ -149,7 +150,7 @@ export class StoreShiftsController {
     @Query("includeStockTransfers") includeStockTransfers?: string,
     @Query("includeProductAdjustments") includeProductAdjustments?: string,
   ) {
-    if (!tenantId) throw new Error("TenantId required");
+    if (!tenantId) throw new BadRequestException("TenantId required");
     return this.storeShiftsService.getShiftDetails(tenantId, id, {
       includeOrders: includeOrders !== "false",
       includeStockTransfers: includeStockTransfers !== "false",

@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, BadRequestException } from "@nestjs/common";
 import { PrismaService } from "../../prisma/prisma.service";
 
 @Injectable()
@@ -129,7 +129,8 @@ export class FinancialManagementService {
 
   async calculateTax(tenantId: string, period: string) {
     if (!period) {
-      throw new Error("Period is required (YYYY-MM format)");
+      const now = new Date();
+      period = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
     }
 
     const [year, month] = period.split("-").map(Number);
@@ -303,7 +304,7 @@ export class FinancialManagementService {
     } = body;
 
     if (!type || !amount || !description) {
-      throw new Error("Type, amount, and description are required");
+      throw new BadRequestException("Type, amount, and description are required");
     }
 
     const reportType = type === "EXPENSE" ? "EXPENSE" : "CASH_FLOW";
@@ -343,7 +344,7 @@ export class FinancialManagementService {
       body;
 
     if (!category || !amount || !description) {
-      throw new Error("Category, amount, and description are required");
+      throw new BadRequestException("Category, amount, and description are required");
     }
 
     const record = await this.prisma.report.create({
@@ -377,7 +378,7 @@ export class FinancialManagementService {
     const { bankAccount, statementDate, statementBalance, transactions } = body;
 
     if (!bankAccount || statementBalance === undefined) {
-      throw new Error("Bank account and statement balance are required");
+      throw new BadRequestException("Bank account and statement balance are required");
     }
 
     const stmtDate = new Date(statementDate || Date.now());

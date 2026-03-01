@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, BadRequestException } from "@nestjs/common";
 import { PrismaService } from "../../prisma/prisma.service";
 
 @Injectable()
@@ -74,7 +74,7 @@ export class InternalService {
 
   async rotateApiKey(newKey: string) {
     if (!newKey || newKey.length < 16) {
-      throw new Error("New API key must be at least 16 characters long");
+      throw new BadRequestException("New API key must be at least 16 characters long");
     }
     return { success: true, message: "API key rotated successfully" };
   }

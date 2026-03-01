@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { PrismaService } from "../../prisma/prisma.service";
 import * as fs from "fs";
 import * as path from "path";
@@ -13,7 +13,7 @@ export class TenantBackupService {
     });
 
     if (!tenant) {
-      throw new Error("Tenant not found");
+      throw new NotFoundException("Tenant not found");
     }
 
     const today = new Date();

@@ -7,6 +7,7 @@ import {
   UseGuards,
   HttpCode,
   HttpStatus,
+  BadRequestException,
 } from '@nestjs/common';
 import { CashShiftsService } from './cash-shifts.service';
 import { OpenCashShiftDto } from './dto/open-cash-shift.dto';
@@ -34,7 +35,7 @@ export class CashShiftsController {
     @CurrentUser() user: any,
     @Body() dto: OpenCashShiftDto,
   ) {
-    if (!tenantId) throw new Error('TenantId required');
+    if (!tenantId) throw new BadRequestException('TenantId required');
     return this.cashShiftsService.openShift(
       tenantId,
       user.id,
@@ -50,7 +51,7 @@ export class CashShiftsController {
     @CurrentUser() user: any,
     @Body() dto: CloseCashShiftDto,
   ) {
-    if (!tenantId) throw new Error('TenantId required');
+    if (!tenantId) throw new BadRequestException('TenantId required');
     return this.cashShiftsService.closeShift(
       tenantId,
       user.id,
@@ -64,7 +65,7 @@ export class CashShiftsController {
     @TenantId() tenantId: string | null,
     @CurrentUser() user: any,
   ) {
-    if (!tenantId) throw new Error('TenantId required');
+    if (!tenantId) throw new BadRequestException('TenantId required');
     const shift = await this.cashShiftsService.getCurrentShift(
       tenantId,
       user.id,
@@ -81,7 +82,7 @@ export class CashShiftsController {
     @Query('startDate') startDate?: string,
     @Query('endDate') endDate?: string,
   ) {
-    if (!tenantId) throw new Error('TenantId required');
+    if (!tenantId) throw new BadRequestException('TenantId required');
     return this.cashShiftsService.getShiftHistory(
       tenantId,
       page ? parseInt(page) : 1,
@@ -97,7 +98,7 @@ export class CashShiftsController {
     @TenantId() tenantId: string | null,
     @CurrentUser() user: any,
   ) {
-    if (!tenantId) throw new Error('TenantId required');
+    if (!tenantId) throw new BadRequestException('TenantId required');
     const hasActive = await this.cashShiftsService.hasActiveShift(
       tenantId,
       user.id,

@@ -9,6 +9,7 @@ import {
   UseGuards,
   Body,
   UseInterceptors,
+  BadRequestException,
 } from "@nestjs/common";
 import { ProductsService } from "./products.service";
 import { GetProductsDto } from "./dto/get-products.dto";
@@ -34,26 +35,26 @@ export class ProductsController {
     @TenantId() tenantId: string | null,
     @Query() query: GetProductsDto,
   ) {
-    if (!tenantId) throw new Error("TenantId required");
+    if (!tenantId) throw new BadRequestException("TenantId required");
     return this.productsService.getProducts(tenantId, query);
   }
 
   @Get("low-stock/all")
   async getLowStock(@TenantId() tenantId: string | null) {
-    if (!tenantId) throw new Error("TenantId required");
+    if (!tenantId) throw new BadRequestException("TenantId required");
     return this.productsService.getLowStockProducts(tenantId);
   }
 
   @Get(":id")
   async getById(@Param("id") id: string, @TenantId() tenantId: string | null) {
-    if (!tenantId) throw new Error("TenantId required");
+    if (!tenantId) throw new BadRequestException("TenantId required");
     return this.productsService.getProductById(id, tenantId);
   }
 
   @Post()
   @Roles("SUPER_ADMIN", "ADMIN_TENANT", "SUPERVISOR")
   async createProduct(@TenantId() tenantId: string | null, @Body() dto: any) {
-    if (!tenantId) throw new Error("TenantId required");
+    if (!tenantId) throw new BadRequestException("TenantId required");
     return this.productsService.createProduct(dto, tenantId);
   }
 
@@ -64,7 +65,7 @@ export class ProductsController {
     @TenantId() tenantId: string | null,
     @Body() dto: any,
   ) {
-    if (!tenantId) throw new Error("TenantId required");
+    if (!tenantId) throw new BadRequestException("TenantId required");
     return this.productsService.updateProduct(id, dto, tenantId);
   }
 
@@ -74,7 +75,7 @@ export class ProductsController {
     @Param("id") id: string,
     @TenantId() tenantId: string | null,
   ) {
-    if (!tenantId) throw new Error("TenantId required");
+    if (!tenantId) throw new BadRequestException("TenantId required");
     return this.productsService.deleteProduct(id, tenantId);
   }
 
@@ -85,7 +86,7 @@ export class ProductsController {
     @TenantId() tenantId: string | null,
     @Body() body: { quantity: number; operation?: "set" | "add" | "subtract" },
   ) {
-    if (!tenantId) throw new Error("TenantId required");
+    if (!tenantId) throw new BadRequestException("TenantId required");
     return this.productsService.updateStock(
       id,
       body.quantity,
@@ -100,14 +101,14 @@ export class ProductsController {
     @TenantId() tenantId: string | null,
     @Body() body: { productIds: string[] },
   ) {
-    if (!tenantId) throw new Error("TenantId required");
+    if (!tenantId) throw new BadRequestException("TenantId required");
     return this.productsService.bulkDeleteProducts(body.productIds, tenantId);
   }
 
   @Get("categories")
   @Roles("SUPER_ADMIN", "ADMIN_TENANT", "SUPERVISOR", "CASHIER")
   async getCategories(@TenantId() tenantId: string | null) {
-    if (!tenantId) throw new Error("TenantId required");
+    if (!tenantId) throw new BadRequestException("TenantId required");
     return this.productsService.getCategories(tenantId);
   }
 
@@ -117,7 +118,7 @@ export class ProductsController {
     @TenantId() tenantId: string | null,
     @Query("q") query: string,
   ) {
-    if (!tenantId) throw new Error("TenantId required");
+    if (!tenantId) throw new BadRequestException("TenantId required");
     return this.productsService.searchProducts(tenantId, query);
   }
 
@@ -127,7 +128,7 @@ export class ProductsController {
     @TenantId() tenantId: string | null,
     @Param("id") id: string,
   ) {
-    if (!tenantId) throw new Error("TenantId required");
+    if (!tenantId) throw new BadRequestException("TenantId required");
     return this.productsService.getProductHistory(tenantId, id);
   }
 
@@ -137,7 +138,7 @@ export class ProductsController {
     @TenantId() tenantId: string | null,
     @Param("id") id: string,
   ) {
-    if (!tenantId) throw new Error("TenantId required");
+    if (!tenantId) throw new BadRequestException("TenantId required");
     return this.productsService.duplicateProduct(tenantId, id);
   }
 
@@ -147,7 +148,7 @@ export class ProductsController {
     @TenantId() tenantId: string | null,
     @Body() body: { productIds: string[]; data: any },
   ) {
-    if (!tenantId) throw new Error("TenantId required");
+    if (!tenantId) throw new BadRequestException("TenantId required");
     return this.productsService.bulkUpdateProducts(
       tenantId,
       body.productIds,
