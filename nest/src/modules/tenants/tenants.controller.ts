@@ -18,16 +18,19 @@ import {
   TenantQueryDto,
 } from "./dto/tenant.dto";
 import { JwtAuthGuard } from "../auth/guards/jwt-auth.guard";
-import { TenantGuard, TENANT_REQUIRED_KEY } from "../../common/guards/tenant.guard";
+import {
+  TenantGuard,
+  TENANT_REQUIRED_KEY,
+} from "../../common/guards/tenant.guard";
 import { RolesGuard } from "../../common/guards/roles.guard";
 import { Roles } from "../../common/decorators/roles.decorator";
-import { TenantId } from "../../common/decorators/tenant-id.decorator";
 import { Public } from "../../common/decorators/public.decorator";
 
 @Controller("tenants")
 @UseGuards(JwtAuthGuard, TenantGuard, RolesGuard)
+@Roles("SUPER_ADMIN")
 export class TenantsController {
-  constructor(private readonly tenantsService: TenantsService) { }
+  constructor(private readonly tenantsService: TenantsService) {}
 
   @Post()
   @SetMetadata(TENANT_REQUIRED_KEY, false)
@@ -128,7 +131,8 @@ export class TenantsController {
   @Post(":id/users")
   createTenantUser(
     @Param("id", ParseUUIDPipe) id: string,
-    @Body() body: { name: string; email: string; password: string; role?: string },
+    @Body()
+    body: { name: string; email: string; password: string; role?: string },
   ) {
     return this.tenantsService.createTenantUser(id, body);
   }

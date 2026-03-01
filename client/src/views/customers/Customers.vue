@@ -426,7 +426,7 @@ const pagination = ref({
 });
 
 // Debounce to prevent rate limiting
-let loadCustomersTimeout: ReturnType<typeof setTimeout> | null = null;
+const loadCustomersTimeout: ReturnType<typeof setTimeout> | null = null;
 
 const loadCustomers = async (page = 1, forceRefresh = false) => {
   // Check if tenant selection is needed (modal as fallback)

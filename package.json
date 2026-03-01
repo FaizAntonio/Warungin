@@ -58,6 +58,14 @@
     "check:logic": "node scripts/check-logic.js",
     "check:events": "node scripts/check-events.js",
     "check:full-auto": "npm run check:ui && npm run check:logic && npm run check:events",
+    "audit:phase23": "node scripts/run-phase23-audit.js",
+    "localdb:start": "node scripts/start-local-db.js",
+    "localdb:stop": "node scripts/stop-local-db.js",
+    "seed:roles": "node scripts/seed-role-readiness.js",
+    "teardown:roles": "node scripts/teardown-role-readiness.js",
+    "audit:local": "node scripts/run-local-audit.js",
+    "audit:status": "node scripts/audit-health-summary.js",
+    "audit:gate": "node scripts/audit-gate.js",
     "pre-commit": "npm run type-check && npm run lint && npx prisma validate"
   },
   "keywords": [

@@ -57,6 +57,28 @@ Perintah di atas menjalankan backend dari folder `nest/` dengan mode development
 - `npm run start` - jalankan backend production build
 - `npm run test` - jalankan test (Vitest)
 - `npm run type-check` - cek tipe backend + frontend
+- `npm run check:full-auto` - audit statis UI/logic/events
+- `npm run audit:phase23` - jalankan gate Phase 2+3
+- `npm run localdb:start` - bootstrap PostgreSQL lokal untuk audit
+- `npm run seed:roles` - seed user audit semua role
+- `npm run teardown:roles` - hapus user/tenant audit seed
+- `npm run audit:local` - one-command full audit lokal (start DB + seed + phase23)
+- `npm run audit:status` - generate ringkasan status audit terbaru
+- `npm run audit:gate` - validasi GO/NO-GO dari report audit
+- `npm run localdb:stop` - stop PostgreSQL lokal
+
+## CI Audit Otomatis
+
+- Workflow: `.github/workflows/audit-phase23.yml`
+- Trigger: push ke `main/master` dan pull request.
+- Langkah CI:
+  1. Start service PostgreSQL
+  2. Install dependency root + client + nest
+  3. `prisma db push`
+  4. Seed role audit (`npm run seed:roles`)
+  5. Jalankan Phase 2+3 (`npm run audit:phase23`)
+  6. Generate status + enforce gate (`npm run audit:status`, `npm run audit:gate`)
+  7. Upload artefak report audit
 
 ## Struktur folder utama
 

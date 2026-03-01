@@ -1,13 +1,16 @@
 import { Controller, Get, UseGuards } from "@nestjs/common";
 import { JwtAuthGuard } from "../auth/guards/jwt-auth.guard";
 import { TenantGuard } from "../../common/guards/tenant.guard";
+import { RolesGuard } from "../../common/guards/roles.guard";
+import { Roles } from "../../common/decorators/roles.decorator";
 import { TenantId } from "../../common/decorators/tenant-id.decorator";
 
 @Controller("customer-engagement")
-@UseGuards(JwtAuthGuard, TenantGuard)
+@UseGuards(JwtAuthGuard, TenantGuard, RolesGuard)
+@Roles("SUPER_ADMIN", "ADMIN_TENANT")
 export class CustomerEngagementController {
   @Get()
-  async getEngagement(@TenantId() tenantId: string) {
+  async getEngagement(@TenantId() _tenantId: string) {
     return {
       data: [],
       total: 0,
@@ -18,7 +21,7 @@ export class CustomerEngagementController {
   }
 
   @Get("stats/overall")
-  async getOverallStats(@TenantId() tenantId: string) {
+  async getOverallStats(@TenantId() _tenantId: string) {
     return {
       totalCustomers: 0,
       activeCustomers: 0,

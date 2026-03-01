@@ -1,0 +1,85 @@
+name: Phase 2-3 Audit
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  pull_request:
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: warungin
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U postgres -d warungin"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    env:
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/warungin?schema=public
+      JWT_SECRET: ci-jwt-secret-please-change-1234567890
+      JWT_REFRESH_SECRET: ci-jwt-refresh-secret-please-change-1234567890
+      JWT_EXPIRES_IN: 7d
+      NODE_ENV: test
+      PORT: 3000
+      FRONTEND_URL: http://localhost:5173
+      BACKEND_URL: http://localhost:3000
+      CORS_ORIGIN: http://localhost:5173
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install root dependencies
+        run: npm ci
+
+      - name: Install frontend dependencies
+        run: npm ci --prefix client
+
+      - name: Install backend dependencies
+        run: npm ci --prefix nest
+
+      - name: Prepare database schema
+        run: npx prisma db push
+
+      - name: Seed role readiness users
+        run: npm run seed:roles
+
+      - name: Run phase 2-3 audit
+        run: npm run audit:phase23
+
+      - name: Build audit health summary
+        run: npm run audit:status
+
+      - name: Enforce audit gate
+        run: npm run audit:gate
+
+      - name: Upload audit reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: phase23-audit-reports
+          path: |
+            AUDIT_PAGE_API_REPORT.md
+            AUDIT_AUTH_ROUTE_API_MATRIX.md
+            AUDIT_RUNTIME_ROLE_MATRIX.md
+            AUDIT_RUNTIME_EXECUTION.md
+            AUDIT_FINAL_SIGNOFF.md
+            AUDIT_HEALTH_STATUS.md
+            PHASE23_EXECUTION.md

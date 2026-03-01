@@ -15,6 +15,7 @@ import { UpdateContactDto } from "./dto/update-contact.dto";
 import { JwtAuthGuard } from "../auth/guards/jwt-auth.guard";
 import { RolesGuard } from "../../common/guards/roles.guard";
 import { Roles } from "../../common/decorators/roles.decorator";
+import { Public } from "../../common/decorators/public.decorator";
 
 @Controller("contacts")
 export class ContactController {
@@ -35,6 +36,7 @@ export class ContactController {
   }
 
   @Post()
+  @Public()
   async createContact(@Body() createContactDto: CreateContactDto) {
     return this.contactService.createContact(createContactDto);
   }
@@ -59,7 +61,7 @@ export class ContactController {
   @Post("bulk")
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles("SUPER_ADMIN")
-  async bulkAction(@Body() body: any) {
+  async bulkAction(@Body() _body: any) {
     return { success: true, message: "Bulk action completed" };
   }
 
@@ -71,7 +73,8 @@ export class ContactController {
   }
 
   @Post("demo")
-  async submitDemoRequest(@Body() body: any) {
+  @Public()
+  async submitDemoRequest(@Body() _body: any) {
     return { success: true, message: "Demo request submitted" };
   }
 
@@ -79,8 +82,8 @@ export class ContactController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles("SUPER_ADMIN")
   async replyToContact(
-    @Param("id") id: string,
-    @Body() body: { message: string },
+    @Param("id") _id: string,
+    @Body() _body: { message: string },
   ) {
     return { success: true, message: "Reply sent" };
   }
@@ -105,6 +108,7 @@ export class ContactAliasController {
   }
 
   @Post()
+  @Public()
   async createContact(@Body() createContactDto: CreateContactDto) {
     return this.contactService.createContact(createContactDto);
   }
@@ -129,7 +133,7 @@ export class ContactAliasController {
   @Post("bulk")
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles("SUPER_ADMIN")
-  async bulkActionAlias(@Body() body: any) {
+  async bulkActionAlias(@Body() _body: any) {
     return { success: true, message: "Bulk action completed" };
   }
 
@@ -141,7 +145,8 @@ export class ContactAliasController {
   }
 
   @Post("demo")
-  async submitDemoRequestAlias(@Body() body: any) {
+  @Public()
+  async submitDemoRequestAlias(@Body() _body: any) {
     return { success: true, message: "Demo request submitted" };
   }
 
@@ -149,8 +154,8 @@ export class ContactAliasController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles("SUPER_ADMIN")
   async replyToContactAlias(
-    @Param("id") id: string,
-    @Body() body: { message: string },
+    @Param("id") _id: string,
+    @Body() _body: { message: string },
   ) {
     return { success: true, message: "Reply sent" };
   }

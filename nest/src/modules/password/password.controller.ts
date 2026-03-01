@@ -1,6 +1,8 @@
 import { Controller, Post, Body, UseGuards } from "@nestjs/common";
 import { PasswordService } from "./password.service";
 import { JwtAuthGuard } from "../auth/guards/jwt-auth.guard";
+import { RolesGuard } from "../../common/guards/roles.guard";
+import { Roles } from "../../common/decorators/roles.decorator";
 import { CurrentUser } from "../../common/decorators/current-user.decorator";
 
 @Controller("password")
@@ -8,7 +10,8 @@ export class PasswordController {
   constructor(private readonly passwordService: PasswordService) {}
 
   @Post("change")
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles("SUPER_ADMIN", "ADMIN_TENANT", "SUPERVISOR", "CASHIER", "KITCHEN")
   async changePassword(
     @Body() body: { currentPassword: string; newPassword: string },
     @CurrentUser() user: any,
@@ -31,7 +34,8 @@ export class PasswordController {
   }
 
   @Post("update")
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles("SUPER_ADMIN", "ADMIN_TENANT", "SUPERVISOR", "CASHIER", "KITCHEN")
   async updatePassword(
     @Body() body: { currentPassword: string; newPassword: string },
     @CurrentUser() user: any,
