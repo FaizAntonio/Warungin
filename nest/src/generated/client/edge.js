@@ -736,7 +736,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "C:\\Users\\Iz\\Downloads\\Compressed\\New-Warungin\\New-Warungin\\nest\\src\\generated\\client",
+      "value": "/home/runner/workspace/nest/src/generated/client",
       "fromEnvVar": null
     },
     "config": {
@@ -745,7 +745,7 @@ const config = {
     "binaryTargets": [
       {
         "fromEnvVar": null,
-        "value": "windows",
+        "value": "debian-openssl-3.0.x",
         "native": true
       },
       {
@@ -754,7 +754,7 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "C:\\Users\\Iz\\Downloads\\Compressed\\New-Warungin\\New-Warungin\\prisma\\schema.prisma",
+    "sourceFilePath": "/home/runner/workspace/prisma/schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {

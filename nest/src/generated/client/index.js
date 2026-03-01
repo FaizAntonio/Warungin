@@ -737,7 +737,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "C:\\Users\\Iz\\Downloads\\Compressed\\New-Warungin\\New-Warungin\\nest\\src\\generated\\client",
+      "value": "/home/runner/workspace/nest/src/generated/client",
       "fromEnvVar": null
     },
     "config": {
@@ -746,7 +746,7 @@ const config = {
     "binaryTargets": [
       {
         "fromEnvVar": null,
-        "value": "windows",
+        "value": "debian-openssl-3.0.x",
         "native": true
       },
       {
@@ -755,7 +755,7 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "C:\\Users\\Iz\\Downloads\\Compressed\\New-Warungin\\New-Warungin\\prisma\\schema.prisma",
+    "sourceFilePath": "/home/runner/workspace/prisma/schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
@@ -787,8 +787,8 @@ const fs = require('fs')
 config.dirname = __dirname
 if (!fs.existsSync(path.join(__dirname, 'schema.prisma'))) {
   const alternativePaths = [
+    "nest/src/generated/client",
     "src/generated/client",
-    "generated/client",
   ]
   
   const alternativePath = alternativePaths.find((altPath) => {
@@ -817,12 +817,8 @@ exports.PrismaClient = PrismaClient
 Object.assign(exports, Prisma)
 
 // file annotations for bundling tools to include these files
-path.join(__dirname, "query_engine-windows.dll.node");
-path.join(process.cwd(), "src/generated/client/query_engine-windows.dll.node")
-
-// file annotations for bundling tools to include these files
 path.join(__dirname, "libquery_engine-debian-openssl-3.0.x.so.node");
-path.join(process.cwd(), "src/generated/client/libquery_engine-debian-openssl-3.0.x.so.node")
+path.join(process.cwd(), "nest/src/generated/client/libquery_engine-debian-openssl-3.0.x.so.node")
 // file annotations for bundling tools to include these files
 path.join(__dirname, "schema.prisma");
-path.join(process.cwd(), "src/generated/client/schema.prisma")
+path.join(process.cwd(), "nest/src/generated/client/schema.prisma")
