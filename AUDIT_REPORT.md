@@ -30,48 +30,46 @@ Lingkup: baseline health check, security quick scan, build readiness untuk Repli
 
 ### HIGH
 
-#### A-SEC-001 - Endpoint internal sensitif dapat diakses publik
+#### A-SEC-001 - Endpoint internal sensitif dapat diakses publik — **RESOLVED**
 
-- Lokasi: `nest/src/modules/internal/internal.controller.ts:25`, `nest/src/modules/internal/internal.controller.ts:31`, `nest/src/modules/internal/internal.controller.ts:43`, `nest/src/modules/internal/internal.controller.ts:49`
-- Masalah: endpoint `backup`, `subscription/revert`, `api-key/rotate`, dan `api-key/history` diberi `@Public()`.
-- Dampak: risiko eksekusi operasi internal tanpa autentikasi yang benar.
-- Rekomendasi:
-  - Hapus `@Public()` dari endpoint internal sensitif.
-  - Lindungi dengan guard khusus internal auth (API key terverifikasi/HMAC/IP allowlist).
-  - Tambahkan audit log untuk semua akses endpoint internal.
+- Lokasi: `nest/src/modules/internal/internal.controller.ts`
+- Status: **Resolved** (2026-03-01)
+- Implementasi:
+  - `InternalApiKeyGuard` diterapkan di class level — semua endpoint wajib API key valid (min 16 chars).
+  - `@Public()` dipertahankan di class level (pola NestJS: bypass global JWT guard untuk service-to-service auth, diganti dengan API key guard).
+  - Tanpa API key: semua 7 endpoint mengembalikan 401.
+  - Dengan API key valid: endpoint dapat diakses.
+  - Audit logging ditambahkan untuk operasi sensitif: backup, subscription/revert, api-key/rotate, api-key/history, tenants/active.
 - Estimasi effort: **M**
 
-#### A-SEC-002 - Fallback JWT secret hardcoded
+#### A-SEC-002 - Fallback JWT secret hardcoded — **RESOLVED**
 
-- Lokasi: `nest/src/modules/auth/auth.service.ts:276`
-- Masalah: jika `JWT_SECRET` kosong, service menggunakan fallback hardcoded.
-- Dampak: potensi token dapat diverifikasi dengan secret default jika konfigurasi environment bermasalah.
-- Rekomendasi:
-  - Hapus fallback string hardcoded.
-  - Fail-fast saat `JWT_SECRET` tidak tersedia.
-  - Pastikan hanya `ConfigModule` schema validation yang menjadi source of truth.
+- Lokasi: `nest/src/modules/auth/auth.service.ts`
+- Status: **Resolved** (2026-03-01)
+- Implementasi:
+  - `jwtSecret` getter melakukan fail-fast: throw Error jika `JWT_SECRET` tidak ada atau < 32 karakter.
+  - Tidak ada fallback hardcoded. Semua token signing/verification menggunakan getter ini.
 - Estimasi effort: **S**
 
 ### MEDIUM
 
-#### A-REL-001 - Script type-check root tidak valid untuk struktur monorepo saat ini
+#### A-REL-001 - Script type-check root tidak valid untuk struktur monorepo saat ini — **RESOLVED**
 
 - Lokasi: `package.json:51`
-- Masalah: `tsc --noEmit` di root gagal karena tidak ada `tsconfig.json` root.
-- Dampak: quality gate CI tidak dapat digunakan sebagai indikator kualitas.
-- Rekomendasi:
-  - Ubah script ke `cd nest && tsc --noEmit` + `cd client && vue-tsc --noEmit`.
-  - Atau tambahkan `tsconfig.json` root yang mereferensikan project backend/frontend.
+- Status: **Resolved** (2026-03-01)
+- Implementasi:
+  - Script diubah menjadi: `cd nest && npx tsc --noEmit && cd ../client && npx vue-tsc --noEmit`
+  - `npm run type-check` berhasil dari root (backend + frontend).
 - Estimasi effort: **S**
 
-#### A-REL-002 - Script lint root salah target directory
+#### A-REL-002 - Script lint root salah target directory — **RESOLVED**
 
 - Lokasi: `package.json:47`
-- Masalah: lint root menjalankan `eslint src --ext .ts`, sementara `src` ada di `nest/src`.
-- Dampak: lint root selalu gagal walau kode valid.
-- Rekomendasi:
-  - Ganti menjadi `eslint nest/src --ext .ts`.
-  - Tambahkan lint frontend terpisah atau gabungkan dengan workspace script yang jelas.
+- Status: **Resolved** (2026-03-01)
+- Implementasi:
+  - Script diubah menjadi: `cd nest && npx eslint src --ext .ts`
+  - `npm run lint` berjalan dari root dan mengarah ke path backend yang benar.
+  - Lint frontend tetap terpisah di `client/package.json`.
 - Estimasi effort: **S**
 
 #### A-REL-003 - Test baseline tidak tersedia di root

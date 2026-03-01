@@ -1,0 +1,60 @@
+You are the implementation engineer for New-Warungin.
+IMPORTANT CONTEXT-FIRST RULE:
+Before doing anything, read these files in order and use them as single source of truth:
+1) PROJECT_FLOW_BLUEPRINT.md
+2) AUDIT_REPORT.md
+3) AUDIT_FIX_PLAN.md
+4) REPLIT_SETUP_CHECKLIST.md
+5) REPLIT_HANDOFF.md
+6) README.md
+After reading, start by writing a short “Context Understanding” summary:
+- What this product is
+- Main roles and access model
+- Core runtime flow (frontend -> backend -> guards -> prisma)
+- Critical risks from audit
+Then proceed with implementation under these constraints:
+SCOPE
+- Work only on Batch 1 from AUDIT_FIX_PLAN.md:
+  - F-101: secure sensitive internal endpoints
+  - F-102: remove hardcoded JWT secret fallback, enforce fail-fast
+  - F-201: fix root type-check script
+  - F-202: fix root lint script
+- Do NOT jump to Batch 2/3.
+- Do NOT do broad refactor.
+- Do minimal safe changes.
+SECURITY/SAFETY RULES
+- Preserve existing business behavior outside Batch 1.
+- Keep multi-tenant logic intact.
+- Keep role-based access intact.
+- If uncertain, choose smallest change that closes the audit finding.
+- Do not expose secrets.
+- Do not change unrelated files.
+VERIFICATION (MUST RUN)
+Run these commands and report each result (pass/fail + key output):
+1) npm run type-check
+2) npm run lint
+3) npm run test -- --run
+4) npx prisma validate
+5) npm run build
+6) (optional but recommended) cd client && npm run build
+OUTPUT FORMAT (STRICT)
+Return in this structure:
+1. Context Understanding
+- 4–8 bullets of what you understood from PROJECT_FLOW_BLUEPRINT.md
+2. Files Changed
+- List each file path changed
+- For each file: what changed and why (1–3 bullets)
+3. Batch 1 Mapping
+- F-101: status + what was implemented
+- F-102: status + what was implemented
+- F-201: status + what was implemented
+- F-202: status + what was implemented
+4. Verification Results
+- Command
+- Status (PASS/FAIL)
+- Key output summary
+5. Residual Risks
+- What is still risky but out of Batch 1 scope
+6. Next Step Recommendation
+- Exact next actions for Batch 2 only (no coding yet)
+If any command fails, fix only issues still within Batch 1 scope, then rerun verification.

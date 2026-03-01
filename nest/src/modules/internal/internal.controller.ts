@@ -1,65 +1,58 @@
-import { Controller, Get, Post, Body, UseGuards } from "@nestjs/common";
+import { Controller, Get, Post, Body, UseGuards, Logger } from "@nestjs/common";
 import { InternalService } from "./internal.service";
 import { Public } from "../../common/decorators/public.decorator";
 import { InternalApiKeyGuard } from "../../common/guards/internal-api-key.guard";
 
 @Controller("internal")
+@Public()
+@UseGuards(InternalApiKeyGuard)
 export class InternalController {
+  private readonly logger = new Logger(InternalController.name);
+
   constructor(private readonly internalService: InternalService) {}
 
-  @Public()
-  @UseGuards(InternalApiKeyGuard)
   @Get("health")
   async healthCheck() {
     return this.internalService.healthCheck();
   }
 
-  @Public()
-  @UseGuards(InternalApiKeyGuard)
   @Get("info")
   async getSystemInfo() {
     return this.internalService.getSystemInfo();
   }
 
-  @Public()
-  @UseGuards(InternalApiKeyGuard)
   @Post("payment/webhook")
   async handlePaymentWebhook(@Body() body: any) {
     return this.internalService.handlePaymentWebhook(body);
   }
 
-  @Public()
-  @UseGuards(InternalApiKeyGuard)
   @Post("backup")
   async triggerBackup(@Body() body: { tenantId?: string; type?: string }) {
+    this.logger.warn(`[AUDIT] Backup triggered: tenantId=${body.tenantId}, type=${body.type}`);
     return this.internalService.triggerBackup(body.tenantId, body.type);
   }
 
-  @Public()
-  @UseGuards(InternalApiKeyGuard)
   @Post("subscription/revert")
   async revertSubscriptions() {
+    this.logger.warn("[AUDIT] Subscription revert triggered");
     return this.internalService.revertSubscriptions();
   }
 
-  @Public()
-  @UseGuards(InternalApiKeyGuard)
   @Get("tenants/active")
   async getActiveTenants() {
+    this.logger.log("[AUDIT] Active tenants list accessed");
     return { data: await this.internalService.getActiveTenants() };
   }
 
-  @Public()
-  @UseGuards(InternalApiKeyGuard)
   @Post("api-key/rotate")
   async rotateApiKey(@Body() body: { newKey: string }) {
+    this.logger.warn("[AUDIT] API key rotation triggered");
     return this.internalService.rotateApiKey(body.newKey);
   }
 
-  @Public()
-  @UseGuards(InternalApiKeyGuard)
   @Get("api-key/history")
   async getApiKeyHistory() {
+    this.logger.log("[AUDIT] API key history accessed");
     return this.internalService.getApiKeyHistory();
   }
 }
