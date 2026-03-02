@@ -140,7 +140,48 @@ export class TenantsService {
       throw new NotFoundException("Tenant not found");
     }
 
-    return tenant;
+    const [users, stores, addons, subscription, invoices] = await Promise.all([
+      this.prisma.user.findMany({
+        where: { tenantId: id },
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          role: true,
+          isActive: true,
+          createdAt: true,
+          updatedAt: true,
+        },
+        orderBy: { createdAt: "desc" },
+      }),
+      this.prisma.outlet.findMany({
+        where: { tenantId: id },
+        orderBy: { createdAt: "desc" },
+      }),
+      this.prisma.tenantAddon.findMany({
+        where: { tenantId: id },
+        orderBy: { subscribedAt: "desc" },
+      }),
+      this.prisma.subscription.findFirst({
+        where: { tenantId: id },
+        orderBy: { endDate: "desc" },
+      }),
+      this.prisma.subscriptionHistory.findMany({
+        where: { tenantId: id },
+        orderBy: { createdAt: "desc" },
+        take: 20,
+      }),
+    ]);
+
+    return {
+      ...tenant,
+      tenant,
+      users,
+      stores,
+      addons,
+      subscription,
+      invoices,
+    };
   }
 
   async update(id: string, dto: UpdateTenantDto) {

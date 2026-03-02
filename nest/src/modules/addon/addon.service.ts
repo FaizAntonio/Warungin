@@ -2,7 +2,6 @@ import {
   Injectable,
   NotFoundException,
   BadRequestException,
-  ForbiddenException,
 } from "@nestjs/common";
 import { PrismaService } from "../../prisma/prisma.service";
 import { CreateAddonDto } from "./dto/create-addon.dto";
@@ -97,6 +96,23 @@ const PLAN_LIMITS: Record<string, { outlets: number; users: number; products: nu
 export class AddonService {
   constructor(private readonly prisma: PrismaService) {}
 
+  private async resolveAddonRecord(idOrAddonId: string, tenantId: string) {
+    const byId = await this.prisma.tenantAddon.findFirst({
+      where: { id: idOrAddonId, tenantId },
+    });
+
+    if (byId) {
+      return byId;
+    }
+
+    const byAddonId = await this.prisma.tenantAddon.findFirst({
+      where: { addonId: idOrAddonId, tenantId },
+      orderBy: { subscribedAt: "desc" },
+    });
+
+    return byAddonId;
+  }
+
   async getAddons(tenantId: string, query: any) {
     const { page, limit, skip } = parsePagination(query.page, query.limit);
 
@@ -140,16 +156,10 @@ export class AddonService {
   }
 
   async getAddonById(id: string, tenantId: string) {
-    const addon = await this.prisma.tenantAddon.findUnique({
-      where: { id },
-    });
+    const addon = await this.resolveAddonRecord(id, tenantId);
 
     if (!addon) {
       throw new NotFoundException("Addon not found");
-    }
-
-    if (addon.tenantId !== tenantId) {
-      throw new ForbiddenException("Unauthorized access to this addon");
     }
 
     return addon;
@@ -219,10 +229,10 @@ export class AddonService {
   }
 
   async updateAddon(id: string, data: UpdateAddonDto, tenantId: string) {
-    await this.getAddonById(id, tenantId);
+    const addon = await this.getAddonById(id, tenantId);
 
     const updated = await this.prisma.tenantAddon.update({
-      where: { id },
+      where: { id: addon.id },
       data,
     });
 
@@ -230,20 +240,14 @@ export class AddonService {
   }
 
   async deleteAddon(id: string, tenantId: string) {
-    const addon = await this.prisma.tenantAddon.findUnique({
-      where: { id },
-    });
+    const addon = await this.resolveAddonRecord(id, tenantId);
 
     if (!addon) {
       throw new NotFoundException("Addon not found");
     }
 
-    if (addon.tenantId !== tenantId) {
-      throw new ForbiddenException("Unauthorized access to this addon");
-    }
-
     await this.prisma.tenantAddon.update({
-      where: { id },
+      where: { id: addon.id },
       data: { status: "INACTIVE" },
     });
 
@@ -350,7 +354,7 @@ export class AddonService {
     const newExpiry = new Date(baseDate.getTime() + duration * 24 * 60 * 60 * 1000);
 
     const updated = await this.prisma.tenantAddon.update({
-      where: { id },
+      where: { id: addon.id },
       data: { expiresAt: newExpiry },
     });
 
