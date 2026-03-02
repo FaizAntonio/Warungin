@@ -67,6 +67,7 @@
     "audit:status": "node scripts/audit-health-summary.js",
     "audit:gate": "node scripts/audit-gate.js",
     "audit:release": "node scripts/release-readiness.js",
+    "smoke:post-deploy": "node scripts/post-deploy-smoke.js",
     "pre-commit": "npm run type-check && npm run lint && npx prisma validate"
   },
   "keywords": [

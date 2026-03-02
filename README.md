@@ -66,6 +66,7 @@ Perintah di atas menjalankan backend dari folder `nest/` dengan mode development
 - `npm run audit:status` - generate ringkasan status audit terbaru
 - `npm run audit:gate` - validasi GO/NO-GO dari report audit
 - `npm run audit:release` - jalankan full readiness check (required gate + optional lint) dan hasilkan `RELEASE_READINESS.md`
+- `npm run smoke:post-deploy` - smoke check endpoint penting setelah deploy
 - `npm run localdb:stop` - stop PostgreSQL lokal
 
 ## CI Audit Otomatis
