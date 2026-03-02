@@ -256,10 +256,24 @@ export class TenantsService {
     return { orders, products, customers, users };
   }
 
-  async createTenantUser(tenantId: string, data: { name: string; email: string; password: string; role?: string }) {
+  async createTenantUser(
+    tenantId: string,
+    data: { name: string; email: string; password?: string; role?: string },
+  ) {
     await this.findOne(tenantId);
-    const hashedPassword = await bcrypt.hash(data.password, 10);
-    return this.prisma.user.create({
+
+    const existingUser = await this.prisma.user.findFirst({
+      where: { tenantId, email: data.email },
+    });
+    if (existingUser) {
+      throw new ConflictException("Email already exists");
+    }
+
+    const generatedPassword = Math.random().toString(36).slice(-8);
+    const rawPassword = data.password?.trim() || generatedPassword;
+    const hashedPassword = await bcrypt.hash(rawPassword, 10);
+
+    const user = await this.prisma.user.create({
       data: {
         tenantId,
         name: data.name,
@@ -268,6 +282,11 @@ export class TenantsService {
         role: (data.role as any) || "CASHIER",
       },
     });
+
+    return {
+      ...user,
+      defaultPassword: data.password ? undefined : rawPassword,
+    };
   }
 
   async createTenantOutlet(tenantId: string, data: { name: string; address?: string; phone?: string }) {

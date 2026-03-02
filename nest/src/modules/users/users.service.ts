@@ -89,7 +89,9 @@ export class UsersService {
       throw new ConflictException("Email already exists for this tenant");
     }
 
-    const hashedPassword = await bcrypt.hash(data.password, 10);
+    const generatedPassword = Math.random().toString(36).slice(-8);
+    const rawPassword = data.password?.trim() || generatedPassword;
+    const hashedPassword = await bcrypt.hash(rawPassword, 10);
 
     const user = await this.prisma.user.create({
       data: {
@@ -110,7 +112,10 @@ export class UsersService {
       },
     });
 
-    return user;
+    return {
+      ...user,
+      defaultPassword: data.password ? undefined : rawPassword,
+    };
   }
 
   async updateUser(id: string, data: UpdateUserDto, tenantId: string) {

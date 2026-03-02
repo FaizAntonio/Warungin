@@ -10,7 +10,8 @@ export class CreateUserDto {
 
   @IsString()
   @MaxLength(255)
-  password: string;
+  @IsOptional()
+  password?: string;
 
   @IsEnum(['SUPER_ADMIN', 'ADMIN_TENANT', 'SUPERVISOR', 'CASHIER', 'KITCHEN'])
   role: string;

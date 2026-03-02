@@ -132,7 +132,7 @@ export class TenantsController {
   createTenantUser(
     @Param("id", ParseUUIDPipe) id: string,
     @Body()
-    body: { name: string; email: string; password: string; role?: string },
+    body: { name: string; email: string; password?: string; role?: string },
   ) {
     return this.tenantsService.createTenantUser(id, body);
   }

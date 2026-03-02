@@ -964,10 +964,12 @@ import api from '../../api';
 import { formatDate } from '../../utils/formatters';
 import { useNotification } from '../../composables/useNotification';
 import UserEditModal from '../../components/UserEditModal.vue';
+import { useAuthStore } from '../../stores/auth';
 
 const route = useRoute();
 const router = useRouter();
 const { success: showSuccess, error: showError, confirm: confirmDialog } = useNotification();
+const authStore = useAuthStore();
 const tenantId = route.params.id as string;
 
 interface Tenant {
@@ -1163,14 +1165,13 @@ const handleEditSubscription = () => {
 const handleSaveSubscription = async () => {
     saving.value = true;
     try {
-        await api.put(`/tenants/${tenantId}/subscription`, {
-            plan: editSubscriptionForm.value.plan,
-            status: editSubscriptionForm.value.status,
-            durationDays: editSubscriptionForm.value.durationDays
+        await api.put(`/tenants/${tenantId}/upgrade-plan`, {
+            subscriptionPlan: editSubscriptionForm.value.plan,
+            durationDays: Number(editSubscriptionForm.value.durationDays) || 30,
         });
         showSuccess('Langganan berhasil diperbarui!');
         showEditSubscriptionModal.value = false;
-        loadTenantDetail();
+        await loadTenantDetail();
     } catch (error: any) {
         showError(error.response?.data?.message || 'Gagal memperbarui langganan.');
     } finally {
@@ -1208,19 +1209,17 @@ const handleAddAddonSubmit = async () => {
     
     saving.value = true;
     try {
+        const durationDays = Number(newAddonForm.value.durationDays);
+        const expiresAt = new Date(Date.now() + durationDays * 24 * 60 * 60 * 1000).toISOString();
         const payload: any = {
             addonId: addon.id,
             addonName: addon.name,
             addonType: addon.type,
-            limit: addon.defaultLimit || null,
-            duration: newAddonForm.value.durationDays
+            limit: addon.defaultLimit ?? null,
+            duration: durationDays,
+            expiresAt,
         };
-        
-        // For Super Admin viewing a tenant, include tenantId in the request
-        if (tenantId) {
-            payload.tenantId = tenantId;
-        }
-        
+
         await api.post(`/addons/subscribe`, payload);
         
         showSuccess(`Addon "${addon.name}" berhasil ditambahkan!`);
@@ -1232,7 +1231,7 @@ const handleAddAddonSubmit = async () => {
             durationDays: 30
         };
         
-        loadTenantDetail();
+        await Promise.all([loadTenantAddons(), loadAvailableAddons()]);
     } catch (error: any) {
         showError(error.response?.data?.message || 'Gagal menambahkan addon.');
     } finally {
@@ -1244,7 +1243,7 @@ const handleAddAddonSubmit = async () => {
 const handleEditAddon = (addon: any) => {
     selectedAddonForEdit.value = addon;
     editAddonForm.value = {
-        id: addon.addonId || addon.id, // Handle different property names
+        id: addon.id || addon.addonId,
         name: addon.addonName || addon.name,
         status: addon.status || 'ACTIVE',
         durationDays: 30 // Default 30 days
@@ -1255,13 +1254,21 @@ const handleEditAddon = (addon: any) => {
 const handleSaveAddon = async () => {
     saving.value = true;
     try {
-        await api.put(`/addons/${editAddonForm.value.id}`, {
-            durationDays: editAddonForm.value.durationDays,
-            status: editAddonForm.value.status
-        });
+        if (editAddonForm.value.status) {
+            await api.put(`/addons/${editAddonForm.value.id}`, {
+                status: editAddonForm.value.status,
+            });
+        }
+
+        if (editAddonForm.value.durationDays && editAddonForm.value.durationDays > 0) {
+            await api.post(`/addons/${editAddonForm.value.id}/extend`, {
+                duration: Number(editAddonForm.value.durationDays),
+            });
+        }
+
         showSuccess(`Addon "${editAddonForm.value.name}" berhasil diperbarui!`);
         showEditAddonModal.value = false;
-        loadTenantDetail();
+        await loadTenantAddons();
     } catch (error: any) {
         showError(error.response?.data?.message || 'Gagal memperbarui addon.');
     } finally {
@@ -1357,26 +1364,88 @@ const handleBackToTenants = () => {
     router.push('/app/tenants');
 };
 
+const normalizeList = (payload: any): any[] => {
+    if (Array.isArray(payload)) return payload;
+    if (Array.isArray(payload?.data)) return payload.data;
+    if (Array.isArray(payload?.data?.data)) return payload.data.data;
+    return [];
+};
+
+const syncSuperAdminTenantContext = () => {
+    if (!authStore.isSuperAdmin || !tenantId) return;
+    authStore.setSelectedTenant(tenantId);
+    localStorage.setItem('selectedTenantId', tenantId);
+};
+
+const loadTenantUsers = async () => {
+    const response = await api.get(`/tenants/${tenantId}/users`);
+    tenantUsers.value = normalizeList(response.data);
+};
+
+const loadTenantStores = async () => {
+    loadingStores.value = true;
+    try {
+        const response = await api.get('/outlets', { params: { tenantId, limit: 100 } });
+        tenantStores.value = normalizeList(response.data);
+    } finally {
+        loadingStores.value = false;
+    }
+};
+
+const loadTenantAddons = async () => {
+    const response = await api.get('/addons', { params: { tenantId, limit: 100 } });
+    const addonsData = normalizeList(response.data);
+    activeAddons.value = addonsData.map((a: any) => ({
+        ...a,
+        isActive: a.status?.toUpperCase() === 'ACTIVE',
+        isLimitReached: Boolean(a.limit) && (a.currentUsage || 0) >= a.limit,
+    }));
+};
+
+const loadCurrentSubscription = async () => {
+    try {
+        const response = await api.get('/subscriptions/current', { params: { tenantId } });
+        subscription.value = response.data || null;
+    } catch {
+        subscription.value = null;
+    }
+};
+
 const loadTenantDetail = async () => {
     loading.value = true;
     hasError.value = false;
     try {
+        syncSuperAdminTenantContext();
+
         const response = await api.get(`/tenants/${tenantId}`);
-        const data = response.data.data || response.data;
-        tenant.value = data.tenant || data;
-        tenantStores.value = data.stores || [];
-        tenantUsers.value = data.users || [];
-        subscription.value = data.subscription || null;
-        billingHistory.value = data.invoices || [];
-        
-        // Process addons
-        const addonsData = data.addons || [];
-        activeAddons.value = addonsData.map((a: any) => ({
-             ...a,
-             isActive: a.status?.toUpperCase() === 'ACTIVE',
-             isLimitReached: a.limit && a.currentUsage >= a.limit
-        }));
-        
+        const data = response.data;
+        tenant.value = data?.tenant || data;
+
+        const [usersResult, storesResult, addonsResult, subscriptionResult] = await Promise.allSettled([
+            loadTenantUsers(),
+            loadTenantStores(),
+            loadTenantAddons(),
+            loadCurrentSubscription(),
+        ]);
+
+        if (usersResult.status === 'rejected') {
+            tenantUsers.value = [];
+            console.error('Failed loading tenant users', usersResult.reason);
+        }
+        if (storesResult.status === 'rejected') {
+            tenantStores.value = [];
+            console.error('Failed loading tenant stores', storesResult.reason);
+        }
+        if (addonsResult.status === 'rejected') {
+            activeAddons.value = [];
+            console.error('Failed loading tenant addons', addonsResult.reason);
+        }
+        if (subscriptionResult.status === 'rejected') {
+            subscription.value = null;
+        }
+
+        billingHistory.value = normalizeList(data?.invoices);
+
         // Update countdown after loading data
         updateCountdown();
 
@@ -1474,17 +1543,23 @@ const handleRequestUpdateProfile = () => {
 const handleAddUserSubmit = async () => {
     saving.value = true;
     try {
-        // Send request to add user for the tenant
-        await api.post(`/tenants/${tenantId}/users`, {
+        const response = await api.post(`/tenants/${tenantId}/users`, {
             name: newUserForm.value.name,
             email: newUserForm.value.email,
             role: newUserForm.value.role,
         });
-        showSuccess('User berhasil ditambahkan. Password default telah dikirim via email.');
+
+        const defaultPassword = response?.data?.defaultPassword;
+        if (defaultPassword) {
+            showSuccess(`User berhasil ditambahkan. Password default: ${defaultPassword}`);
+        } else {
+            showSuccess('User berhasil ditambahkan.');
+        }
+
         showAddUserModal.value = false;
         // Reset form
         newUserForm.value = { name: '', email: '', role: '' };
-        loadTenantDetail();
+        await loadTenantUsers();
     } catch (err: any) {
         showError(err.response?.data?.message || 'Gagal menambah user');
     } finally {
@@ -1522,7 +1597,7 @@ const handleAddStore = async () => {
         await api.post(`/tenants/${tenantId}/outlets`, newStoreForm.value);
         showSuccess('Toko berhasil ditambahkan');
         showAddStoreModal.value = false;
-        loadTenantDetail();
+        await loadTenantStores();
     } catch (err: any) {
         showError(err.response?.data?.message || 'Gagal menambah toko');
     } finally {

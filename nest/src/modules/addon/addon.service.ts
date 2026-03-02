@@ -156,6 +156,14 @@ export class AddonService {
   }
 
   async createAddon(data: CreateAddonDto, tenantId: string) {
+    const expiresAtFromDuration =
+      data.duration && data.duration > 0
+        ? new Date(Date.now() + data.duration * 24 * 60 * 60 * 1000)
+        : null;
+    const resolvedExpiresAt = data.expiresAt
+      ? new Date(data.expiresAt)
+      : expiresAtFromDuration;
+
     const existing = await this.prisma.tenantAddon.findFirst({
       where: {
         tenantId,
@@ -182,9 +190,9 @@ export class AddonService {
         data: {
           status: data.status || "ACTIVE",
           subscribedAt: new Date(),
-          limit: data.limit || inactive.limit,
+          limit: data.limit ?? inactive.limit,
           currentUsage: 0,
-          expiresAt: data.expiresAt ? new Date(data.expiresAt) : null,
+          expiresAt: resolvedExpiresAt,
           purchasedBy: data.purchasedBy || "SELF",
           config: data.config || inactive.config,
         },
@@ -199,9 +207,9 @@ export class AddonService {
         addonName: data.addonName,
         addonType: data.addonType,
         status: data.status || "ACTIVE",
-        limit: data.limit || null,
+        limit: data.limit ?? null,
         currentUsage: data.currentUsage || 0,
-        expiresAt: data.expiresAt ? new Date(data.expiresAt) : null,
+        expiresAt: resolvedExpiresAt,
         purchasedBy: data.purchasedBy || "SELF",
         config: data.config || null,
       },

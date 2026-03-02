@@ -4,6 +4,8 @@ import {
   IsNumber,
   IsDateString,
   IsObject,
+  IsInt,
+  Min,
 } from "class-validator";
 
 export class CreateAddonDto {
@@ -39,4 +41,13 @@ export class CreateAddonDto {
   @IsOptional()
   @IsString()
   purchasedBy?: string;
+
+  @IsOptional()
+  @IsInt()
+  @Min(1)
+  duration?: number;
+
+  @IsOptional()
+  @IsString()
+  tenantId?: string;
 }
