@@ -1,10 +1,10 @@
 # AUTH ROUTE API RISK REPORT
 
-Generated: 2026-03-02T04:46:53.187Z
+Generated: 2026-03-02T06:09:02.912Z
 
 ## Summary
 - Routed pages analyzed: 79
-- Route/Page/API matrix rows: 293
+- Route/Page/API matrix rows: 282
 - Risks found: 0
 - P0: 0
 - P1: 0
@@ -20,8 +20,8 @@ Generated: 2026-03-02T04:46:53.187Z
 |---|---|---|---|---|---|---|---|
 | client\src\views\addons\Addons.vue | addons | ADMIN_TENANT, SUPER_ADMIN | GET /addons/available | GET /addons/available | no | SUPER_ADMIN, ADMIN_TENANT | nest\src\modules\addon\addon.controller.ts:39 |
 | client\src\views\addons\Addons.vue | addons | ADMIN_TENANT, SUPER_ADMIN | GET /addons | GET /addons | no | SUPER_ADMIN, ADMIN_TENANT, SUPERVISOR | nest\src\modules\addon\addon.controller.ts:27 |
-| client\src\views\addons\Addons.vue | addons | ADMIN_TENANT, SUPER_ADMIN | GET /subscriptions/current | GET /subscriptions/current | no | SUPER_ADMIN, ADMIN_TENANT, SUPERVISOR, CASHIER, KITCHEN | nest\src\modules\subscriptions\subscriptions.controller.ts:47 |
-| client\src\views\addons\Addons.vue | addons | ADMIN_TENANT, SUPER_ADMIN | POST /payment/addon | POST /payment/addon | no | SUPER_ADMIN, ADMIN_TENANT | nest\src\modules\payments\payment-legacy.controller.ts:67 |
+| client\src\views\addons\Addons.vue | addons | ADMIN_TENANT, SUPER_ADMIN | GET /subscriptions/current | GET /subscriptions/current | no | SUPER_ADMIN, ADMIN_TENANT, SUPERVISOR, CASHIER, KITCHEN | nest\src\modules\subscriptions\subscriptions.controller.ts:46 |
+| client\src\views\addons\Addons.vue | addons | ADMIN_TENANT, SUPER_ADMIN | POST /payment/addon | POST /payment/addon | no | SUPER_ADMIN, ADMIN_TENANT | nest\src\modules\payments\payment-legacy.controller.ts:65 |
 | client\src\views\addons\Addons.vue | addons | ADMIN_TENANT, SUPER_ADMIN | POST /addons/unsubscribe/${addonId} | POST /addons/:id/extend | no | SUPER_ADMIN, ADMIN_TENANT | nest\src\modules\addon\addon.controller.ts:78 |
 | client\src\views\analytics\AdvancedAnalytics.vue | analytics | ADMIN_TENANT, SUPER_ADMIN | GET /analytics/predictions | GET /analytics/predictions | no | SUPER_ADMIN, ADMIN_TENANT, SUPERVISOR, CASHIER | nest\src\modules\analytics\analytics.controller.ts:49 |
 | client\src\views\analytics\AdvancedAnalytics.vue | analytics | ADMIN_TENANT, SUPER_ADMIN | GET /analytics/top-products | GET /analytics/top-products | no | SUPER_ADMIN, ADMIN_TENANT, SUPERVISOR, CASHIER | nest\src\modules\analytics\analytics.controller.ts:61 |
@@ -56,7 +56,7 @@ Generated: 2026-03-02T04:46:53.187Z
 | client\src\views\customers\Customers.vue | customers | ADMIN_TENANT, SUPERVISOR, CASHIER, SUPER_ADMIN | POST /marketing/campaigns/send-email | POST /marketing/campaigns/send-email | no | SUPER_ADMIN, ADMIN_TENANT, SUPERVISOR, CASHIER | nest\src\modules\marketing\marketing.controller.ts:35 |
 | client\src\views\customers\Customers.vue | customers | ADMIN_TENANT, SUPERVISOR, CASHIER, SUPER_ADMIN | POST /customers | POST /customers | no | SUPER_ADMIN, ADMIN_TENANT, SUPERVISOR, CASHIER | nest\src\modules\customers\customers.controller.ts:56 |
 | client\src\views\dashboard\Dashboard.vue | dashboard | ADMIN_TENANT, SUPERVISOR, CASHIER, KITCHEN | GET /dashboard/stats | GET /dashboard/stats | no | SUPER_ADMIN, ADMIN_TENANT, SUPERVISOR, CASHIER, KITCHEN | nest\src\modules\dashboard\dashboard.controller.ts:52 |
-| client\src\views\dashboard\Dashboard.vue | dashboard | ADMIN_TENANT, SUPERVISOR, CASHIER, KITCHEN | GET /subscriptions/current | GET /subscriptions/current | no | SUPER_ADMIN, ADMIN_TENANT, SUPERVISOR, CASHIER, KITCHEN | nest\src\modules\subscriptions\subscriptions.controller.ts:47 |
+| client\src\views\dashboard\Dashboard.vue | dashboard | ADMIN_TENANT, SUPERVISOR, CASHIER, KITCHEN | GET /subscriptions/current | GET /subscriptions/current | no | SUPER_ADMIN, ADMIN_TENANT, SUPERVISOR, CASHIER, KITCHEN | nest\src\modules\subscriptions\subscriptions.controller.ts:46 |
 | client\src\views\dashboard\Dashboard.vue | dashboard | ADMIN_TENANT, SUPERVISOR, CASHIER, KITCHEN | GET /orders | GET /orders | no | SUPER_ADMIN, ADMIN_TENANT, SUPERVISOR, CASHIER, KITCHEN | nest\src\modules\orders\orders.controller.ts:27 |
 | client\src\views\delivery\DeliveryOrders.vue | delivery | ADMIN_TENANT, SUPERVISOR, SUPER_ADMIN | GET /delivery/orders | GET /delivery/orders | no | SUPER_ADMIN, ADMIN_TENANT, SUPERVISOR | nest\src\modules\delivery\delivery.controller.ts:76 |
 | client\src\views\delivery\DeliveryOrders.vue | delivery | ADMIN_TENANT, SUPERVISOR, SUPER_ADMIN | POST /delivery/orders/${orderId}/process | POST /delivery/orders/:orderId/process | no | SUPER_ADMIN, ADMIN_TENANT, SUPERVISOR | nest\src\modules\delivery\delivery.controller.ts:82 |

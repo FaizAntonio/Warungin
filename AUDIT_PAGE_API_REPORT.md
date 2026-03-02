@@ -1,6 +1,6 @@
 # PAGE-API AUDIT REPORT
 
-Generated: 2026-03-02T04:46:52.780Z
+Generated: 2026-03-02T06:09:02.458Z
 
 ## Coverage Summary
 - Routed view files audited: 79
@@ -204,11 +204,7 @@ Generated: 2026-03-02T04:46:52.780Z
 - GET /orders/${order.id} | base: orders | backend-base-exists: yes
 - GET /orders/${order.id} | base: orders | backend-base-exists: yes
 - PUT /orders/${id}/status | base: orders | backend-base-exists: yes
-- PUT /orders/${id} | base: orders | backend-base-exists: yes
-- PUT /orders/${id}/status | base: orders | backend-base-exists: yes
 - GET /orders/${order.id} | base: orders | backend-base-exists: yes
-- PUT /orders/${id}/status | base: orders | backend-base-exists: yes
-- PUT /orders/${id}/status | base: orders | backend-base-exists: yes
 - DELETE /orders/${id} | base: orders | backend-base-exists: yes
 - POST /orders/bulk-delete | base: orders | backend-base-exists: yes
 - POST /orders/bulk-refund | base: orders | backend-base-exists: yes
@@ -223,7 +219,6 @@ Generated: 2026-03-02T04:46:52.780Z
 
 ### client\src\views\pos\POS.vue
 - GET /tenant/profile | base: tenant | backend-base-exists: yes
-- GET /inventory/restock-suggestions/critical | base: inventory | backend-base-exists: yes
 - GET /members | base: members | backend-base-exists: yes
 - GET /discounts | base: discounts | backend-base-exists: yes
 - POST /orders | base: orders | backend-base-exists: yes
@@ -276,13 +271,9 @@ Generated: 2026-03-02T04:46:52.780Z
 ### client\src\views\reports\GlobalReports.vue
 - GET /reports/global | base: reports | backend-base-exists: yes
 - PUT /admin/subscriptions/${editingSubscription.value.id} | base: admin | backend-base-exists: yes
-- DELETE /admin/subscriptions/${sub.id} | base: admin | backend-base-exists: yes
 - DELETE /admin/subscriptions/${id} | base: admin | backend-base-exists: yes
 - PUT /admin/addons-purchase/${editingAddon.value.id} | base: admin | backend-base-exists: yes
-- DELETE /admin/addons-purchase/${addon.id} | base: admin | backend-base-exists: yes
 - DELETE /admin/addons-purchase/${id} | base: admin | backend-base-exists: yes
-- PUT /admin/subscriptions/${selectedSubscription.value.id} | base: admin | backend-base-exists: yes
-- PUT /admin/addons-purchase/${selectedAddon.value.id} | base: admin | backend-base-exists: yes
 
 ### client\src\views\reports\Reports.vue
 - GET /reports/tenant | base: reports | backend-base-exists: yes
@@ -460,8 +451,6 @@ Generated: 2026-03-02T04:46:52.780Z
 - GET /tenants/${tenantId} | base: tenants | backend-base-exists: yes
 - PUT /tenants/${tenantId} | base: tenants | backend-base-exists: yes
 - POST /tenants/${tenantId}/users | base: tenants | backend-base-exists: yes
-- POST /tenants/${tenantId}/users | base: tenants | backend-base-exists: yes
-- PUT /users/${editUserForm.value.id} | base: users | backend-base-exists: yes
 - PUT /users/${editingUser.value.id} | base: users | backend-base-exists: yes
 - POST /tenants/${tenantId}/outlets | base: tenants | backend-base-exists: yes
 - PUT /outlets/${editStoreForm.value.id} | base: outlets | backend-base-exists: yes
