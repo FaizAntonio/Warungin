@@ -51,6 +51,10 @@ export class UpdateOutletDto {
 
 export class GetOutletsDto {
   @IsOptional()
+  @IsString()
+  tenantId?: string;
+
+  @IsOptional()
   @Type(() => Number)
   page: number = 1;
 
