@@ -292,7 +292,7 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue';
-import { useRouter, useRoute } from 'vue-router';
+import { useRoute } from 'vue-router';
 import { useAuthStore } from '../stores/auth';
 import { usePermissions } from '../composables/usePermissions';
 import api from '../api';
@@ -312,16 +312,15 @@ import ShellModals from '../components/layout/ShellModals.vue';
 import NotificationDropdown from '../components/NotificationDropdown.vue';
 import ConnectionIndicator from '../components/ui/ConnectionIndicator.vue';
 
-const router = useRouter();
 const route = useRoute();
 const authStore = useAuthStore();
 
 // Composables
-const { sidebarOpen, windowWidth, toggleSidebar, closeSidebarOnMobile } = useLayoutBase();
+const { sidebarOpen, windowWidth, closeSidebarOnMobile } = useLayoutBase();
 const { userName, userEmail, userRole, userInitials, handleLogout } = useLayoutUser();
-const { activeAddons, loadAddons, hasBusinessAnalytics } = useActiveAddons();
+const { loadAddons, hasBusinessAnalytics } = useActiveAddons();
 const { pendingOrdersCount, startPolling, stopPolling } = usePendingOrders();
-const { recentItems, addRecentItem } = useRecentItems();
+const { addRecentItem } = useRecentItems();
 const { canManageProducts, canViewReports, canEditOrders, canManageCustomers } = usePermissions();
 const { criticalStockCount, fetchCriticalStock } = useStockAlerts();
 const { currentHelp } = useHelp();
@@ -408,17 +407,6 @@ const hasUnreadInfo = ref(false);
 
 const shellModalsRef = ref<any>(null);
 const openGlobalSearch = () => shellModalsRef.value?.openGlobalSearch();
-
-const clearRecentItems = () => {
-  localStorage.removeItem('recentItems');
-  window.location.reload();
-};
-
-const highlightMatch = (text: string, query: string) => {
-  if (!query) return text;
-  const regex = new RegExp(`(${query})`, 'gi');
-  return text.replace(regex, '<mark class="bg-yellow-200">$1</mark>');
-};
 
 const getMenuIcon = (path: string) => {
   const icons: Record<string, string> = {

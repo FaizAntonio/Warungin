@@ -286,7 +286,7 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue';
-import { useRouter, useRoute } from 'vue-router';
+import { useRoute } from 'vue-router';
 import { useAuthStore } from '../stores/auth';
 import { usePermissions } from '../composables/usePermissions';
 import api from '../api';
@@ -306,13 +306,12 @@ import NotificationDropdown from '../components/NotificationDropdown.vue';
 
 import { useSystemStatus } from '../composables/useSystemStatus';
 
-const router = useRouter();
 const route = useRoute();
 const authStore = useAuthStore();
 
 // Composables
-const { sidebarOpen, windowWidth, toggleSidebar, closeSidebarOnMobile } = useLayoutBase();
-const { userName, userEmail, userRole, userInitials, handleLogout } = useLayoutUser();
+const { sidebarOpen, windowWidth } = useLayoutBase();
+const { userName, userRole, userInitials, handleLogout } = useLayoutUser();
 const { activeAddons, loadAddons, hasBusinessAnalytics } = useActiveAddons();
 const { pendingOrdersCount, startPolling, stopPolling } = usePendingOrders();
 const { canManageProducts, canViewReports, canEditOrders, canManageCustomers } = usePermissions();
@@ -335,10 +334,6 @@ const handleInfoModalClose = () => {
    showInfoModal.value = false;
    hasUnreadInfo.value = false;
    localStorage.setItem('admin_info_last_seen', new Date().toISOString());
-};
-
-const handleDontShowToday = () => {
-   handleInfoModalClose();
 };
 
 const hasDeliveryMarketing = computed(() => {
