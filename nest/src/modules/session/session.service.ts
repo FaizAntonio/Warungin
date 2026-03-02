@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 import { PrismaService } from "../../prisma/prisma.service";
 
 @Injectable()
@@ -20,14 +20,14 @@ export class SessionService {
     };
   }
 
-  async revokeAllSessions(userId: string, tenantId: string) {
+  async revokeAllSessions(userId: string, _tenantId: string) {
     return {
       message: "All sessions revoked",
       userId,
     };
   }
 
-  async getSessionCount(userId: string, tenantId: string) {
+  async getSessionCount(_userId: string, _tenantId: string) {
     return { count: 1 };
   }
 }

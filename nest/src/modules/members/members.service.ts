@@ -7,12 +7,7 @@ import {
 import { PrismaService } from "../../prisma/prisma.service";
 import { CreateMemberDto } from "./dto/create-member.dto";
 import { UpdateMemberDto } from "./dto/update-member.dto";
-import {
-  parsePagination,
-  PAGINATION_DEFAULT_LIMIT,
-  PAGINATION_DEFAULT_PAGE,
-  PAGINATION_MAX_LIMIT,
-} from "../../common/utils/pagination.util";
+import { parsePagination } from "../../common/utils/pagination.util";
 
 @Injectable()
 export class MembersService {
@@ -197,7 +192,7 @@ export class MembersService {
   }
 
   async addLoyaltyPoints(id: string, tenantId: string, points: number) {
-    const member = await this.getMemberById(id, tenantId);
+    await this.getMemberById(id, tenantId);
 
     if (points < 0) {
       throw new BadRequestException("Points must be positive");

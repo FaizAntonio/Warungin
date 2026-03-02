@@ -67,7 +67,7 @@ export class FinancialManagementService {
         (byCategory[method] || 0) + Number(group._sum.amount || 0);
     }
 
-    const monthlyOrders = await this.prisma.order.groupBy({
+    await this.prisma.order.groupBy({
       by: ["status"],
       where: {
         tenantId,

@@ -38,16 +38,16 @@ export class WebhookController {
 
   @Get(":id/deliveries")
   @Roles("SUPER_ADMIN", "ADMIN_TENANT")
-  async getWebhookDeliveries(@Param("id") id: string, @TenantId() tenantId: string) {
+  async getWebhookDeliveries(@Param("id") _id: string, @TenantId() _tenantId: string) {
     return { data: [], total: 0 };
   }
 
   @Post(":id/replay/:deliveryId")
   @Roles("SUPER_ADMIN", "ADMIN_TENANT")
   async replayWebhookDelivery(
-    @Param("id") id: string,
+    @Param("id") _id: string,
     @Param("deliveryId") deliveryId: string,
-    @TenantId() tenantId: string,
+    @TenantId() _tenantId: string,
   ) {
     return { success: true, message: `Delivery ${deliveryId} replayed` };
   }

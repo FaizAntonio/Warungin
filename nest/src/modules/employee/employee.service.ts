@@ -141,7 +141,7 @@ export class EmployeeService {
   }
 
   async activateEmployee(id: string, tenantId: string) {
-    const employee = await this.getEmployeeById(id, tenantId);
+    await this.getEmployeeById(id, tenantId);
     return this.prisma.employee.update({
       where: { id },
       data: { isActive: true },
@@ -149,7 +149,7 @@ export class EmployeeService {
   }
 
   async deactivateEmployee(id: string, tenantId: string) {
-    const employee = await this.getEmployeeById(id, tenantId);
+    await this.getEmployeeById(id, tenantId);
     return this.prisma.employee.update({
       where: { id },
       data: { isActive: false },

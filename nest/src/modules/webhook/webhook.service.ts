@@ -112,7 +112,7 @@ export class WebhookService {
     };
   }
 
-  async getWebhookEvents(tenantId: string) {
+  async getWebhookEvents(_tenantId: string) {
     const events = [
       {
         id: "order.created",

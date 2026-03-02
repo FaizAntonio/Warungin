@@ -2,7 +2,6 @@ import {
   Injectable,
   NotFoundException,
   BadRequestException,
-  ForbiddenException,
 } from "@nestjs/common";
 import { PrismaService } from "../../prisma/prisma.service";
 import { UpgradeSubscriptionDto } from "./dto/subscription.dto";
@@ -598,7 +597,7 @@ export class SubscriptionsService {
     return { message: "Addon removed successfully" };
   }
 
-  async getSubscriptionHistory(tenantId: string, query?: any) {
+  async getSubscriptionHistory(tenantId: string, _query?: any) {
     const subscriptions = await this.prisma.subscriptionHistory.findMany({
       where: { tenantId },
       orderBy: { createdAt: "desc" },
