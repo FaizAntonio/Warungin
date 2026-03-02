@@ -1,4 +1,4 @@
-import { IsOptional, IsString, IsNumber, Min, Max, IsPositive } from 'class-validator';
+import { IsOptional, IsString, IsNumber, Max, IsPositive } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class GetCustomersDto {

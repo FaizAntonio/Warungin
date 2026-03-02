@@ -1,4 +1,4 @@
-import { IsOptional, IsEnum, IsNumber, Min, Max, IsString, IsPositive } from 'class-validator';
+import { IsOptional, IsEnum, IsNumber, Max, IsString, IsPositive } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class GetOrdersDto {

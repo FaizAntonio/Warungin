@@ -3,10 +3,8 @@ import {
   IsOptional,
   IsNumber,
   IsDateString,
-  IsObject,
   IsArray,
   Min,
-  Max,
   IsBoolean,
 } from "class-validator";
 

@@ -4,7 +4,6 @@ import {
   Post,
   Body,
   Param,
-  Query,
   UseGuards,
   Headers,
 } from "@nestjs/common";
@@ -12,7 +11,6 @@ import { PaymentsService } from "./payments.service";
 import {
   CreatePaymentDto,
   PaymentCallbackDto,
-  PaymentQueryDto,
   CreateAddonPaymentDto,
 } from "./dto/payment.dto";
 import { JwtAuthGuard } from "../auth/guards/jwt-auth.guard";

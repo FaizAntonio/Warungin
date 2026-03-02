@@ -1,4 +1,4 @@
-import { IsUUID, IsNumber, IsPositive, IsArray, ArrayMinSize, IsOptional, IsString, IsEnum, Min } from 'class-validator';
+import { IsUUID, IsNumber, IsPositive, IsArray, ArrayMinSize, IsOptional, IsString, Min } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class CreateOrderItemDto {
