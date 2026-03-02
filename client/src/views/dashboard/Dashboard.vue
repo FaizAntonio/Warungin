@@ -239,10 +239,10 @@ import { useShiftReminder } from '../../composables/useShiftReminder';
 
 const router = useRouter();
 const authStore = useAuthStore();
-const { showNotification, warning: showWarning } = useNotification();
+const { warning: showWarning } = useNotification();
 
 // Shift reminder
-const { shiftDurationHours, shouldShowReminder, startChecking, stopChecking } = useShiftReminder();
+const { startChecking, stopChecking } = useShiftReminder();
 
 const loading = ref(true);
 const stats = ref<any>(null);

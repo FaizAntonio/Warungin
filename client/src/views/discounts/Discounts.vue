@@ -660,14 +660,6 @@ const handleProductSelectorCancel = () => {
   console.log('Product selector cancelled');
 };
 
-const handleProductSelectionTypeChange = () => {
-  // Reset selections when selection type changes
-  if (productSelectionType.value === 'CATEGORY') {
-    discountForm.value.applicableProducts = [];
-    selectedCategory.value = '';
-  }
-};
-
 const loadDiscounts = async () => {
   if (needsTenantSelection.value) {
     return;
@@ -997,4 +989,3 @@ onMounted(async () => {
   }
 });
 </script>
-

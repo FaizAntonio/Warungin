@@ -596,7 +596,7 @@ interface Order {
 const authStore = useAuthStore();
 const { needsTenantSelection, showTenantModal, handleTenantSelected } = useTenantCheck();
 const { success: showSuccess, error: showError, confirm: showConfirm } = useNotification();
-const { canEditOrders, canDeleteOrders, canCancelOrders, canRefundOrders } = usePermissions();
+const { canEditOrders, canDeleteOrders, canRefundOrders } = usePermissions();
 const selectedOrder = ref<Order | null>(null);
 const showEditModal = ref(false);
 const editingOrder = ref<Order | null>(null);
@@ -781,20 +781,6 @@ const viewOrder = async (order: Order) => {
   }
 };
 
-const getPaymentMethodLabel = (method: string) => {
-  const labels: Record<string, string> = {
-    CASH: 'Cash',
-    CARD: 'Kartu',
-    E_WALLET: 'E-Wallet',
-    QRIS: 'QRIS',
-    BANK_TRANSFER: 'Bank',
-    SHOPEEPAY: 'ShopeePay',
-    DANA: 'Dana',
-    MIDTRANS: 'Midtrans',
-  };
-  return labels[method] || method;
-};
-
 const printReceipt = async (order: Order) => {
   try {
     // Load full order data for receipt
@@ -857,39 +843,6 @@ const updateStatus = async (id: string, status: string) => {
   }
 };
 
-const sendToKitchen = async (id: string) => {
-  try {
-    // Update order dengan sendToKitchen flag dan status
-    await api.put(`/orders/${id}`, { 
-      sendToKitchen: true,
-    });
-    await api.put(`/orders/${id}/status`, { status: 'PROCESSING' });
-    await loadOrders(pagination.value.page);
-    await showSuccess('Pesanan berhasil dikirim ke dapur');
-  } catch (error: any) {
-    console.error('Error sending order to kitchen:', error);
-    let errorMessage = 'Gagal mengirim ke dapur';
-    
-    if (error.response) {
-      if (error.response.data?.message) {
-        errorMessage = error.response.data.message;
-      } else if (error.response.data?.error) {
-        errorMessage = `Error: ${error.response.data.error}`;
-      } else if (error.response.status === 404) {
-        errorMessage = 'Pesanan tidak ditemukan';
-      } else if (error.response.status === 403) {
-        errorMessage = 'Anda tidak memiliki izin untuk mengirim pesanan ke dapur';
-      } else if (error.response.status === 400) {
-        errorMessage = error.response.data?.message || 'Pesanan tidak dapat dikirim ke dapur';
-      }
-    } else if (error.message) {
-      errorMessage = error.message;
-    }
-    
-    await showError(errorMessage);
-  }
-};
-
 const editOrder = async (order: Order) => {
   try {
     // Load full order data
@@ -903,78 +856,8 @@ const editOrder = async (order: Order) => {
       items: orderData.items ?? [],
     };
     showEditModal.value = true;
-  } catch (error: any) {
+  } catch {
     await showError('Gagal memuat data pesanan untuk edit');
-  }
-};
-
-const cancelOrder = async (id: string) => {
-  const confirmed = await showConfirm('Apakah Anda yakin ingin membatalkan pesanan ini?', 'Batalkan Pesanan');
-  if (!confirmed) return;
-  
-  try {
-    await api.put(`/orders/${id}/status`, { status: 'CANCELLED' });
-    await loadOrders(pagination.value.page);
-    if (selectedOrder.value?.id === id) {
-      selectedOrder.value = null;
-    }
-    await showSuccess('Pesanan berhasil dibatalkan');
-  } catch (error: any) {
-    console.error('Error cancelling order:', error);
-    let errorMessage = 'Gagal membatalkan pesanan';
-    
-    if (error.response) {
-      if (error.response.data?.message) {
-        errorMessage = error.response.data.message;
-      } else if (error.response.data?.error) {
-        errorMessage = `Error: ${error.response.data.error}`;
-      } else if (error.response.status === 404) {
-        errorMessage = 'Pesanan tidak ditemukan';
-      } else if (error.response.status === 403) {
-        errorMessage = 'Anda tidak memiliki izin untuk membatalkan pesanan';
-      } else if (error.response.status === 400) {
-        errorMessage = error.response.data?.message || 'Pesanan tidak dapat dibatalkan';
-      }
-    } else if (error.message) {
-      errorMessage = error.message;
-    }
-    
-    await showError(errorMessage);
-  }
-};
-
-const refundOrder = async (id: string) => {
-  const confirmed = await showConfirm('Apakah Anda yakin ingin melakukan refund untuk pesanan ini?', 'Refund Pesanan');
-  if (!confirmed) return;
-  
-  try {
-    await api.put(`/orders/${id}/status`, { status: 'REFUNDED' });
-    await loadOrders(pagination.value.page);
-    if (selectedOrder.value?.id === id) {
-      selectedOrder.value = null;
-    }
-    await showSuccess('Pesanan berhasil direfund');
-  } catch (error: any) {
-    console.error('Error refunding order:', error);
-    let errorMessage = 'Gagal melakukan refund';
-    
-    if (error.response) {
-      if (error.response.data?.message) {
-        errorMessage = error.response.data.message;
-      } else if (error.response.data?.error) {
-        errorMessage = `Error: ${error.response.data.error}`;
-      } else if (error.response.status === 404) {
-        errorMessage = 'Pesanan tidak ditemukan';
-      } else if (error.response.status === 403) {
-        errorMessage = 'Anda tidak memiliki izin untuk melakukan refund';
-      } else if (error.response.status === 400) {
-        errorMessage = error.response.data?.message || 'Pesanan tidak dapat direfund. Pastikan status pesanan adalah COMPLETED.';
-      }
-    } else if (error.message) {
-      errorMessage = error.message;
-    }
-    
-    await showError(errorMessage);
   }
 };
 
@@ -1321,4 +1204,3 @@ const toggleColumn = (col: string) => {
   localStorage.setItem('ordersVisibleColumns', JSON.stringify(visibleColumns.value));
 };
 </script>
-
