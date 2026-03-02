@@ -27,9 +27,9 @@ export class SettingsService {
   }
 
   async updateFeatureToggle(
-    tenantId: string,
-    featureName: string,
-    enabled: boolean,
+    _tenantId: string,
+    _featureName: string,
+    _enabled: boolean,
   ) {
     return { message: "Feature toggle updated" };
   }
@@ -56,19 +56,19 @@ export class SettingsService {
     return updated;
   }
 
-  async getTheme(tenantId: string) {
+  async getTheme(_tenantId: string) {
     return { theme: "light" };
   }
 
-  async updateTheme(tenantId: string, data: any) {
+  async updateTheme(_tenantId: string, _data: any) {
     return { message: "Theme updated" };
   }
 
-  async getNotificationSettings(tenantId: string) {
+  async getNotificationSettings(_tenantId: string) {
     return { email: true, push: true, sms: false };
   }
 
-  async updateNotificationSettings(tenantId: string, data: any) {
+  async updateNotificationSettings(_tenantId: string, _data: any) {
     return { message: "Notification settings updated" };
   }
 }

@@ -92,25 +92,25 @@ export class ArchiveController {
 
   @Post("reports")
   @Roles("SUPER_ADMIN", "ADMIN_TENANT")
-  async archiveReports(@TenantId() tenantId: string, @Query("daysOld") daysOld: number = 90) {
+  async archiveReports(@TenantId() _tenantId: string, @Query("daysOld") _daysOld: number = 90) {
     return { success: true, message: "Reports archived", archived: 0 };
   }
 
   @Post("transactions")
   @Roles("SUPER_ADMIN", "ADMIN_TENANT")
-  async archiveTransactions(@TenantId() tenantId: string, @Query("daysOld") daysOld: number = 90) {
+  async archiveTransactions(@TenantId() _tenantId: string, @Query("daysOld") _daysOld: number = 90) {
     return { success: true, message: "Transactions archived", archived: 0 };
   }
 
   @Post("restore")
   @Roles("SUPER_ADMIN", "ADMIN_TENANT")
-  async restoreGeneric(@TenantId() tenantId: string, @Body() body: any) {
+  async restoreGeneric(@TenantId() _tenantId: string, @Body() _body: any) {
     return { success: true, message: "Data restored" };
   }
 
   @Get("files")
   @Roles("SUPER_ADMIN", "ADMIN_TENANT")
-  async getArchiveFiles(@TenantId() tenantId: string) {
+  async getArchiveFiles(@TenantId() _tenantId: string) {
     return { data: [], total: 0 };
   }
 }
@@ -200,25 +200,25 @@ export class ArchiveAliasController {
 
   @Post("reports")
   @Roles("SUPER_ADMIN", "ADMIN_TENANT")
-  async archiveReportsAlias(@TenantId() tenantId: string) {
+  async archiveReportsAlias(@TenantId() _tenantId: string) {
     return { success: true, message: "Reports archived", archived: 0 };
   }
 
   @Post("transactions")
   @Roles("SUPER_ADMIN", "ADMIN_TENANT")
-  async archiveTransactionsAlias(@TenantId() tenantId: string) {
+  async archiveTransactionsAlias(@TenantId() _tenantId: string) {
     return { success: true, message: "Transactions archived", archived: 0 };
   }
 
   @Post("restore")
   @Roles("SUPER_ADMIN", "ADMIN_TENANT")
-  async restoreGenericAlias(@TenantId() tenantId: string, @Body() body: any) {
+  async restoreGenericAlias(@TenantId() _tenantId: string, @Body() _body: any) {
     return { success: true, message: "Data restored" };
   }
 
   @Get("files")
   @Roles("SUPER_ADMIN", "ADMIN_TENANT")
-  async getArchiveFilesAlias(@TenantId() tenantId: string) {
+  async getArchiveFilesAlias(@TenantId() _tenantId: string) {
     return { data: [], total: 0 };
   }
 }

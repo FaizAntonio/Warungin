@@ -2,11 +2,9 @@ import {
   Injectable,
   NotFoundException,
   BadRequestException,
-  ForbiddenException,
 } from "@nestjs/common";
 import { PrismaService } from "../../prisma/prisma.service";
 import { GetOrdersDto } from "./dto/get-orders.dto";
-import { CreateOrderDto } from "./dto/create-order.dto";
 import { UpdateOrderStatusDto } from "./dto/update-order-status.dto";
 import { parsePagination } from "../../common/utils/pagination.util";
 
@@ -133,7 +131,7 @@ export class OrdersService {
   }
 
   async updateOrder(id: string, dto: any, tenantId: string) {
-    const order = await this.getOrderById(id, tenantId);
+    await this.getOrderById(id, tenantId);
 
     // Validate status if provided - prevent mass assignment
     if (dto.status && !VALID_ORDER_STATUSES.includes(dto.status)) {
@@ -158,7 +156,7 @@ export class OrdersService {
     dto: UpdateOrderStatusDto,
     tenantId: string,
   ) {
-    const order = await this.getOrderById(id, tenantId);
+    await this.getOrderById(id, tenantId);
 
     // Validate status - prevent mass assignment
     if (!VALID_ORDER_STATUSES.includes(dto.status)) {
@@ -295,7 +293,7 @@ export class OrdersService {
   }
 
   async completeOrder(id: string, tenantId: string) {
-    const order = await this.getOrderById(id, tenantId);
+    await this.getOrderById(id, tenantId);
 
     const updated = await this.prisma.order.update({
       where: { id },
@@ -424,7 +422,7 @@ export class OrdersService {
   }
 
   async deleteOrder(id: string, tenantId: string) {
-    const order = await this.getOrderById(id, tenantId);
+    await this.getOrderById(id, tenantId);
 
     await this.prisma.order.update({
       where: { id },

@@ -36,7 +36,7 @@ export class ArchiveService {
     return { message: `Restored ${orderIds.length} orders` };
   }
 
-  async archiveProducts(tenantId: string, daysOld: number) {
+  async archiveProducts(_tenantId: string, _daysOld: number) {
     return { message: "Products archived" };
   }
 
@@ -44,7 +44,7 @@ export class ArchiveService {
     return { message: `Restored ${productIds.length} products` };
   }
 
-  async archiveCustomers(tenantId: string, daysOld: number) {
+  async archiveCustomers(_tenantId: string, _daysOld: number) {
     return { message: "Customers archived" };
   }
 

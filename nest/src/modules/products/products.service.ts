@@ -90,7 +90,7 @@ export class ProductsService {
     return { data: products };
   }
 
-  async createProduct(dto: any, tenantId: string, userRole?: string) {
+  async createProduct(dto: any, tenantId: string, _userRole?: string) {
     this.validateTenantId(tenantId);
 
     const product = await this.prisma.product.create({
@@ -115,7 +115,7 @@ export class ProductsService {
   }
 
   async updateProduct(id: string, dto: any, tenantId: string) {
-    const existing = await this.getProductById(id, tenantId);
+    await this.getProductById(id, tenantId);
 
     const product = await this.prisma.product.update({
       where: { id },
@@ -141,7 +141,7 @@ export class ProductsService {
   }
 
   async deleteProduct(id: string, tenantId: string) {
-    const existing = await this.getProductById(id, tenantId);
+    await this.getProductById(id, tenantId);
 
     await this.prisma.product.update({
       where: { id },
@@ -301,11 +301,9 @@ export class ProductsService {
   }
 
   async bulkUpdateProducts(tenantId: string, productIds: string[], data: any) {
-    const { isActive, price, ...updateData } = data;
-
     await this.prisma.product.updateMany({
       where: { id: { in: productIds }, tenantId },
-      data: updateData,
+      data,
     });
 
     return { message: "Products updated", count: productIds.length };
