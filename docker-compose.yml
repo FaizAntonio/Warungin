@@ -247,10 +247,10 @@ services:
       timeout: 10s
       retries: 3
 
-  # Nginx Reverse Proxy
-  nginx:
+  # Gateway Reverse Proxy
+  gateway:
     image: nginx:alpine
-    container_name: warungin-nginx
+    container_name: warungin-gateway
     restart: unless-stopped
     logging:
       driver: "json-file"
