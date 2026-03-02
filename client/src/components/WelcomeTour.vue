@@ -106,7 +106,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, nextTick, onMounted } from 'vue';
+import { computed, watch, nextTick } from 'vue';
 import { useTour } from '../composables/useTour';
 
 interface TourStep {

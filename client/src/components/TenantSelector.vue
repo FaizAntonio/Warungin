@@ -70,7 +70,7 @@ interface Props {
   showInfo?: boolean;
 }
 
-const props = withDefaults(defineProps<Props>(), {
+withDefaults(defineProps<Props>(), {
   placeholder: 'Pilih Tenant',
   showInfo: true,
 });

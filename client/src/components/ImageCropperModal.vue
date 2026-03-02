@@ -84,7 +84,6 @@
 
 <script setup lang="ts">
 import { ref, watch, onUnmounted } from 'vue';
-import { Teleport } from 'vue';
 import { useNotification } from '../composables/useNotification';
 
 const { error: showError } = useNotification();
@@ -361,4 +360,3 @@ onUnmounted(() => {
 <style scoped>
 /* Cropper styles are imported globally in main.ts */
 </style>
-

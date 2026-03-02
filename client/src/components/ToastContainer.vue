@@ -26,7 +26,7 @@
 </template>
 
 <script setup lang="ts">
-import { useNotification, Toast } from '../composables/useNotification';
+import { useNotification } from '../composables/useNotification';
 import ToastItem from './ToastItem.vue';
 
 const { toasts, removeToast } = useNotification();

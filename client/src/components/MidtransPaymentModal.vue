@@ -220,7 +220,7 @@ const createPayment = async () => {
                       // Still pending, start polling
                       checkPaymentStatus(orderId);
                     }
-                  } catch (err) {
+                  } catch {
                     // If status check fails, assume success (webhook will handle it)
                     emit('success');
                     close();
@@ -364,4 +364,3 @@ declare global {
   }
 }
 </script>
-

@@ -69,12 +69,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted } from 'vue';
-import { useRouter } from 'vue-router';
+import { ref, computed, onMounted } from 'vue';
 import api from '../api';
 import { useAuthStore } from '../stores/auth';
 
-const router = useRouter();
 const authStore = useAuthStore();
 const isOpen = ref(false);
 const loading = ref(false);
