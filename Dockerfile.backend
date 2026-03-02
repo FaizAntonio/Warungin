@@ -30,7 +30,7 @@ FROM node:18-alpine
 WORKDIR /app
 
 # Install runtime dependencies
-RUN apk add --no-cache dumb-init
+RUN apk add --no-cache dumb-init wget
 
 # Copy package files from builder
 COPY nest/package*.json ./nest/
