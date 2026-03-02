@@ -143,7 +143,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref } from 'vue';
 
 interface Props {
   show: boolean;
@@ -155,7 +155,7 @@ interface Emits {
   (e: 'send', data: { message: string; type: 'SMS' | 'EMAIL' | 'WHATSAPP' }): void;
 }
 
-const props = defineProps<Props>();
+defineProps<Props>();
 const emit = defineEmits<Emits>();
 
 const messageType = ref<'SMS' | 'EMAIL' | 'WHATSAPP'>('SMS');

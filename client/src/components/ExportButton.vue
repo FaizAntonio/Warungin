@@ -57,7 +57,7 @@ interface Props {
   headers?: string[];
 }
 
-const props = withDefaults(defineProps<Props>(), {
+withDefaults(defineProps<Props>(), {
   title: 'Data Export',
   headers: undefined,
 });
@@ -89,4 +89,3 @@ onUnmounted(() => {
   document.removeEventListener('click', handleClickOutside);
 });
 </script>
-

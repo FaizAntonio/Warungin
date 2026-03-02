@@ -6,7 +6,6 @@
 
 describe('🎯 Phase 29 - E2E Complete Workflow', () => {
   const baseUrl = Cypress.env('API_URL') || 'http://localhost:3000';
-  const token = Cypress.env('TEST_TOKEN') || 'test-token';
 
   beforeEach(() => {
     cy.visit(`${baseUrl}`);
