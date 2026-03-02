@@ -314,7 +314,7 @@ services:
     ports:
       - "3100:3100"
     volumes:
-      - ./observability/loki/local-config.yaml:/etc/loki/local-config.yaml
+      - ./observability/loki:/etc/loki
     command: -config.file=/etc/loki/local-config.yaml -validation.allow-structured-metadata=false
     networks:
       - warungin-network
@@ -331,7 +331,7 @@ services:
     container_name: warungin-promtail
     restart: unless-stopped
     volumes:
-      - ./observability/promtail/config.yaml:/etc/promtail/config.yaml
+      - ./observability/promtail:/etc/promtail
       - /var/run/docker.sock:/var/run/docker.sock
     command: -config.file=/etc/promtail/config.yaml
     networks:
