@@ -304,6 +304,13 @@ services:
       timeout: 5s
       retries: 5
       start_period: 30s
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=coolify
+      - traefik.http.routers.warungin-gateway.rule=Host(`gg00c04ocks08k0oc0cs4sso.140.213.187.48.sslip.io`)
+      - traefik.http.routers.warungin-gateway.entrypoints=http
+      - traefik.http.routers.warungin-gateway.service=warungin-gateway-svc
+      - traefik.http.services.warungin-gateway-svc.loadbalancer.server.port=80
 
   # Loki Log Aggregation
   loki:
