@@ -1,4 +1,4 @@
-import { onMounted, onUnmounted, ref, type Ref } from 'vue';
+import { onMounted, onUnmounted, type Ref } from 'vue';
 
 export function useFocusTrap(containerRef: Ref<HTMLElement | null>, isActive: Ref<boolean>) {
     const focusableElementsSelector = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';

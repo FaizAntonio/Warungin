@@ -35,7 +35,6 @@ const SHOW_ALL_ERRORS = isDevelopment; // Set to true to see all errors in devel
 // Suppress CORS errors in console for PDF generation (only in production)
 const originalError = window.console.error;
 const originalWarn = window.console.warn;
-const originalLog = window.console.log;
 
 window.console.error = (...args: any[]) => {
   // In development, show all errors for debugging
@@ -148,4 +147,3 @@ offlineStorage.init().catch((error) => {
 });
 
 app.mount('#app');
-

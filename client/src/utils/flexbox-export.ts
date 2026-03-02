@@ -1,4 +1,4 @@
-import { formatCurrency, formatDate, formatDateTime } from './formatters';
+import { formatCurrency, formatDate } from './formatters';
 
 interface ExportData {
   type: 'report' | 'analytics' | 'both';

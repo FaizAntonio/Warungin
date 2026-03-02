@@ -1,10 +1,8 @@
 import { ref, computed, watch } from 'vue';
 import { useAuthStore } from '../stores/auth';
-import { useRouter } from 'vue-router';
 
 export const useTenantCheck = () => {
   const authStore = useAuthStore();
-  const router = useRouter();
   const showTenantModal = ref(false);
 
   const needsTenantSelection = computed(() => {

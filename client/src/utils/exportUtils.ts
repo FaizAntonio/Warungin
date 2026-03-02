@@ -40,7 +40,7 @@ export const exportToPDF = async (data: any[], filename: string, title?: string)
     let y = 30;
     const pageHeight = doc.internal.pageSize.height;
 
-    data.forEach((row, i) => {
+    data.forEach((row) => {
         const text = Object.values(row).map(v => String(v)).join(' | ');
         // Simple text wrapping or truncation might be needed
         const splitText = doc.splitTextToSize(text, 180);

@@ -1,10 +1,8 @@
 import { ref, computed } from 'vue';
 import api from '../api';
 import { useNotification } from './useNotification';
-import { useAuthStore } from '../stores/auth';
 
 export function useShiftReminder() {
-  const authStore = useAuthStore();
   const { warning: showWarning } = useNotification();
   
   const currentShift = ref<any>(null);

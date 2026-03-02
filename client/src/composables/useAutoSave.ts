@@ -1,4 +1,4 @@
-import { ref, watch, onMounted } from 'vue';
+import { ref, watch } from 'vue';
 
 export function useAutoSave<T extends object>(key: string, data: T, enabled = true) {
     const hasDraft = ref(false);

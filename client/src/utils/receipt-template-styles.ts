@@ -78,7 +78,7 @@ export function getTemplateStyles(templateType: string, styles?: any): TemplateS
   return baseStyles[templateType as keyof typeof baseStyles] || baseStyles.CLASSIC;
 }
 
-export function getTemplateHeaderStyle(templateType: string, styles?: any): string {
+export function getTemplateHeaderStyle(templateType: string, _styles?: any): string {
   const styleMap: Record<string, string> = {
     CLASSIC: 'text-center mb-4 sm:mb-6 border-b-2 border-gray-900 pb-4 sm:pb-6 bg-gradient-to-b from-gray-50 to-white',
     MODERN: 'text-center mb-4 sm:mb-6 border-b border-gray-200 pb-4 sm:pb-6 bg-gradient-to-r from-gray-50 to-white',

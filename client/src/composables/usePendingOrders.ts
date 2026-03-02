@@ -1,4 +1,4 @@
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ref } from 'vue';
 import api from '../api';
 
 const pendingOrdersCount = ref(0);

@@ -78,7 +78,7 @@ export const usePosStore = defineStore('pos', () => {
                 });
                 categories.value = Array.from(cats);
             }
-        } catch (e) {
+        } catch {
             // Ignore cache read errors, proceed to fetch
         }
 

@@ -7,7 +7,7 @@ export const formatDate = (date: Date | string | null | undefined): string => {
     const dateObj = new Date(date);
     if (isNaN(dateObj.getTime())) return '-';
     return format(dateObj, 'dd MMMM yyyy', { locale: id });
-  } catch (error) {
+  } catch {
     return '-';
   }
 };
@@ -18,7 +18,7 @@ export const formatDateTime = (date: Date | string | null | undefined): string =
     const dateObj = new Date(date);
     if (isNaN(dateObj.getTime())) return '-';
     return format(dateObj, 'dd MMMM yyyy HH:mm', { locale: id });
-  } catch (error) {
+  } catch {
     return '-';
   }
 };

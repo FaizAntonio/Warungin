@@ -1,5 +1,3 @@
-import { ref } from 'vue';
-
 const CACHE_PREFIX = 'warungin_cache_';
 const CACHE_EXPIRY_PREFIX = 'warungin_cache_expiry_';
 const DEFAULT_CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
