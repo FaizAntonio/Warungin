@@ -389,7 +389,7 @@
 <script setup lang="ts">
 import { ref, watch, computed } from 'vue';
 import api from '../api';
-import { exportToCSV, getPeriodLabel } from '../utils/export';
+import { exportToCSV } from '../utils/export';
 import { generateFlexboxExport } from '../utils/export-templates';
 import { useAuthStore } from '../stores/auth';
 import { useNotification } from '../composables/useNotification';
@@ -477,7 +477,7 @@ const copyShareLink = async () => {
     setTimeout(() => {
       linkCopied.value = false;
     }, 3000);
-  } catch (error) {
+  } catch {
     // Fallback for older browsers
     const textArea = document.createElement('textarea');
     textArea.value = shareableLink.value;
@@ -491,7 +491,7 @@ const copyShareLink = async () => {
       setTimeout(() => {
         linkCopied.value = false;
       }, 3000);
-    } catch (err) {
+    } catch {
       await showError('Gagal menyalin link');
     }
     document.body.removeChild(textArea);

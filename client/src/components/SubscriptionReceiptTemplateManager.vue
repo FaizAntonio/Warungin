@@ -353,7 +353,6 @@
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue';
 import api from '../api';
-import { Teleport } from 'vue';
 import { useNotification } from '../composables/useNotification';
 import { 
   getTemplateHeaderStyle, 
@@ -588,4 +587,3 @@ onMounted(() => {
   }
 });
 </script>
-
