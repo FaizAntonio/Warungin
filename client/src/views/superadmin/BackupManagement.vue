@@ -380,7 +380,6 @@ const loadBackups = async () => {
     }
   } catch (error: any) {
     console.error('Error loading backups:', error);
-    const errorMessage = error.response?.data?.message || 'Gagal memuat backup';
     const errorCode = error.response?.data?.error || '';
     
     if (errorCode === 'DATABASE_CONNECTION_ERROR') {

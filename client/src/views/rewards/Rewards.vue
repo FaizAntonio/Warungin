@@ -288,7 +288,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import { useAuthStore } from '../../stores/auth';
 import { useNotification } from '../../composables/useNotification';
 import api from '../../api';
 
@@ -482,14 +481,6 @@ const formatDate = (date: string) => {
     hour: '2-digit',
     minute: '2-digit',
   });
-};
-
-const getDaysUntilExpiration = (expirationDate: string): number => {
-  const expDate = new Date(expirationDate);
-  const now = new Date();
-  const diffTime = expDate.getTime() - now.getTime();
-  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-  return Math.max(0, diffDays);
 };
 
 onMounted(async () => {

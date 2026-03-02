@@ -170,7 +170,7 @@ useSEO({
   keywords: 'kontak warungin, support warungin, help center, lupa password, customer service',
 });
 
-const { success: showSuccess, error: showError } = useNotification();
+const { error: showError } = useNotification();
 
 onMounted(() => {
   window.scrollTo({ top: 0, behavior: 'smooth' });

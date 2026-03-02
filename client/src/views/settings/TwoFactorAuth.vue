@@ -238,7 +238,7 @@ import { ref, onMounted } from 'vue';
 import api from '../../api';
 import { useNotification } from '../../composables/useNotification';
 
-const { success, error } = useNotification();
+const { success } = useNotification();
 
 const loading = ref(true);
 const status = ref({

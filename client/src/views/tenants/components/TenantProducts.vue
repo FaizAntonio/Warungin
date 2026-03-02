@@ -194,7 +194,7 @@ const loadProducts = async () => {
     try {
       const limitRes = await api.get('/addons/check-limit/ADD_PRODUCTS');
       productLimit.value = limitRes.data;
-    } catch (e) {
+    } catch {
       // Ignore if no addon
       productLimit.value = null;
     }
@@ -264,4 +264,3 @@ watch(() => props.tenantId, async (newTenantId, oldTenantId) => {
   }
 }, { immediate: true });
 </script>
-

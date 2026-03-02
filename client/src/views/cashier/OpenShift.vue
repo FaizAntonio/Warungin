@@ -420,11 +420,6 @@ const formattedDate = computed(() => {
 });
 
 // Methods
-const getShiftLabel = (shiftName: string) => {
-    const found = availableShifts.value.find((s: { name: string; label: string }) => s.name === shiftName || s.name.toLowerCase() === shiftName.toLowerCase());
-    return found ? found.label : shiftName;
-};
-
 const goToDashboard = () => router.push('/app/dashboard');
 const goToPOS = () => router.push('/pos');
 const handleLogout = () => {

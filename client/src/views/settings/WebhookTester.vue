@@ -370,7 +370,7 @@ const previewPayload = computed(() => {
       null,
       2
     );
-  } catch (e) {
+  } catch {
     return 'Invalid JSON';
   }
 });
@@ -437,7 +437,7 @@ const testWebhook = async () => {
     if (testForm.value.payload) {
       try {
         payload.payload = JSON.parse(testForm.value.payload);
-      } catch (e) {
+      } catch {
         await showError('Format JSON tidak valid');
         testing.value = false;
         return;
@@ -475,7 +475,7 @@ const copyPayload = async () => {
   try {
     await navigator.clipboard.writeText(previewPayload.value);
     await showSuccess('Payload berhasil disalin!');
-  } catch (error) {
+  } catch {
     await showError('Gagal menyalin payload');
   }
 };

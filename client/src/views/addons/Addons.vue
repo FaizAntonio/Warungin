@@ -212,7 +212,7 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted, watch } from 'vue';
-import { safeArrayMethod, ensureArray, safeSome, safeFilter, safeMap, safeFind } from '../../utils/array-helpers';
+import { safeFilter, safeFind } from '../../utils/array-helpers';
 import api from '../../api';
 import { formatCurrency } from '../../utils/formatters';
 import { useAuthStore } from '../../stores/auth';
@@ -303,31 +303,6 @@ const loadAddons = async () => {
 
 
 
-const isAddonActive = (addonId: string) => {
-  const now = new Date();
-  return safeArrayMethod(
-    activeAddons.value,
-    (addons) => {
-      try {
-        if (!Array.isArray(addons)) return false;
-        return addons.some(a => {
-          if (!a || a.addonId !== addonId) return false;
-          // Check if expired
-          if (a.expiresAt) {
-            const expiresAt = new Date(a.expiresAt);
-            return expiresAt > now;
-          }
-          return true;
-        });
-      } catch (error) {
-        console.error('Error checking addon active status:', error);
-        return false;
-      }
-    },
-    false
-  );
-};
-
 // Check if addon has defaultLimit (Tambah Outlet, Pengguna, Produk - bisa beli berapapun = Unlimited)
 const hasDefaultLimit = (addon: any) => {
   return addon.defaultLimit !== null && addon.defaultLimit !== undefined;
@@ -341,7 +316,7 @@ const filteredAvailableAddons = computed(() => {
   );
   
   // All addons are shown (can be purchased multiple times)
-  const filtered = safeFilter(uniqueAddons, (addon: any) => {
+  const filtered: any[] = safeFilter(uniqueAddons, (_addon: any) => {
     // Semua addon selalu ditampilkan (bisa dibeli berkali-kali)
     return true;
   });
@@ -457,4 +432,3 @@ onMounted(() => {
   }
 });
 </script>
-

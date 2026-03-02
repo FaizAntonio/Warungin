@@ -1185,7 +1185,7 @@ const loadAvailableAddons = async () => {
     try {
         const response = await api.get('/addons/available');
         availableAddonsList.value = Array.isArray(response.data) ? response.data : [];
-    } catch (error) {
+    } catch {
         console.warn('Failed to load available addons');
         availableAddonsList.value = [];
     }
@@ -1487,27 +1487,6 @@ const handleAddUserSubmit = async () => {
         loadTenantDetail();
     } catch (err: any) {
         showError(err.response?.data?.message || 'Gagal menambah user');
-    } finally {
-        saving.value = false;
-    }
-};
-
-const handleSaveUser = async () => {
-    saving.value = true;
-    try {
-        if (!editUserForm.value.id) {
-             // Create
-             await api.post(`/tenants/${tenantId}/users`, editUserForm.value);
-             showSuccess('User berhasil dibuat');
-        } else {
-             // Update
-             await api.put(`/users/${editUserForm.value.id}`, editUserForm.value);
-             showSuccess('User berhasil diperbarui');
-        }
-        showEditUserModal.value = false;
-        loadTenantDetail();
-    } catch (err: any) {
-        showError(err.response?.data?.message || 'Gagal menyimpan user');
     } finally {
         saving.value = false;
     }

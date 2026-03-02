@@ -89,8 +89,6 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
-
 // Define types based on usage
 interface CartItem {
   id: string;
@@ -100,7 +98,7 @@ interface CartItem {
   [key: string]: any;
 }
 
-const props = defineProps<{
+defineProps<{
   cart: CartItem[];
   subtotal: number;
   discount: number;

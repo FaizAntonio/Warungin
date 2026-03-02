@@ -386,24 +386,6 @@ const getPlanName = (plan: string) => {
   return planNames[plan] || plan;
 };
 
-const getPlanPrice = (plan: string) => {
-  const prices: Record<string, number> = {
-    BASIC: 149000, 
-    PRO: 299000, 
-    ENTERPRISE: 499000, 
-  };
-  return prices[plan] || 0;
-};
-
-const getSubscriptionStatusClass = (status: string) => {
-  const classes: Record<string, string> = {
-    ACTIVE: 'bg-blue-100 text-blue-800',
-    EXPIRED: 'bg-red-100 text-red-800',
-    CANCELLED: 'bg-slate-100 text-slate-800',
-  };
-  return classes[status] || 'bg-slate-100 text-slate-800';
-};
-
 const getSubscriptionStatusLabel = (status: string) => {
   const labels: Record<string, string> = {
     ACTIVE: 'Aktif',

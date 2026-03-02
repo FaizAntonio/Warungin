@@ -384,7 +384,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted } from 'vue';
 import api from '../../api';
 import { useNotification } from '../../composables/useNotification';
 import { format } from 'date-fns';

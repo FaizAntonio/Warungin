@@ -236,7 +236,7 @@ const loadUsers = async (page = 1) => {
     try {
       const limitRes = await api.get('/addons/check-limit/ADD_USERS');
       userLimit.value = limitRes.data;
-    } catch (e) {
+    } catch {
       // Ignore if no addon
     }
   } catch (error: any) {

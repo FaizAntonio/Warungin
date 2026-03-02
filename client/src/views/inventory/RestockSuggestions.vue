@@ -245,7 +245,7 @@ const applySuggestion = async (suggestion: RestockSuggestion) => {
       },
     });
     showSuccess('Redirecting to Purchase Order page');
-  } catch (error: any) {
+  } catch {
     showError('Failed to apply suggestion');
   }
 };

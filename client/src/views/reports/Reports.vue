@@ -757,7 +757,7 @@ const loadReport = async () => {
     reportData.value = reportResponse.data;
     
     if (reportData.value?.byDate && Array.isArray(reportData.value.byDate)) {
-      reportData.value.byDate.forEach((item: any, index: number) => {
+      reportData.value.byDate.forEach((item: any) => {
         if (item.orders && Array.isArray(item.orders)) {
           const productsList: any[] = [];
           item.orders.forEach((order: any) => {

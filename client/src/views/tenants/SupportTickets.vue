@@ -362,7 +362,7 @@ const loadAgents = async () => {
   try {
     const response = await api.get('/users', { params: { role: 'support' } });
     agents.value = response.data.data || response.data || [];
-  } catch (error) {
+  } catch {
     // Fallback agents
     agents.value = [
       { id: '1', name: 'Support Agent 1' },

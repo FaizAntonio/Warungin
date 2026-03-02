@@ -194,7 +194,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted, watch } from 'vue';
+import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { useAuthStore } from '../../stores/auth';
 import { useSocket } from '../../composables/useSocket';
 import { useNotification } from '../../composables/useNotification';

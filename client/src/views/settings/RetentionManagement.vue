@@ -436,10 +436,8 @@
 import { ref, onMounted } from 'vue';
 import api from '../../api';
 import { useNotification } from '../../composables/useNotification';
-import { useTenantCheck } from '../../composables/useTenantCheck';
 
-const { needsTenantSelection } = useTenantCheck();
-const { success: showSuccess, error: showError, confirm: showConfirm } = useNotification();
+const { success: showSuccess, error: showError } = useNotification();
 
 const loading = ref(true);
 const applying = ref(false);

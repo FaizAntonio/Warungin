@@ -358,7 +358,7 @@ const handleStoreSelectorClose = () => {
   }
 };
 
-const handleStoreSelected = (storeId: string) => {
+const handleStoreSelected = (_storeId: string) => {
   showStoreSelector.value = false;
   const redirect = route.query.redirect as string;
   if (redirect) {

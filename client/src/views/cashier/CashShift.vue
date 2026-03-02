@@ -1363,11 +1363,6 @@ const formatDateTime = (date: string | Date) => {
   });
 };
 
-const changeHistoryPage = (page: number) => {
-  historyPagination.value.page = page;
-  loadShiftHistory();
-};
-
 const loadTodayShifts = async () => {
   todayShiftsLoading.value = true;
   try {

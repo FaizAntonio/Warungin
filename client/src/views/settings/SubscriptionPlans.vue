@@ -318,10 +318,8 @@
 import { ref, onMounted } from 'vue';
 import api from '../../api';
 import { useNotification } from '../../composables/useNotification';
-import { useRouter } from 'vue-router';
 
 const { success: showSuccess, error: showError, confirm: showConfirm } = useNotification();
-const router = useRouter();
 
 const loading = ref(true);
 const upgrading = ref(false);

@@ -245,11 +245,6 @@ const updateQuantity = (item: CartItem, change: number) => {
   emit('update-quantity', item, change);
 };
 
-const removeItem = (item: CartItem) => {
-  playSound('delete');
-  emit('remove-item', item);
-};
-
 const setCustomerType = (type: 'customer' | 'member') => {
   playSound('click');
   emit('update:customerType', type);

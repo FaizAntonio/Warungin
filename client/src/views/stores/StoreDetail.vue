@@ -221,7 +221,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { useAuthStore } from '../../stores/auth';
 import { format } from 'date-fns';
 import { id } from 'date-fns/locale';
 import api from '../../api';
@@ -229,8 +228,7 @@ import { useNotification } from '../../composables/useNotification';
 
 const route = useRoute();
 const router = useRouter();
-const authStore = useAuthStore();
-const { success: showSuccess } = useNotification();
+useNotification();
 const store = ref<any>(null);
 
 const fetchStore = async () => {

@@ -277,7 +277,7 @@ import { useRouter } from 'vue-router';
 import { useNotification } from '../../composables/useNotification';
 
 const router = useRouter();
-const { success: showSuccess, info: showInfo } = useNotification();
+useNotification();
 const activeCategory = ref('tech');
 
 const menuLabels = {
