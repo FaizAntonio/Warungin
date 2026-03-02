@@ -694,7 +694,6 @@ import api from '../../api';
 import { formatCurrency } from '../../utils/formatters';
 import { useAuthStore } from '../../stores/auth';
 import { usePermissions } from '../../composables/usePermissions';
-import { safeSome, safeFilter, safeMap, safeReduce, safeFind } from '../../utils/array-helpers';
 import { useSocket } from '../../composables/useSocket';
 import { useNotification } from '../../composables/useNotification';
 import { useSound } from '../../composables/useSound';
@@ -722,8 +721,7 @@ const {
   loading, 
   processing, 
   filteredProducts, 
-  subtotal, 
-  totalItems 
+  subtotal 
 } = storeToRefs(posStore);
 
 const { isSubscriptionActive } = storeToRefs(authStore);
@@ -773,7 +771,6 @@ watch([customerType, customerName, selectedMember], () => {
 
 const showSuccessOverlay = ref(false);
 const currentTime = ref('');
-const showCustomerModal = ref(false);
 const printerRef = ref<any>(null);
 const showLowStockModal = ref(false);
 const criticalStockProducts = ref<any[]>([]);
@@ -926,7 +923,7 @@ const promotionDiscounts = computed(() => {
       if (subtotal.value >= minAmount && cart.value.length >= minQuantity) {
         let currentParsing: any = d.applicableProducts;
         if (typeof currentParsing === 'string') {
-          try { currentParsing = JSON.parse(currentParsing); } catch (e) { currentParsing = []; }
+          try { currentParsing = JSON.parse(currentParsing); } catch { currentParsing = []; }
         }
         const applicableProductIds = (Array.isArray(currentParsing) && currentParsing.length > 0)
           ? currentParsing
@@ -953,7 +950,7 @@ const promotionDiscounts = computed(() => {
     } else if (d.discountType === 'BUNDLE') {
       let bundleParsing: any = d.bundleProducts;
       if (typeof bundleParsing === 'string') {
-        try { bundleParsing = JSON.parse(bundleParsing); } catch (e) { bundleParsing = []; }
+        try { bundleParsing = JSON.parse(bundleParsing); } catch { bundleParsing = []; }
       }
       const bundleProductIds = Array.isArray(bundleParsing) ? bundleParsing : [];
       const discountProductId = d.bundleDiscountProduct;
@@ -978,7 +975,7 @@ const promotionDiscounts = computed(() => {
     } else if (d.discountType === 'PRODUCT_BASED') {
       let productParsing: any = d.applicableProducts;
       if (typeof productParsing === 'string') {
-        try { productParsing = JSON.parse(productParsing); } catch (e) { productParsing = []; }
+        try { productParsing = JSON.parse(productParsing); } catch { productParsing = []; }
       }
       const applicableProductIds = Array.isArray(productParsing) ? productParsing : [];
 
@@ -1006,7 +1003,7 @@ const promotionDiscounts = computed(() => {
       const minQuantity = d.minQuantity || 1;
       let qtyParsing: any = d.applicableProducts;
       if (typeof qtyParsing === 'string') {
-        try { qtyParsing = JSON.parse(qtyParsing); } catch (e) { qtyParsing = []; }
+        try { qtyParsing = JSON.parse(qtyParsing); } catch { qtyParsing = []; }
       }
       const applicableProductIds = Array.isArray(qtyParsing) ? qtyParsing : [];
 
@@ -1078,17 +1075,6 @@ const total = computed(() => {
   return Math.max(0, subtotal.value - discount.value);
 });
 
-const getCategoryIcon = (category: string) => {
-  const map: Record<string, string> = {
-    'SEMUA': 'grid_view', 'ALL': 'grid_view',
-    'MAKANAN': 'restaurant', 'FOOD': 'restaurant', 'FOODS': 'restaurant',
-    'MINUMAN': 'local_cafe', 'DRINK': 'local_cafe', 'DRINKS': 'local_cafe',
-    'SNACK': 'cookie', 'SNACKS': 'cookie',
-    'DESSERT': 'icecream', 'DESSERTS': 'icecream'
-  };
-  return map[category.toUpperCase()] || 'category';
-};
-
 // Methods
 const checkOrientation = () => {
   isPortrait.value = window.innerHeight > window.innerWidth;
@@ -1101,7 +1087,7 @@ const checkOrientation = () => {
     const orientation = screenAny.orientation || screenAny.mozOrientation || screenAny.msOrientation;
     
     if (orientation && typeof orientation.lock === 'function') {
-      (orientation as { lock: (orientation: string) => Promise<void> }).lock('landscape').catch((err: any) => {
+      (orientation as { lock: (orientation: string) => Promise<void> }).lock('landscape').catch(() => {
         // Lock failed (user may have denied or browser doesn't support)
 
       });
@@ -1123,30 +1109,13 @@ const loadTenantFeatures = async () => {
     const response = await api.get('/tenant/profile');
     const features = response.data.features || {};
     isSimpleMode.value = features.simplePosMode === true;
-  } catch (error: any) {
+  } catch {
 
     isSimpleMode.value = false;
   }
 };
 
 
-
-const checkCriticalStock = async () => {
-  try {
-    const response = await api.get('/inventory/restock-suggestions/critical', {
-      params: { limit: 5 },
-    });
-    criticalStockProducts.value = response.data || [];
-    if (criticalStockProducts.value.length > 0) {
-      const dismissedToday = localStorage.getItem(`lowStockDismissed_${new Date().toDateString()}`);
-      if (!dismissedToday) {
-        showLowStockModal.value = true;
-      }
-    }
-  } catch (error: any) {
-
-  }
-};
 
 const dismissLowStockModal = () => {
   showLowStockModal.value = false;
@@ -1162,22 +1131,6 @@ const goToStockAlerts = () => {
   dismissLowStockModal();
   window.location.href = '/app/inventory/stock-alerts';
 };
-
-const isInCart = (productId: string) => {
-  return safeSome(cart.value, (item: any) => item && item.id === productId);
-};
-
-
-
-const increaseQuantity = async (productId: string) => {
-  updateQuantity(productId, 1);
-};
-
-const decreaseQuantity = (productId: string) => {
-  updateQuantity(productId, -1);
-};
-
-
 
 const resetCartState = () => {
   // Use store action
@@ -1204,16 +1157,6 @@ const handleClearCart = async () => {
   resetCartState();
 };
 
-const handleCustomerInput = async () => {
-  if (!customerInput.value.trim()) {
-    customerName.value = '';
-    return;
-  }
-  customerName.value = customerInput.value.trim();
-  selectedMember.value = null;
-  estimatedDiscount.value = 0;
-};
-
 const handleMemberSelect = () => {
   if (!selectedMemberId.value) {
     selectedMember.value = null;
@@ -1234,29 +1177,6 @@ const handleMemberSelect = () => {
     selectedMember.value = null;
     estimatedDiscount.value = 0;
   }
-};
-
-const switchCustomerType = (type: 'customer' | 'member') => {
-  if (customerType.value === type) return;
-  customerInput.value = '';
-  customerName.value = '';
-  selectedMember.value = null;
-  selectedMemberId.value = '';
-  estimatedDiscount.value = 0;
-  customerType.value = type;
-};
-
-const clearCustomer = () => {
-  customerInput.value = '';
-  customerName.value = '';
-  selectedMember.value = null;
-  selectedMemberId.value = '';
-  estimatedDiscount.value = 0;
-};
-
-const handleStoreChange = (_storeId: string | null) => {
-  loadProducts();
-  loadMembers();
 };
 
 const loadMembers = async () => {
@@ -1281,22 +1201,6 @@ const loadDiscounts = async () => {
     console.error('Error loading discounts:', error);
     discounts.value = [];
   }
-};
-
-const fetchInventoryAddonStatus = async () => {
-    // Stub for missing function
-    console.log('fetchInventoryAddonStatus called');
-};
-
-const refreshProducts = async () => {
-  loading.value = true;
-  await Promise.all([
-    loadProducts(),
-    loadMembers(),
-    loadDiscounts(),
-    fetchInventoryAddonStatus()
-  ]);
-  showSuccess('Data refreshed');
 };
 
 const handlePaymentConfirm = async (paymentData: { paymentMethod: string; cashAmount?: number; qrCode?: string }) => {
@@ -1868,7 +1772,7 @@ const checkShiftStatus = async () => {
     const data = response.data?.data || response.data;
     // If we get a current shift, it's active
     hasActiveShift.value = data && data.id && !data.shiftEnd;
-  } catch (error: any) {
+  } catch {
     // 404 means no shift, other errors we treat as no shift
     hasActiveShift.value = false;
   } finally {

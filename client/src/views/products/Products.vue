@@ -1076,7 +1076,6 @@ const productCardRefs = ref(new Map<string, HTMLElement>());
 const { isOnline } = useOffline();
 const { getCached, setCached } = useCache();
 const CACHE_KEY_PRODUCTS = 'products_list';
-const CACHE_KEY_CATEGORIES = 'products_categories';
 
 const retryLoad = () => {
   hasError.value = false;
@@ -1471,7 +1470,7 @@ const loadProducts = async (page = 1, append = false) => {
     try {
       const limitRes = await api.get('/addons/check-limit/ADD_PRODUCTS');
       productLimit.value = limitRes.data;
-    } catch (e) {
+    } catch {
       // Ignore if no addon
     }
   } catch (error: any) {
@@ -1770,7 +1769,7 @@ const deleteProduct = async (id: string) => {
           });
           await loadProducts(pagination.value.page);
           await showSuccess('Produk berhasil dipulihkan');
-        } catch (error: any) {
+        } catch {
           await showError('Gagal memulihkan produk');
         }
       },
@@ -1895,7 +1894,7 @@ const handleEmailReport = async (title: string) => {
   
   try {
     await showSuccess(`Laporan "${title}" telah dijadwalkan untuk dikirim ke ${email}`);
-  } catch (err) {
+  } catch {
     await showError('Gagal menjadwalkan pengiriman email');
   }
 };
@@ -1951,8 +1950,6 @@ const handleFileImport = async (event: Event) => {
     const headers = parseCSVLine(lines[0]);
     // Allow both English and Indonesian headers for backward compatibility or ease of use
     // But we map them to our internal field names
-    
-    const requiredHeaders = ['Name', 'Price', 'Stock']; // simplified for English
     
     // Check if headers match (we'll do a simple check for now mainly focusing on standard template)
     const headerMap: Record<string, number> = {};
@@ -2122,12 +2119,6 @@ const getStockStatusLabel = (stock: number, minStock: number): string => {
   }
 };
 
-const calculateMargin = (price: number, cost: number): string => {
-  if (!cost || cost <= 0 || !price || price <= 0) return '0.00';
-  const margin = ((price - cost) / price) * 100;
-  return margin.toFixed(2);
-};
-
 const formatMargin = (price: number, cost: number): string => {
   if (!cost || cost <= 0 || !price || price <= 0) {
     return marginDisplayFormat.value === 'percentage' ? '0.00%' : formatCurrency(0);
@@ -2193,6 +2184,21 @@ const toggleInfiniteScroll = () => {
   }
 };
 
+const setupSwipeForProduct = (el: HTMLElement | null, productId: string) => {
+  if (!el || window.innerWidth >= 768) return;
+  productCardRefs.value.set(productId, el);
+
+  useSwipe(el, {
+    onSwipeLeft: () => {
+      if (canManageProducts.value || authStore.user?.role === 'ADMIN_TENANT' || authStore.user?.role === 'SUPER_ADMIN') {
+        deleteProduct(productId);
+      }
+    },
+    threshold: 100,
+    velocityThreshold: 0.5,
+  });
+};
+
 onMounted(async () => {
   try {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -2249,26 +2255,6 @@ watch(() => selectedIds.value.length, (count) => {
   }
 });
 
-// Setup swipe gesture for product cards
-const setupSwipeForProduct = (el: HTMLElement | null, productId: string) => {
-  if (!el) return;
-  
-  // Only setup on mobile devices
-  if (window.innerWidth >= 768) return;
-  
-  productCardRefs.value.set(productId, el);
-  
-  useSwipe(el, {
-    onSwipeLeft: () => {
-      // Swipe left to delete
-      if (canManageProducts.value || authStore.user?.role === 'ADMIN_TENANT' || authStore.user?.role === 'SUPER_ADMIN') {
-        deleteProduct(productId);
-      }
-    },
-    threshold: 100, // Require 100px swipe
-    velocityThreshold: 0.5,
-  });
-};
   } catch (error: any) {
     console.error('Error in onMounted:', error);
     hasError.value = true;
@@ -2279,8 +2265,4 @@ const setupSwipeForProduct = (el: HTMLElement | null, productId: string) => {
 onUnmounted(() => {
     window.removeEventListener('focus-search', handleGlobalFocusSearch);
 });
-const setupSwipeForProduct = (el: HTMLElement | null, productId: string) => {
-  // Placeholder for swipe functionality
-};
 </script>
-
