@@ -488,14 +488,6 @@ interface Container {
   memory?: string;
 }
 
-interface Log {
-  time: string;
-  severity: 'INFO' | 'WARN' | 'ERROR';
-  service: string;
-  message: string;
-  node: string;
-}
-
 interface Service {
   name: string;
   status: 'healthy' | 'unhealthy' | 'degraded';
@@ -616,7 +608,7 @@ const restartContainer = async (containerName: string) => {
     await api.post(`/admin/docker/restart/${containerName}`);
     await success('Container berhasil direstart', 'Sukses');
     await loadContainers();
-  } catch (err) {
+  } catch {
     await error('Gagal merestart container', 'Error');
   }
 };
@@ -628,7 +620,7 @@ const stopContainer = async (containerName: string) => {
     await api.post(`/admin/docker/stop/${containerName}`);
     await success('Container berhasil dimatikan', 'Sukses');
     await loadContainers();
-  } catch (err) {
+  } catch {
     await error('Gagal mematikan container', 'Error');
   }
 };

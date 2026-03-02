@@ -787,7 +787,7 @@ const bulkMarkAsRead = async () => {
     await showSuccess(`${selectedMessages.value.length} pesan ditandai sudah dibaca`);
     selectedMessages.value = [];
     await loadMessages();
-  } catch (error: any) {
+  } catch {
     await showError('Gagal menandai pesan');
   }
 };
@@ -799,7 +799,7 @@ const bulkMarkAsUnread = async () => {
     await showSuccess(`${selectedMessages.value.length} pesan ditandai belum dibaca`);
     selectedMessages.value = [];
     await loadMessages();
-  } catch (error: any) {
+  } catch {
     await showError('Gagal menandai pesan');
   }
 };
@@ -814,7 +814,7 @@ const bulkDelete = async () => {
     await showSuccess(`${selectedMessages.value.length} pesan berhasil dihapus`);
     selectedMessages.value = [];
     await loadMessages();
-  } catch (error: any) {
+  } catch {
     await showError('Gagal menghapus pesan');
   }
 };
@@ -853,7 +853,7 @@ const loadAgents = async () => {
   try {
     const response = await api.get('/users', { params: { role: 'support' } });
     agents.value = response.data.data || response.data || [];
-  } catch (error) {
+  } catch {
     agents.value = [
       { id: '1', name: 'Support Agent 1' },
       { id: '2', name: 'Support Agent 2' },
@@ -1024,7 +1024,7 @@ const checkForNewMessages = async () => {
       }
     }
     previousUnreadCount.value = currentUnreadCount;
-  } catch (error: any) {
+  } catch {
     // Silent fail
   }
 };

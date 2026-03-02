@@ -590,7 +590,7 @@
 import { ref, computed, onMounted } from 'vue';
 import api from '../../api';
 import { useNotification } from '../../composables/useNotification';
-import { formatCurrency, formatDate } from '../../utils/formatters';
+import { formatCurrency } from '../../utils/formatters';
 import GlobalReportExportModal from '../../components/GlobalReportExportModal.vue';
 
 const { success: showSuccess, error: showError, confirm: showConfirm } = useNotification();
@@ -616,10 +616,7 @@ const subscriptionFilter = ref('all');
 const subscriptionPurchasedByFilter = ref('all'); // Filter baru
 const subscriptionPage = ref(1);
 const ITEMS_PER_PAGE = 7;
-const showSubscriptionModal = ref(false);
 const showEditSubscriptionModal = ref(false);
-const selectedSubscription = ref<any>(null);
-const selectedSubscriptionPurchasedBy = ref('SELF'); // State baru untuk modal detail
 const editingSubscription = ref<any>(null);
 const editSubscriptionForm = ref({ plan: '', amount: 0, status: '' });
 
@@ -628,17 +625,9 @@ const selectedAddons = ref<string[]>([]);
 const addonFilter = ref('all');
 const addonPurchasedByFilter = ref('all'); // Filter baru
 const addonPage = ref(1);
-const showAddonModal = ref(false);
 const showEditAddonModal = ref(false);
-const selectedAddon = ref<any>(null);
-const selectedAddonPurchasedBy = ref('SELF'); // State baru untuk modal detail
 const editingAddon = ref<any>(null);
 const editAddonForm = ref({ status: '' });
-
-// Admin Modal State
-const showAddAdminModal = ref(false);
-const addAdminForm = ref({ name: '', email: '', password: '', tenantId: '' });
-const tenants = ref<any[]>([]);
 
 const loadReport = async () => {
   if (!shouldLoadReport.value) return;
@@ -714,22 +703,6 @@ const updateSubscription = async () => {
   }
 };
 
-const deleteSubscription = async (sub: any) => {
-  const confirmed = await showConfirm('Apakah Anda yakin ingin menghapus subscription ini?');
-  if (!confirmed) return;
-
-  try {
-    await api.delete(`/admin/subscriptions/${sub.id}`);
-    showSuccess('Subscription berhasil dihapus');
-    showSubscriptionModal.value = false;
-    loadReport(); // Reload data
-  } catch (error: any) {
-    console.error('Error deleting subscription:', error);
-    showError('Gagal menghapus subscription');
-  }
-};
-
-
 const bulkDeleteSubscriptions = async () => {
   const confirmed = await showConfirm(`Apakah Anda yakin ingin menghapus ${selectedSubscriptions.value.length} subscription?`);
   if (!confirmed) return;
@@ -804,21 +777,6 @@ const updateAddon = async () => {
   }
 };
 
-const deleteAddon = async (addon: any) => {
-    const confirmed = await showConfirm('Apakah Anda yakin ingin menghapus addon ini?');
-    if (!confirmed) return;
-
-    try {
-        await api.delete(`/admin/addons-purchase/${addon.id}`);
-        showSuccess('Addon berhasil dihapus');
-        showAddonModal.value = false;
-        loadReport();
-    } catch (error: any) {
-        console.error('Error deleting addon:', error);
-        showError('Gagal menghapus addon');
-    }
-}
-
 const bulkDeleteAddons = async () => {
   const confirmed = await showConfirm(`Apakah Anda yakin ingin menghapus ${selectedAddons.value.length} addon?`);
   if (!confirmed) return;
@@ -839,33 +797,6 @@ const printAddon = (addon: any) => {
 }
 
 // --- Detail Modal Functions (Updated for missing implementations) ---
-
-const saveSubscriptionPurchasedBy = async () => {
-  if (!selectedSubscription.value) return;
-  try {
-    await api.put(`/admin/subscriptions/${selectedSubscription.value.id}`, { purchasedBy: selectedSubscriptionPurchasedBy.value });
-    showSuccess('Purchased By updated successfully');
-    // Update local data
-    selectedSubscription.value.purchasedBy = selectedSubscriptionPurchasedBy.value;
-    loadReport();
-  } catch (error: any) {
-    showError('Failed to update purchased by');
-  }
-};
-
-const saveAddonPurchasedBy = async () => {
-  if (!selectedAddon.value) return;
-   try {
-    await api.put(`/admin/addons-purchase/${selectedAddon.value.id}`, { purchasedBy: selectedAddonPurchasedBy.value });
-    showSuccess('Purchased By updated successfully');
-    // Update local data
-    selectedAddon.value.purchasedBy = selectedAddonPurchasedBy.value;
-    loadReport();
-  } catch (error: any) {
-    showError('Failed to update purchased by');
-  }
-};
-
 
 onMounted(() => {
   shouldLoadReport.value = true;
