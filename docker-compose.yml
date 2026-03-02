@@ -19,6 +19,7 @@ services:
       - postgres_backup:/backup
     networks:
       - warungin-network
+      - coolify
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres}"]
       interval: 10s
@@ -519,6 +520,8 @@ services:
 networks:
   warungin-network:
     driver: bridge
+  coolify:
+    external: true
 
 volumes:
   postgres_data:
