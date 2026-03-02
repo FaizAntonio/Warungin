@@ -66,7 +66,7 @@ export async function generateReportPDF(data: ReportData) {
 
 // Template 1: Clean & Simple (formerly Minimalist)
 function generateCleanTemplate(data: ReportData): string {
-  const { tenants, stats, startDate, endDate } = data;
+  const { stats, startDate, endDate } = data;
   const date = new Date().toLocaleDateString('id-ID', { 
     year: 'numeric', 
     month: 'long', 
@@ -193,7 +193,7 @@ function generateCleanTemplate(data: ReportData): string {
 
 // Template 2: Contemporary (formerly Modern)
 function generateContemporaryTemplate(data: ReportData): string {
-  const { tenants, stats, startDate, endDate } = data;
+  const { stats, startDate, endDate } = data;
   const date = new Date().toLocaleDateString('id-ID', { 
     year: 'numeric', 
     month: 'long', 
@@ -329,7 +329,7 @@ function generateContemporaryTemplate(data: ReportData): string {
 
 // Template 3: Vibrant (formerly Colorful)
 function generateVibrantTemplate(data: ReportData): string {
-  const { tenants, stats, startDate, endDate } = data;
+  const { stats, startDate, endDate } = data;
   const date = new Date().toLocaleDateString('id-ID', { 
     year: 'numeric', 
     month: 'long', 
@@ -466,7 +466,7 @@ function generateVibrantTemplate(data: ReportData): string {
 
 // Template 4: Professional (formerly Elegant)
 function generateProfessionalTemplate(data: ReportData): string {
-  const { tenants, stats, startDate, endDate } = data;
+  const { stats, startDate, endDate } = data;
   const date = new Date().toLocaleDateString('id-ID', { 
     year: 'numeric', 
     month: 'long', 
@@ -599,7 +599,7 @@ function generateProfessionalTemplate(data: ReportData): string {
 
 // Template 5: Executive (NEW)
 function generateExecutiveTemplate(data: ReportData): string {
-  const { tenants, stats, startDate, endDate } = data;
+  const { stats, startDate, endDate } = data;
   const date = new Date().toLocaleDateString('id-ID', { 
     year: 'numeric', 
     month: 'long', 

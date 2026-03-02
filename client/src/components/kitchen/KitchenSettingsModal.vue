@@ -57,7 +57,7 @@ import { computed } from 'vue';
 import { useAuthStore } from '../../stores/auth';
 import StoreSelector from '../StoreSelector.vue';
 
-const props = defineProps<{
+defineProps<{
   isOpen: boolean;
 }>();
 

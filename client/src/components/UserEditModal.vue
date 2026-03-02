@@ -559,7 +559,7 @@ watch(() => props.user, async (newUser) => {
         setTimeout(async () => {
           try {
             await loadPassword();
-          } catch (error) {
+          } catch {
             // Silently fail - user can click "Lihat Password" manually
             console.log('Password not available yet, user can click to load');
           }
@@ -708,4 +708,3 @@ const handleSubmit = () => {
   opacity: 0;
 }
 </style>
-

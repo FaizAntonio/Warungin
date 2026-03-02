@@ -85,33 +85,23 @@ const tooltipStyle = computed(() => {
   
   let top = 0;
   let left = 0;
-  let arrowTop = '';
-  let arrowLeft = '';
   
   switch (props.placement) {
     case 'top':
       top = targetRect.top - tooltipRect.height - gap;
       left = targetRect.left + (targetRect.width / 2) - (tooltipRect.width / 2);
-      arrowTop = '100%';
-      arrowLeft = '50%';
       break;
     case 'bottom':
       top = targetRect.bottom + gap;
       left = targetRect.left + (targetRect.width / 2) - (tooltipRect.width / 2);
-      arrowTop = '-4px';
-      arrowLeft = '50%';
       break;
     case 'left':
       top = targetRect.top + (targetRect.height / 2) - (tooltipRect.height / 2);
       left = targetRect.left - tooltipRect.width - gap;
-      arrowTop = '50%';
-      arrowLeft = '100%';
       break;
     case 'right':
       top = targetRect.top + (targetRect.height / 2) - (tooltipRect.height / 2);
       left = targetRect.right + gap;
-      arrowTop = '50%';
-      arrowLeft = '-4px';
       break;
   }
   
@@ -133,8 +123,6 @@ const tooltipStyle = computed(() => {
 });
 
 const arrowStyle = computed(() => {
-  const arrowOffset = '8px';
-  
   switch (props.placement) {
     case 'top':
       return { bottom: '-4px', left: '50%', transform: 'translateX(-50%) rotate(45deg)' };

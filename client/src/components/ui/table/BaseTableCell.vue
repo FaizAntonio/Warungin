@@ -10,9 +10,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps } from 'vue';
-
-const props = defineProps<{
+defineProps<{
   align?: 'left' | 'center' | 'right';
 }>();
 </script>

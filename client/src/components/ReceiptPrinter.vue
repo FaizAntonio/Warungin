@@ -220,7 +220,6 @@
 
 <script setup lang="ts">
 import { ref, watch, onMounted } from 'vue';
-import { Teleport } from 'vue';
 import api from '../api';
 import { formatCurrency } from '../utils/formatters';
 import { useNotification } from '../composables/useNotification';
@@ -289,10 +288,6 @@ const props = withDefaults(defineProps<Props>(), {
   tenantAddress: '',
   tenantPhone: '',
 });
-
-const emit = defineEmits<{
-  close: [];
-}>();
 
 const templates = ref<ReceiptTemplate[]>([]);
 const selectedTemplate = ref<string>('');
@@ -479,7 +474,7 @@ const handleShare = async () => {
     try {
       await navigator.clipboard.writeText(shareData.text);
       await success('Link receipt disalin ke clipboard!');
-    } catch (err) {
+    } catch {
       await warning('Browser tidak mendukung fitur share.');
     }
   }

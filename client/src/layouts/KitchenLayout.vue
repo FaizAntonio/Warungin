@@ -125,14 +125,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted, watch } from 'vue';
-import { useRouter, useRoute } from 'vue-router';
+import { ref, computed, onMounted, onUnmounted } from 'vue';
+import { useRoute } from 'vue-router';
 import { useAuthStore } from '../stores/auth';
 import { useSocket } from '../composables/useSocket';
 import { useSystemStatus } from '../composables/useSystemStatus';
 import api from '../api';
 
-const router = useRouter();
 const route = useRoute();
 const authStore = useAuthStore();
 const { socket } = useSocket();

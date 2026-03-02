@@ -45,7 +45,6 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, defineEmits } from 'vue';
 
 interface Column {
   key: string;
@@ -55,7 +54,7 @@ interface Column {
   width?: string;
 }
 
-const props = defineProps<{
+defineProps<{
   columns: Column[];
   actions?: boolean;
   sortKey?: string;

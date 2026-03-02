@@ -3,12 +3,7 @@
  * App Key: 244d3c355
  */
 
-import { ref, onMounted } from 'vue';
-
-interface IronSourceAd {
-  show: () => Promise<void>;
-  isAvailable: () => boolean;
-}
+import { ref } from 'vue';
 
 declare global {
   interface Window {
@@ -252,8 +247,6 @@ export function useIronSource() {
       }
 
       let rewarded = false;
-      let adClosed = false;
-
       // Set up one-time listener for this ad
       const listener = {
         onRewardedVideoAdRewarded: (placement: any) => {
@@ -262,7 +255,6 @@ export function useIronSource() {
         },
         onRewardedVideoAdClosed: () => {
           console.log('IronSource: Ad closed');
-          adClosed = true;
           // Remove listener
           if (window.IronSource) {
             window.IronSource.setRewardedVideoListener({});
