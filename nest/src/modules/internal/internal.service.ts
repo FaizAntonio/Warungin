@@ -19,7 +19,7 @@ export class InternalService {
     };
   }
 
-  async handlePaymentWebhook(body: any) {
+  async handlePaymentWebhook(_body: any) {
     return { success: true, message: "Payment webhook processed" };
   }
 

@@ -72,13 +72,13 @@ export class AnalyticsController {
 
   @Post("custom-reports")
   @Roles("SUPER_ADMIN", "ADMIN_TENANT")
-  async createCustomReport(@Body() data: any, @TenantId() tenantId: string) {
+  async createCustomReport(@Body() data: any, @TenantId() _tenantId: string) {
     return { success: true, id: "stub-report-id", ...data };
   }
 
   @Get("custom-reports/:id/export")
   @Roles("SUPER_ADMIN", "ADMIN_TENANT")
-  async exportCustomReport(@Param("id") id: string, @TenantId() tenantId: string) {
+  async exportCustomReport(@Param("id") id: string, @TenantId() _tenantId: string) {
     return { success: true, id, data: [], format: "csv" };
   }
 

@@ -9,7 +9,7 @@ export class ProductStubController {
   @Get("price-suggestion/by-cost")
   async getPriceSuggestionByCost(
     @Query("cost") cost: string,
-    @TenantId() tenantId: string,
+    @TenantId() _tenantId: string,
   ) {
     const costNum = parseFloat(cost) || 0;
     return {

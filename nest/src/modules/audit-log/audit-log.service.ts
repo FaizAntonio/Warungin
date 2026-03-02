@@ -64,7 +64,7 @@ export class AuditLogService {
     };
   }
 
-  async getAuditLogById(id: string, tenantId: string) {
+  async getAuditLogById(id: string, _tenantId: string) {
     const log = await this.prisma.auditLog.findUnique({
       where: { id },
       include: {

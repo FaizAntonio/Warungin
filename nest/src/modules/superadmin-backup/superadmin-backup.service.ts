@@ -3,22 +3,6 @@ import { PrismaService } from "../../prisma/prisma.service";
 import * as fs from "fs";
 import * as path from "path";
 
-interface BackupLogWithTenant {
-  id: string;
-  tenantId: string;
-  status: string;
-  generatedAt: Date;
-  emailSentAt: Date | null;
-  size: number;
-  filePath: string;
-  errorMessage: string | null;
-  tenant?: {
-    id: string;
-    name: string;
-    email: string;
-  };
-}
-
 @Injectable()
 export class SuperadminBackupService {
   constructor(private prisma: PrismaService) {}
@@ -295,8 +279,7 @@ export class SuperadminBackupService {
     }
 
     try {
-      const htmlContent = fs.readFileSync(backupLog.filePath, "utf8");
-      const adminEmail = backupLog.tenant.email;
+      fs.readFileSync(backupLog.filePath, "utf8");
 
       // Email sending would be implemented here with actual email service
       // For now, just log the backup as sent

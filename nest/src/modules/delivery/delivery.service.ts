@@ -81,21 +81,21 @@ export class DeliveryService {
     return { message: "Courier config deleted successfully" };
   }
 
-  async getDeliveryOrders(tenantId: string) {
+  async getDeliveryOrders(_tenantId: string) {
     return [];
   }
 
   async processDeliveryOrder(
-    orderId: string,
-    tenantId: string,
-    data: { trackingNumber?: string; courier?: string },
+    _orderId: string,
+    _tenantId: string,
+    _data: { trackingNumber?: string; courier?: string },
   ) {
     return { success: true, message: "Delivery processed" };
   }
 
   async createShipment(
-    data: { courier: string; orderId: string },
-    tenantId: string,
+    _data: { courier: string; orderId: string },
+    _tenantId: string,
   ) {
     return { success: true, message: "Shipment created" };
   }

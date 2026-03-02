@@ -15,7 +15,6 @@ import { Response } from "express";
 import { SubscriptionsService } from "./subscriptions.service";
 import {
   GetSubscriptionsDto,
-  CreateSubscriptionDto,
   UpgradeSubscriptionDto,
   AddAddonDto,
 } from "./dto/subscription.dto";

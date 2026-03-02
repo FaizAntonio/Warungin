@@ -36,13 +36,13 @@ export class SubscriptionReceiptController {
 
   @Get("templates")
   @Roles("SUPER_ADMIN", "ADMIN_TENANT")
-  async getTemplates(@TenantId() tenantId: string) {
+  async getTemplates(@TenantId() _tenantId: string) {
     return { data: [], total: 0 };
   }
 
   @Post("templates")
   @Roles("SUPER_ADMIN", "ADMIN_TENANT")
-  async createTemplate(@Body() data: any, @TenantId() tenantId: string) {
+  async createTemplate(@Body() data: any, @TenantId() _tenantId: string) {
     return { success: true, id: "stub-template-id", ...data };
   }
 

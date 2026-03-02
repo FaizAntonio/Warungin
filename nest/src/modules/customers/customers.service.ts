@@ -168,7 +168,7 @@ export class CustomersService {
   }
 
   async deleteCustomer(id: string, tenantId: string) {
-    const customer = await this.getCustomerById(id, tenantId);
+    await this.getCustomerById(id, tenantId);
 
     await this.prisma.customer.delete({
       where: { id },
@@ -222,7 +222,7 @@ export class CustomersService {
   }
 
   async addLoyaltyPoints(id: string, tenantId: string, points: number) {
-    const customer = await this.getCustomerById(id, tenantId);
+    await this.getCustomerById(id, tenantId);
 
     if (points < 0) {
       throw new BadRequestException("Points must be positive");
@@ -247,11 +247,11 @@ export class CustomersService {
     return updated;
   }
 
-  async activateCustomer(id: string, tenantId: string) {
+  async activateCustomer(_id: string, _tenantId: string) {
     return { message: "Customer activated" };
   }
 
-  async deactivateCustomer(id: string, tenantId: string) {
+  async deactivateCustomer(_id: string, _tenantId: string) {
     return { message: "Customer deactivated" };
   }
 

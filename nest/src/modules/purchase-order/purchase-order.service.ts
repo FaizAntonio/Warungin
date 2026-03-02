@@ -127,7 +127,7 @@ export class PurchaseOrderService {
   }
 
   async approvePurchaseOrder(id: string, tenantId: string, userId: string) {
-    const order = await this.getPurchaseOrderById(id, tenantId);
+    await this.getPurchaseOrderById(id, tenantId);
 
     return this.prisma.purchaseOrder.update({
       where: { id },
@@ -135,8 +135,8 @@ export class PurchaseOrderService {
     });
   }
 
-  async receivePurchaseOrder(id: string, tenantId: string, data: any) {
-    const order = await this.getPurchaseOrderById(id, tenantId);
+  async receivePurchaseOrder(id: string, tenantId: string, _data: any) {
+    await this.getPurchaseOrderById(id, tenantId);
 
     return this.prisma.purchaseOrder.update({
       where: { id },
@@ -145,7 +145,7 @@ export class PurchaseOrderService {
   }
 
   async cancelPurchaseOrder(id: string, tenantId: string) {
-    const order = await this.getPurchaseOrderById(id, tenantId);
+    await this.getPurchaseOrderById(id, tenantId);
 
     return this.prisma.purchaseOrder.update({
       where: { id },

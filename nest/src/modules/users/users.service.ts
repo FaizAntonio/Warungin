@@ -178,7 +178,7 @@ export class UsersService {
   }
 
   async deleteUser(id: string, tenantId: string) {
-    const user = await this.getUserById(id, tenantId);
+    await this.getUserById(id, tenantId);
 
     await this.prisma.user.delete({
       where: { id },
@@ -219,17 +219,17 @@ export class UsersService {
     return { total, active, inactive: total - active };
   }
 
-  async resetPassword(email: string, tenantId: string) {
+  async resetPassword(_email: string, _tenantId: string) {
     return { message: "Password reset email sent" };
   }
 
   async activateUser(id: string, tenantId: string) {
-    const user = await this.getUserById(id, tenantId);
+    await this.getUserById(id, tenantId);
     return this.prisma.user.update({ where: { id }, data: { isActive: true } });
   }
 
   async deactivateUser(id: string, tenantId: string) {
-    const user = await this.getUserById(id, tenantId);
+    await this.getUserById(id, tenantId);
     return this.prisma.user.update({
       where: { id },
       data: { isActive: false },

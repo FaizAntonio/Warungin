@@ -7,7 +7,7 @@ import { TenantId } from "../../common/decorators/tenant-id.decorator";
 @UseGuards(JwtAuthGuard, TenantGuard)
 export class QuickInsightController {
   @Get()
-  async getInsight(@TenantId() tenantId: string) {
+  async getInsight(@TenantId() _tenantId: string) {
     return {
       todaySales: 0,
       todayOrders: 0,
