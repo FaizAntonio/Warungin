@@ -13,7 +13,6 @@ import { RolesGuard } from "../../common/guards/roles.guard";
 import { SubscriptionGuard } from "../../common/guards/subscription.guard";
 import { Roles } from "../../common/decorators/roles.decorator";
 import { TenantId } from "../../common/decorators/tenant-id.decorator";
-import { Public } from "../../common/decorators/public.decorator";
 import { Request } from "express";
 
 interface AuthRequest extends Request {
@@ -59,7 +58,6 @@ export class DashboardController {
     @Req() req?: AuthRequest,
   ) {
     try {
-      const userRole = req?.user?.role;
       const outletId = req?.assignedStoreId || req?.user?.assignedStoreId;
 
       return this.dashboardService.getDashboardStats(

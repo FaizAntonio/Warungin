@@ -133,7 +133,7 @@ export class DatabaseException extends HttpException {
 }
 
 export class MultiTenantException extends ForbiddenException {
-  constructor(resourceTenantId: string, requestTenantId: string) {
+  constructor(_resourceTenantId: string, _requestTenantId: string) {
     super({
       success: false,
       code: 'MULTI_TENANT_VIOLATION',

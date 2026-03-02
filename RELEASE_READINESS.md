@@ -1,6 +1,6 @@
 # RELEASE READINESS
 
-Generated: 2026-03-01T15:43:42.763Z
+Generated: 2026-03-02T04:48:00.080Z
 
 ## Command Results
 
@@ -34,23 +34,6 @@ Generated: 2026-03-01T15:43:42.763Z
 > cd nest && npx eslint src --ext .ts
 
 
-C:\Users\Iz\Documents\New Replit\Warungin\Warungin\nest\src\common\exceptions\custom-exceptions.ts
-  136:15  warning  'resourceTenantId' is defined but never used. Allowed unused args must match /^_/u  @typescript-eslint/no-unused-vars
-  136:41  warning  'requestTenantId' is defined but never used. Allowed unused args must match /^_/u   @typescript-eslint/no-unused-vars
-
-C:\Users\Iz\Documents\New Replit\Warungin\Warungin\nest\src\common\pipes\enhanced-validation.pipe.ts
-   4:3   warning  'BadRequestException' is defined but never used      @typescript-eslint/no-unused-vars
-  20:11  warning  'primitiveTypes' is assigned a value but never used  @typescript-eslint/no-unused-vars
-
-C:\Users\Iz\Documents\New Replit\Warungin\Warungin\nest\src\common\utils\performance.util.ts
-  2:10  warning  'Transform' is defined but never used  @typescript-eslint/no-unused-vars
-
-C:\Users\Iz\Documents\New Replit\Warungin\Warungin\nest\src\modules\2fa\two-factor.service.ts
-  38:41  warning  'code' is defined but never used. Allowed unused args must match /^_/u  @typescript-eslint/no-unused-vars
-
-C:\Users\Iz\Documents\New Replit\Warungin\Warungin\nest\src\modules\admin-monitor\admin-monitor.service.ts
-  64:26  warning  'name' is defined but never used. Allowed unused args must match /^_/u  @typescript-eslint/no-unused-vars
-
 C:\Users\Iz\Documents\New Replit\Warungin\Warungin\nest\src\modules\analytics\analytics.controller.ts
   75:59  warning  'tenantId' is defined but never used. Allowed unused args must match /^_/u  @typescript-eslint/no-unused-vars
   81:65  warning  'tenantId' is defined but never used. Allowed unused args must match /^_/u  @typescript-eslint/no-unused-vars
@@ -76,9 +59,6 @@ C:\Users\Iz\Documents\New Replit\Warungin\Warungin\nest\src\modules\archive\arch
 C:\Users\Iz\Documents\New Replit\Warungin\Warungin\nest\src\modules\audit-log\audit-log.service.ts
   67:37  warning  'tenantId' is defined but never used. Allowed unused args must match /^_/u  @typescript-eslint/no-unused-vars
 
-C:\Users\Iz\Documents\New Replit\Warungin\Warungin\nest\src\modules\auth\auth.controller.ts
-  7:3  warning  'Req' is defined but never used  @typescript-eslint/no-unused-vars
-
 C:\Users\Iz\Documents\New Replit\Warungin\Warungin\nest\src\modules\customers\customers.service.ts
   171:11  warning  'customer' is assigned a value but never used                               @typescript-eslint/no-unused-vars
   225:11  warning  'customer' is assigned a value but never used                               @typescript-eslint/no-unused-vars
@@ -93,10 +73,6 @@ C:\Users\Iz\Documents\New Replit\Warungin\Warungin\nest\src\modules\customers\dt
 
 C:\Users\Iz\Documents\New Replit\Warungin\Warungin\nest\src\modules\customers\dto\get-customers.dto.ts
   1:42  warning  'Min' is defined but never used  @typescript-eslint/no-unused-vars
-
-C:\Users\Iz\Documents\New Replit\Warungin\Warungin\nest\src\modules\dashboard\dashboard.controller.ts
-  16:10  warning  'Public' is defined but never used             @typescript-eslint/no-unused-vars
-  62:13  warning  'userRole' is assigned a value but never used  @typescript-eslint/no-unused-vars
 
 C:\Users\Iz\Documents\New Replit\Warungin\Warungin\nest\src\modules\delivery\delivery.service.ts
   84:27  warning  'tenantId' is defined but never used. Allowed unused args must match /^_/u  @typescript-eslint/no-unused-vars
@@ -121,5 +97,27 @@ C:\Users\Iz\Documents\New Replit\Warungin\Warungin\nest\src\modules\employee\emp
   144:11  warning  'employee' is assigned a value but never used  @typescript-eslint/no-unused-vars
   152:11  warning  'employee' is assigned a value but never used  @typescript-eslint/no-unused-vars
 
-C:\Users\Iz\Documents\New Replit\W
+C:\Users\Iz\Documents\New Replit\Warungin\Warungin\nest\src\modules\financial-management\financial-management.service.ts
+  70:11  warning  'monthlyOrders' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\Iz\Documents\New Replit\Warungin\Warungin\nest\src\modules\internal\internal.service.ts
+  22:30  warning  'body' is defined but never used. Allowed unused args must match /^_/u  @typescript-eslint/no-unused-vars
+
+C:\Users\Iz\Documents\New Replit\Warungin\Warungin\nest\src\modules\members\members.service.ts
+   12:3   warning  'PAGINATION_DEFAULT_LIMIT' is defined but never used  @typescript-eslint/no-unused-vars
+   13:3   warning  'PAGINATION_DEFAULT_PAGE' is defined but never used   @typescript-eslint/no-unused-vars
+   14:3   warning  'PAGINATION_MAX_LIMIT' is defined but never used      @typescript-eslint/no-unused-vars
+  200:11  warning  'member' is assigned a value but never used           @typescript-eslint/no-unused-vars
+
+C:\Users\Iz\Documents\New Replit\Warungin\Warungin\nest\src\modules\orders\dto\create-order.dto.ts
+  1:85  warning  'IsEnum' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\Iz\Documents\New Replit\Warungin\Warungin\nest\src\modules\orders\dto\get-orders.dto.ts
+  1:40  warning  'Min' is defined but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\Iz\Documents\New Replit\Warungin\Warungin\nest\src\modules\orders\orders.service.ts
+    5:3   warning  'ForbiddenException' is defined but never used  @typescript-eslint/no-unused-vars
+    9:10  warning  'CreateOrderDto' is defined but never used      @typescript-eslint/no-unused-vars
+  136:11  warning  'order' is assigned a value but never used      @typescript-eslint/no-unused-vars
+  161:11  warning  'order' is assigned a value but never used      @typescript-eslint/no-unused
 ```

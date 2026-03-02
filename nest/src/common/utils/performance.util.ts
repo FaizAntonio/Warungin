@@ -1,5 +1,4 @@
 import { applyDecorators, SetMetadata } from '@nestjs/common';
-import { Transform } from 'class-transformer';
 
 /**
  * Performance-related decorators and utilities

@@ -35,7 +35,7 @@ export class TwoFactorService {
     };
   }
 
-  async verifyTwoFactor(userId: string, code: string) {
+  async verifyTwoFactor(userId: string, _code: string) {
     return {
       message: "Two-factor code verified",
       userId,

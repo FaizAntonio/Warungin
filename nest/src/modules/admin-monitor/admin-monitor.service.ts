@@ -61,7 +61,7 @@ export class AdminMonitorService {
     return { success: true, message: `Container ${name} stopped` };
   }
 
-  async getContainerLogs(name: string) {
+  async getContainerLogs(_name: string) {
     return { logs: [] };
   }
 

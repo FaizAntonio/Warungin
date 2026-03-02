@@ -1,7 +1,6 @@
 import {
   PipeTransform,
   Injectable,
-  BadRequestException,
   ArgumentMetadata,
 } from "@nestjs/common";
 import { validate } from "class-validator";
@@ -17,17 +16,6 @@ export class EnhancedValidationPipe implements PipeTransform<any> {
     }
 
     // Skip validation for primitive types (string, number, boolean)
-    const primitiveTypes = [
-      String,
-      Number,
-      Boolean,
-      Object,
-      Date,
-      Array,
-      Map,
-      Set,
-      Promise,
-    ];
     const metatypeName = metadata.metatype?.name;
     if (
       metatypeName &&

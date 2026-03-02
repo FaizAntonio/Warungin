@@ -1,6 +1,6 @@
 # AUTH ROUTE API RISK REPORT
 
-Generated: 2026-03-01T15:41:30.453Z
+Generated: 2026-03-02T04:46:53.187Z
 
 ## Summary
 - Routed pages analyzed: 79
@@ -55,7 +55,7 @@ Generated: 2026-03-01T15:41:30.453Z
 | client\src\views\customers\Customers.vue | customers | ADMIN_TENANT, SUPERVISOR, CASHIER, SUPER_ADMIN | POST /marketing/campaigns/send-sms | POST /marketing/campaigns/send-sms | no | SUPER_ADMIN, ADMIN_TENANT, SUPERVISOR, CASHIER | nest\src\modules\marketing\marketing.controller.ts:29 |
 | client\src\views\customers\Customers.vue | customers | ADMIN_TENANT, SUPERVISOR, CASHIER, SUPER_ADMIN | POST /marketing/campaigns/send-email | POST /marketing/campaigns/send-email | no | SUPER_ADMIN, ADMIN_TENANT, SUPERVISOR, CASHIER | nest\src\modules\marketing\marketing.controller.ts:35 |
 | client\src\views\customers\Customers.vue | customers | ADMIN_TENANT, SUPERVISOR, CASHIER, SUPER_ADMIN | POST /customers | POST /customers | no | SUPER_ADMIN, ADMIN_TENANT, SUPERVISOR, CASHIER | nest\src\modules\customers\customers.controller.ts:56 |
-| client\src\views\dashboard\Dashboard.vue | dashboard | ADMIN_TENANT, SUPERVISOR, CASHIER, KITCHEN | GET /dashboard/stats | GET /dashboard/stats | no | SUPER_ADMIN, ADMIN_TENANT, SUPERVISOR, CASHIER, KITCHEN | nest\src\modules\dashboard\dashboard.controller.ts:53 |
+| client\src\views\dashboard\Dashboard.vue | dashboard | ADMIN_TENANT, SUPERVISOR, CASHIER, KITCHEN | GET /dashboard/stats | GET /dashboard/stats | no | SUPER_ADMIN, ADMIN_TENANT, SUPERVISOR, CASHIER, KITCHEN | nest\src\modules\dashboard\dashboard.controller.ts:52 |
 | client\src\views\dashboard\Dashboard.vue | dashboard | ADMIN_TENANT, SUPERVISOR, CASHIER, KITCHEN | GET /subscriptions/current | GET /subscriptions/current | no | SUPER_ADMIN, ADMIN_TENANT, SUPERVISOR, CASHIER, KITCHEN | nest\src\modules\subscriptions\subscriptions.controller.ts:47 |
 | client\src\views\dashboard\Dashboard.vue | dashboard | ADMIN_TENANT, SUPERVISOR, CASHIER, KITCHEN | GET /orders | GET /orders | no | SUPER_ADMIN, ADMIN_TENANT, SUPERVISOR, CASHIER, KITCHEN | nest\src\modules\orders\orders.controller.ts:27 |
 | client\src\views\delivery\DeliveryOrders.vue | delivery | ADMIN_TENANT, SUPERVISOR, SUPER_ADMIN | GET /delivery/orders | GET /delivery/orders | no | SUPER_ADMIN, ADMIN_TENANT, SUPERVISOR | nest\src\modules\delivery\delivery.controller.ts:76 |
