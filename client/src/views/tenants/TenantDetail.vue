@@ -1594,7 +1594,11 @@ const handleEditUser = (user: any) => {
 const handleAddStore = async () => {
     saving.value = true;
     try {
-        await api.post(`/tenants/${tenantId}/outlets`, newStoreForm.value);
+        await api.post(`/tenants/${tenantId}/outlets`, {
+            name: newStoreForm.value.name,
+            address: newStoreForm.value.address || undefined,
+            phone: newStoreForm.value.phone || undefined,
+        });
         showSuccess('Toko berhasil ditambahkan');
         showAddStoreModal.value = false;
         await loadTenantStores();
@@ -1638,7 +1642,12 @@ const removeEditShift = (index: number) => {
 const handleSaveStore = async () => {
     saving.value = true;
     try {
-        await api.put(`/outlets/${editStoreForm.value.id}`, editStoreForm.value);
+        await api.put(`/outlets/${editStoreForm.value.id}`, {
+            name: editStoreForm.value.name,
+            address: editStoreForm.value.address || undefined,
+            phone: editStoreForm.value.phone || undefined,
+            isActive: editStoreForm.value.isActive,
+        });
         showSuccess('Toko berhasil diperbarui');
         showEditStoreModal.value = false;
         loadTenantDetail();

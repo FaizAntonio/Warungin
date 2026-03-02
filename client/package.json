@@ -7,7 +7,9 @@
     "build": "vite build",
     "preview": "vite preview",
     "type-check": "vue-tsc --noEmit",
-    "lint": "eslint . --fix"
+    "lint": "eslint . --fix",
+    "playwright:test": "playwright test",
+    "playwright:test:headed": "playwright test --headed"
   },
   "dependencies": {
     "@headlessui/vue": "^1.7.17",
@@ -29,6 +31,7 @@
   },
   "devDependencies": {
     "@babel/parser": "^7.28.5",
+    "@playwright/test": "^1.58.2",
     "@types/dompurify": "^3.0.5",
     "@types/node": "^24.10.2",
     "@vitejs/plugin-vue": "^5.0.0",
